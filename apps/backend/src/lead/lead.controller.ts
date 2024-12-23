@@ -34,4 +34,13 @@ export class LeadController
       },
     };
   }
+
+  @TsRest(leadContractController.getAllLeads)
+  async getAllLeads() {
+    const leads = await this.leadService.getAllLeads();
+    return {
+      status: 200 as const,
+      body: leads,
+    };
+  }
 }
