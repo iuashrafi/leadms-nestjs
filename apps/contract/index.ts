@@ -1,8 +1,8 @@
 import { initContract } from "@ts-rest/core";
-import { postContract } from "./post/contract";
+import { leadContract } from "./lead/contract";
 
 const c = initContract();
 
 export const contract = c.router({
-  post: postContract,
+  lead: leadContract,
 });
