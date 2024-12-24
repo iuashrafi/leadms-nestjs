@@ -1,4 +1,4 @@
-import { EntityManager } from '@mikro-orm/postgresql';
+import { EntityManager, wrap } from '@mikro-orm/postgresql';
 import { LeadRequestShapes } from './lead.controller';
 import { Injectable } from '@nestjs/common';
 import { RestaurantLead } from './entities/restaurantLead.entity';
@@ -22,6 +22,26 @@ export class LeadService {
       assignedKAM,
     });
     await this.em.persistAndFlush(lead);
+  }
+
+  async updateLead(body: LeadRequestShapes['updateLead']['body']) {
+    const {
+      id,
+      restaurantName,
+      address,
+      contactNumber,
+      currentStatus,
+      assignedKAM,
+    } = body;
+    const lead = await this.em.findOneOrFail(RestaurantLead, id);
+    wrap(lead).assign({
+      name: restaurantName,
+      address,
+      contactNumber,
+      restaurantLeadStatus: currentStatus,
+      assignedKAM,
+    });
+    await this.em.flush();
   }
 
   async getAllLeads() {

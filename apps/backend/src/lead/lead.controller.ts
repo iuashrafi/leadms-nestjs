@@ -35,6 +35,18 @@ export class LeadController
     };
   }
 
+  @TsRest(leadContractController.updateLead)
+  async updateLead(@TsRestRequest() { body }: LeadRequestShapes['updateLead']) {
+    await this.leadService.updateLead(body);
+    return {
+      status: 200 as const,
+      body: {
+        success: true,
+        message: 'Successfully updated a Lead.',
+      },
+    };
+  }
+
   @TsRest(leadContractController.getAllLeads)
   async getAllLeads() {
     const leads = await this.leadService.getAllLeads();

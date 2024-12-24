@@ -23,6 +23,15 @@ export const leadContract = c.router(
         200: z.array(RestaurantLeadSchema),
       },
     },
+
+    updateLead: {
+      method: "PUT",
+      path: "/updateLead",
+      body: RestaurantLeadSchema,
+      responses: {
+        200: SuccessSchema,
+      },
+    },
   },
   {
     pathPrefix: "/lead",
