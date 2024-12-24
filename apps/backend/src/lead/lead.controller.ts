@@ -55,4 +55,18 @@ export class LeadController
       body: leads,
     };
   }
+
+  @TsRest(leadContractController.createRestaurantStaff)
+  async createRestaurantStaff(
+    @TsRestRequest() { body }: LeadRequestShapes['createRestaurantStaff'],
+  ) {
+    await this.leadService.createRestaurantStaff(body);
+    return {
+      status: 200 as const,
+      body: {
+        success: true,
+        message: 'Successfully created a Restaurant Staff.',
+      },
+    };
+  }
 }
