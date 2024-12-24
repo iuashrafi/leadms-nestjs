@@ -56,6 +56,17 @@ export class LeadController
     };
   }
 
+  @TsRest(leadContractController.getLeadById)
+  async getLeadById(
+    @TsRestRequest() { query }: LeadRequestShapes['getLeadById'],
+  ) {
+    const lead = await this.leadService.getLeadById(query.id);
+    return {
+      status: 200 as const,
+      body: lead,
+    };
+  }
+
   @TsRest(leadContractController.createRestaurantStaff)
   async createRestaurantStaff(
     @TsRestRequest() { body }: LeadRequestShapes['createRestaurantStaff'],

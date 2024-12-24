@@ -51,6 +51,30 @@ export class LeadService {
     return leads;
   }
 
+  async getLeadById(id: number) {
+    const lead = await this.em.findOneOrFail(
+      RestaurantLead,
+      { id },
+      {
+        populate: ['staff'],
+      },
+    );
+    return {
+      restaurantName: lead.name,
+      address: lead.address,
+      contactNumber: lead.contactNumber,
+      currentStatus: lead.restaurantLeadStatus,
+      assignedKAM: lead.assignedKAM,
+      staffs: lead.staff.getItems().map((eachStaff) => ({
+        staffId: eachStaff.id,
+        staffName: eachStaff.name,
+        role: eachStaff.role,
+        contactNumber: eachStaff.contactNumber,
+        email: eachStaff.email,
+      })),
+    };
+  }
+
   async createRestaurantStaff(
     body: LeadRequestShapes['createRestaurantStaff']['body'],
   ) {

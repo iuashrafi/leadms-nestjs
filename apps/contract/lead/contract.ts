@@ -48,6 +48,27 @@ export const leadContract = c.router(
         201: SuccessSchema,
       },
     },
+
+    getLeadById: {
+      method: "GET",
+      path: "/getLeadById",
+      query: z.object({
+        id: z.string().transform(Number),
+      }),
+      responses: {
+        200: RestaurantLeadSchema.extend({
+          staffs: z.array(
+            z.object({
+              staffId: z.number(),
+              staffName: z.string(),
+              role: z.nativeEnum(RestaurantStaffRole),
+              contactNumber: z.string(),
+              email: z.string(),
+            })
+          ),
+        }),
+      },
+    },
   },
   {
     pathPrefix: "/lead",
