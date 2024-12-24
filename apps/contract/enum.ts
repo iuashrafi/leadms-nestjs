@@ -10,3 +10,9 @@ export enum RestaurantStaffRole {
   Chef = "Chef",
   Others = "Others",
 }
+
+export enum RestaurantInteractionType {
+  Call = "Call",
+  Visit = "Visit",
+  Order = "Order",
+}
