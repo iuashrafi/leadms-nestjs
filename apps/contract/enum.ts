@@ -3,3 +3,10 @@ export enum RestaurantLeadStatus {
   Active = "Active",
   Inactive = "Inactive",
 }
+
+export enum RestaurantStaffRole {
+  Owner = "Owner",
+  Manager = "Manager",
+  Chef = "Chef",
+  Others = "Others",
+}
