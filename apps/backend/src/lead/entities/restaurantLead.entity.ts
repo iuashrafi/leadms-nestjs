@@ -1,6 +1,7 @@
-import { Entity, Enum, Property } from '@mikro-orm/core';
+import { Collection, Entity, Enum, OneToMany, Property } from '@mikro-orm/core';
 import { BaseEntity } from 'src/base.entity';
 import { RestaurantLeadStatus } from 'contract/enum';
+import { RestaurantStaff } from './restaurantStaff.entity';
 
 // Given in Doc
 // Restaurant name
@@ -27,6 +28,9 @@ export class RestaurantLead extends BaseEntity {
 
   @Property()
   assignedKAM: string;
+
+  @OneToMany(() => RestaurantStaff, (staff) => staff.restaurantLead)
+  staff = new Collection<RestaurantStaff>(this);
 
   constructor({
     name,
