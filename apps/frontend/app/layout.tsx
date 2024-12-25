@@ -28,13 +28,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-neutral-100`}
       >
         <TanstackProvider>
           <>
             <Toaster />
             <Navbar />
-            {children}
+            <div className="container mx-auto p-4 md:p-6 lg:p-8 xl:p-16 ">
+              {children}
+            </div>
           </>
         </TanstackProvider>
       </body>
