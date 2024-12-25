@@ -33,6 +33,9 @@ export const leadContract = c.router(
     getAllLeads: {
       method: "GET",
       path: "/getAllLeads",
+      query: z.object({
+        searchText: z.string().optional(),
+      }),
       responses: {
         200: z.array(RestaurantLeadSchema),
       },
@@ -86,6 +89,13 @@ export const leadContract = c.router(
     getAllStaffs: {
       method: "GET",
       path: "/getAllStaffs",
+      query: z.object({
+        searchText: z.string().optional(),
+        roles: z
+          .string()
+          .transform((val) => val.split(","))
+          .optional(),
+      }),
       responses: {
         200: RestaurantStaffSchema.array(),
       },

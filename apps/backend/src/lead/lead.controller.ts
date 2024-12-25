@@ -57,8 +57,10 @@ export class LeadController
   }
 
   @TsRest(leadContractController.getAllLeads)
-  async getAllLeads() {
-    const leads = await this.leadService.getAllLeads();
+  async getAllLeads(
+    @TsRestRequest() { query }: LeadRequestShapes['getAllLeads'],
+  ) {
+    const leads = await this.leadService.getAllLeads(query);
     return {
       status: 200 as const,
       body: leads,
@@ -95,8 +97,10 @@ export class LeadController
   }
 
   @TsRest(leadContractController.getAllStaffs)
-  async getAllStaffs() {
-    const staffs = await this.leadService.getAllStaffs();
+  async getAllStaffs(
+    @TsRestRequest() { query }: LeadRequestShapes['getAllLeads'],
+  ) {
+    const staffs = await this.leadService.getAllStaffs(query);
     return {
       status: 200 as const,
       body: staffs,

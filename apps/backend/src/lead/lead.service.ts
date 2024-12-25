@@ -75,10 +75,39 @@ export class LeadService {
     await this.em.flush();
   }
 
-  async getAllLeads() {
-    const leads = await this.em.find(RestaurantLead, {});
+  async getAllLeads(query: LeadRequestShapes['getAllLeads']['query']) {
+    const { searchText } = query;
 
-    return leads;
+    let sqlQuery = `select r.id, r.name, r.address, r.assigned_kam, r.contact_number, r.restaurant_lead_status
+                    from restaurant_lead r
+                    where 1=1`;
+
+    if (searchText?.trim().length > 0) {
+      sqlQuery += ` and ( r.name ilike '%${searchText}%' or
+                          r.address ilike '%${searchText}%' or 
+                          r.assigned_kam ilike '%${searchText}%' or
+                          r.contact_number ilike '%${searchText}%' or 
+                          r.restaurant_lead_status ilike '%${searchText}%' ) `;
+    }
+
+    sqlQuery += ` order by r.created_at `;
+
+    try {
+      const leads = await this.em.getKnex().raw(sqlQuery);
+      // console.log('leads rows= ', leads.rows);
+
+      return leads.rows.map((lead) => ({
+        id: lead.id,
+        restaurantName: lead.name,
+        address: lead.address,
+        contactNumber: lead.contact_number,
+        restaurantLeadStatus: lead.restaurant_lead_status,
+        assignedKAM: lead.assigned_kam,
+      }));
+    } catch (error) {
+      console.error('[Search Error] Error while searching, ', error);
+      return [];
+    }
   }
 
   async getLeadById(id: number) {
@@ -125,29 +154,52 @@ export class LeadService {
     await this.em.persistAndFlush(staff);
   }
 
-  async getAllStaffs() {
-    const staffs = await this.em.find(
-      RestaurantStaff,
-      {},
-      {
-        populate: ['restaurantLead'],
-        fields: [
-          'id',
-          'name',
-          'role',
-          'contactNumber',
-          'email',
-          'restaurantLead.name',
-        ],
-      },
-    );
-    return staffs.map((staff) => ({
+  async getAllStaffs(query: LeadRequestShapes['getAllStaffs']['query']) {
+    const { searchText, roles } = query;
+
+    let sqlQuery = `select  s.id, s.name, s.contact_number, s.email, s.role, s.restaurant_lead_id, rl.name from restaurant_staff s
+              join restaurant_lead rl on s.restaurant_lead_id = rl.id
+                    where 1=1`;
+
+    if (searchText?.trim().length > 0) {
+      sqlQuery += ` and ( s.name ilike '%${searchText}%' or
+                          rl.name ilike '%${searchText}%' ) `;
+    }
+
+    if (roles && roles.length > 0) {
+      const rolesFilters = roles
+        .map((r) => ` s.role ilike '%${r}%' `)
+        .join(' or ');
+
+      sqlQuery += ` and (${rolesFilters})`;
+    }
+
+    sqlQuery += ` order by s.created_at `;
+
+    // const staffs = await this.em.find(
+    //   RestaurantStaff,
+    //   {},
+    //   {
+    //     populate: ['restaurantLead'],
+    //     fields: [
+    //       'id',
+    //       'name',
+    //       'role',
+    //       'contactNumber',
+    //       'email',
+    //       'restaurantLead.name',
+    //     ],
+    //   },
+    // );
+
+    const staffs = await this.em.getKnex().raw(sqlQuery);
+    return staffs.rows.map((staff) => ({
       id: staff.id,
       name: staff.name,
       role: staff.role,
-      contactNumber: staff.contactNumber,
+      contactNumber: staff.contact_number,
       email: staff.email,
-      lead: staff.restaurantLead,
+      // lead: staff.restaurantLead,
     }));
   }
 }
