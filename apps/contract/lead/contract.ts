@@ -1,13 +1,26 @@
 import { initContract } from "@ts-rest/core";
 import { SuccessSchema } from "../common";
 import { z } from "zod";
-import { CreateLeadSchema, RestaurantLeadSchema } from "./type";
+import {
+  CreateLeadSchema,
+  DashboardResponseSchema,
+  RestaurantLeadSchema,
+  RestaurantStaffSchema,
+} from "./type";
 import { RestaurantStaffRole } from "../enum";
 
 const c = initContract();
 
 export const leadContract = c.router(
   {
+    getDashboardData: {
+      method: "GET",
+      path: "/getDashboardData",
+      responses: {
+        200: DashboardResponseSchema,
+      },
+    },
+
     createLead: {
       method: "POST",
       path: "/createLead",
@@ -67,6 +80,14 @@ export const leadContract = c.router(
             })
           ),
         }),
+      },
+    },
+
+    getAllStaffs: {
+      method: "GET",
+      path: "/getAllStaffs",
+      responses: {
+        200: RestaurantStaffSchema.array(),
       },
     },
   },

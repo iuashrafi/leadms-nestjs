@@ -3,10 +3,40 @@ import { LeadRequestShapes } from './lead.controller';
 import { Injectable } from '@nestjs/common';
 import { RestaurantLead } from './entities/restaurantLead.entity';
 import { RestaurantStaff } from './entities/restaurantStaff.entity';
+import { RestaurantInteraction } from './entities/restaurantInteraction.entity';
+import { title } from 'process';
 
 @Injectable()
 export class LeadService {
   constructor(private readonly em: EntityManager) {}
+
+  async getDashboardData() {
+    const [restaurantsCount, restaurantStaffsCount, restaurantInteractions] =
+      await Promise.all([
+        this.em.count(RestaurantLead, {}),
+        this.em.count(RestaurantStaff, {}),
+        this.em.count(RestaurantInteraction, {}),
+      ]);
+
+    return [
+      {
+        title: 'Restaurants',
+        link: '/leads',
+        itemsCount: restaurantsCount,
+      },
+      {
+        title: 'Staffs',
+        link: '/staffs',
+        itemsCount: restaurantStaffsCount,
+      },
+      {
+        title: 'Interaction',
+        link: '/',
+        itemsCount: restaurantInteractions,
+      },
+    ];
+  }
+
   async createLead(body: LeadRequestShapes['createLead']['body']) {
     const {
       restaurantName,
@@ -93,5 +123,31 @@ export class LeadService {
     });
 
     await this.em.persistAndFlush(staff);
+  }
+
+  async getAllStaffs() {
+    const staffs = await this.em.find(
+      RestaurantStaff,
+      {},
+      {
+        populate: ['restaurantLead'],
+        fields: [
+          'id',
+          'name',
+          'role',
+          'contactNumber',
+          'email',
+          'restaurantLead.name',
+        ],
+      },
+    );
+    return staffs.map((staff) => ({
+      id: staff.id,
+      name: staff.name,
+      role: staff.role,
+      contactNumber: staff.contactNumber,
+      email: staff.email,
+      lead: staff.restaurantLead,
+    }));
   }
 }

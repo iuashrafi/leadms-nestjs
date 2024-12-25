@@ -23,6 +23,15 @@ export class LeadController
 {
   constructor(private readonly leadService: LeadService) {}
 
+  @TsRest(leadContractController.getDashboardData)
+  async getDashboardData() {
+    const results = await this.leadService.getDashboardData();
+    return {
+      status: 200 as const,
+      body: results,
+    };
+  }
+
   @TsRest(leadContractController.createLead)
   async createLead(@TsRestRequest() { body }: LeadRequestShapes['createLead']) {
     await this.leadService.createLead(body);
@@ -67,6 +76,10 @@ export class LeadController
     };
   }
 
+  /**
+   * APIs related to Restaurant Staffs
+   */
+
   @TsRest(leadContractController.createRestaurantStaff)
   async createRestaurantStaff(
     @TsRestRequest() { body }: LeadRequestShapes['createRestaurantStaff'],
@@ -78,6 +91,15 @@ export class LeadController
         success: true,
         message: 'Successfully created a Restaurant Staff.',
       },
+    };
+  }
+
+  @TsRest(leadContractController.getAllStaffs)
+  async getAllStaffs() {
+    const staffs = await this.leadService.getAllStaffs();
+    return {
+      status: 200 as const,
+      body: staffs,
     };
   }
 }
