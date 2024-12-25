@@ -1,8 +1,8 @@
 import { initContract } from "@ts-rest/core";
-import { SuccessSchema } from "contract/common";
+import { SuccessSchema } from "../common";
 import { z } from "zod";
 import { CreateLeadSchema, RestaurantLeadSchema } from "./type";
-import { RestaurantStaffRole } from "contract/enum";
+import { RestaurantStaffRole } from "../enum";
 
 const c = initContract();
 

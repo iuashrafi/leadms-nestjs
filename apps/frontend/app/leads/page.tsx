@@ -2,31 +2,50 @@
 import { TableDemo } from "@/components/TableDemo";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { getQueryClient } from "@/lib/api";
 import { MapPin, Phone } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import { contract } from "../../../contract";
 
 const page = () => {
-  const [leads, setLeads] = useState([]);
+  // const [leads, setLeads] = useState([]);
 
-  useEffect(() => {
-    const getLeads = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/lead/getAllLeads");
-        if (!response.ok) {
-          throw new Error(`Response status: ${response.status}`);
-        }
-        const json = await response.json();
-        console.log(json);
-        setLeads(json);
+  // useEffect(() => {
+  //   const getLeads = async () => {
+  //     try {
+  //       const response = await fetch("http://localhost:3000/lead/getAllLeads");
+  //       if (!response.ok) {
+  //         throw new Error(`Response status: ${response.status}`);
+  //       }
+  //       const json = await response.json();
+  //       console.log(json);
+  //       setLeads(json);
 
-        console.log(leads);
-      } catch (error) {
-        console.log("Error fetching leads, error= ", error);
-      }
-    };
-    getLeads();
-  }, []);
+  //       console.log(leads);
+  //     } catch (error) {
+  //       console.log("Error fetching leads, error= ", error);
+  //     }
+  //   };
+  //   getLeads();
+  // }, []);
+
+  const { data, isError, isLoading } =
+    getQueryClient().lead.getAllLeads.useQuery(
+      [contract.lead.getAllLeads.path],
+      {}
+    );
+
+  if (isLoading) {
+    return <>Loading...</>;
+  } else if (isError) {
+    return <>En Error occurred!</>;
+  }
+
+  if (data?.status !== 200) return <>Error : Leads fetching error</>;
+
+  const leads = data.body;
+
   return (
     <div className="container mx-auto bg-red-200 py-8 px-4 grid grid-cols-12 gap-4">
       {leads?.map((lead: any) => (

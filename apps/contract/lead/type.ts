@@ -1,4 +1,4 @@
-import { RestaurantLeadStatus } from "contract/enum";
+import { RestaurantLeadStatus } from "../enum";
 import { z } from "zod";
 
 export const CreateLeadSchema = z.object({
