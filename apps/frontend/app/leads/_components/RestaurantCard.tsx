@@ -5,9 +5,9 @@ import Link from "next/link";
 
 const RestaurantCard = ({ lead }: any) => {
   return (
-    <div className="group col-span-12 sm:col-span-6 lg:col-span-4 transition ease-in-out border bg-white p-4 rounded-xl hover:shadow-lg hover:scale-[1.01]">
+    <div className="group col-span-12 sm:col-span-6 lg:col-span-4 transition ease-in-out border bg-white p-4 rounded-xl hover:shadow-lg  hover:scale-[1.01]">
       <div className="text-xl font-semibold flex justify-between items-center">
-        <span className="text-gray-900 capitalize">{lead.name}</span>
+        <span className="text-gray-900 capitalize">{lead.restaurantName}</span>
         <Badge
           variant={
             lead.restaurantLeadStatus === "New"

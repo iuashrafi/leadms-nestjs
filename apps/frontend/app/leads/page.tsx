@@ -6,11 +6,13 @@ import { getQueryClient } from "@/lib/api";
 import { MapPin, Phone, Search } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { contract } from "../../../contract";
+import { contract } from "contract";
 import { Input } from "@/components/ui/input";
 import RestaurantCard from "./_components/RestaurantCard";
 
 const page = () => {
+  const [searchText, setSearchText] = useState<string>("");
+
   // const [leads, setLeads] = useState([]);
 
   // useEffect(() => {
@@ -48,6 +50,10 @@ const page = () => {
 
   const leads = data.body;
 
+  const handleChange = (value: string) => {
+    setSearchText(value);
+  };
+
   return (
     <div className="">
       <div className="py-4">
@@ -58,6 +64,8 @@ const page = () => {
           <Input
             placeholder="Search for Restaurant Name"
             className="rounded-3xl h-[43px] max-w-md px-4 bg-white"
+            onChange={(e) => handleChange(e.currentTarget.value)}
+            value={searchText}
           />
           <Button className="rounded-3xl text-md" size="lg">
             Search <Search />

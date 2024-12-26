@@ -40,7 +40,7 @@ export function StaffTable({ data }: any) {
           {data.map((staff: any) => (
             <TableRow key={staff.id}>
               <TableCell className="font-medium">{staff.name}</TableCell>
-              <TableCell className="">{staff.lead.name}</TableCell>
+              <TableCell className="">{staff.name}</TableCell>
               <TableCell>{staff.role}</TableCell>
               <TableCell>{staff.contactNumber}</TableCell>
               <TableCell className="">{staff.email}</TableCell>

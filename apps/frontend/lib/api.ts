@@ -1,8 +1,7 @@
-import { contract } from "../../contract";
+import { contract } from "contract";
 import { initQueryClient } from "@ts-rest/react-query";
 import Cookies from "js-cookie";
 import { tsRestFetchApi } from "@ts-rest/core";
-// import { apiUrl } from "@/utils/env";
 
 const queryClient = (authToken: string | undefined) =>
   initQueryClient(contract, {
