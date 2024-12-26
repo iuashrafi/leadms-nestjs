@@ -78,6 +78,18 @@ export class LeadController
     };
   }
 
+  @TsRest(leadContractController.deleteLead)
+  async deleteLead(@TsRestRequest() { body }: LeadRequestShapes['deleteLead']) {
+    await this.leadService.deleteLead(body.id);
+    return {
+      status: 200 as const,
+      body: {
+        success: true,
+        message: 'Lead deleted successfully',
+      },
+    };
+  }
+
   /**
    * APIs related to Restaurant Staffs
    */
@@ -104,6 +116,34 @@ export class LeadController
     return {
       status: 200 as const,
       body: staffs,
+    };
+  }
+
+  @TsRest(leadContractController.updateStaff)
+  async updateStaff(
+    @TsRestRequest() { body }: LeadRequestShapes['updateStaff'],
+  ) {
+    await this.leadService.updateStaff(body);
+    return {
+      status: 200 as const,
+      body: {
+        success: true,
+        message: 'Successfully updated staff',
+      },
+    };
+  }
+
+  @TsRest(leadContractController.deleteStaff)
+  async deleteStaff(
+    @TsRestRequest() { body }: LeadRequestShapes['deleteStaff'],
+  ) {
+    await this.leadService.deleteStaff(body);
+    return {
+      status: 200 as const,
+      body: {
+        success: true,
+        message: 'Successfully deleted a staff',
+      },
     };
   }
 }

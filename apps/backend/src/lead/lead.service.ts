@@ -134,6 +134,11 @@ export class LeadService {
     };
   }
 
+  async deleteLead(id: number) {
+    const lead = await this.em.findOneOrFail(RestaurantLead, { id });
+    await this.em.remove(lead).flush();
+  }
+
   async createRestaurantStaff(
     body: LeadRequestShapes['createRestaurantStaff']['body'],
   ) {
@@ -201,5 +206,38 @@ export class LeadService {
       email: staff.email,
       // lead: staff.restaurantLead,
     }));
+  }
+
+  async updateStaff(body: LeadRequestShapes['updateStaff']['body']) {
+    const { leadId, staffId, email, name, role, contactNumber } = body;
+    const restaurantLead = await this.em.findOneOrFail(RestaurantLead, {
+      id: leadId,
+    });
+
+    const staff = await this.em.findOneOrFail(RestaurantStaff, {
+      id: staffId,
+      restaurantLead,
+    });
+
+    wrap(staff).assign({
+      email,
+      name,
+      role,
+      contactNumber,
+    });
+
+    await this.em.flush();
+  }
+
+  async deleteStaff(body: LeadRequestShapes['deleteStaff']['body']) {
+    const { leadId, staffId } = body;
+    const restaurantLead = await this.em.findOneOrFail(RestaurantLead, {
+      id: leadId,
+    });
+    const staff = await this.em.findOneOrFail(RestaurantStaff, {
+      id: staffId,
+      restaurantLead,
+    });
+    await this.em.removeAndFlush(staff);
   }
 }

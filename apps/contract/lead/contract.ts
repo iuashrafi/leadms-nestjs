@@ -50,6 +50,17 @@ export const leadContract = c.router(
       },
     },
 
+    deleteLead: {
+      method: "DELETE",
+      path: "/deleteLead",
+      body: z.object({
+        id: z.number(),
+      }),
+      responses: {
+        200: SuccessSchema,
+      },
+    },
+
     createRestaurantStaff: {
       method: "POST",
       path: "/createRestaurantStaff",
@@ -98,6 +109,34 @@ export const leadContract = c.router(
       }),
       responses: {
         200: RestaurantStaffSchema.array(),
+      },
+    },
+
+    updateStaff: {
+      method: "PUT",
+      path: "/updateStaff",
+      body: z.object({
+        leadId: z.number(),
+        staffId: z.number(),
+        name: z.string(),
+        role: z.nativeEnum(RestaurantStaffRole),
+        contactNumber: z.string(),
+        email: z.string(),
+      }),
+      responses: {
+        200: SuccessSchema,
+      },
+    },
+
+    deleteStaff: {
+      method: "DELETE",
+      path: "/deleteStaff",
+      body: z.object({
+        staffId: z.number(),
+        leadId: z.number(),
+      }),
+      responses: {
+        200: SuccessSchema,
       },
     },
   },
