@@ -240,4 +240,24 @@ export class LeadService {
     });
     await this.em.removeAndFlush(staff);
   }
+
+  async createInteraction(
+    body: LeadRequestShapes['createInteraction']['body'],
+  ) {
+    const { staffId, leadId, dateOfInteraction, followUp, type, notes } = body;
+    const staff = await this.em.findOneOrFail(RestaurantStaff, {
+      id: staffId,
+    });
+
+    // TODO  : Add relation between staff, lead and Interaction table
+    // TODO  : Remove interactionDate From table and it as date selector
+
+    const interaction = new RestaurantInteraction({
+      interactionType: type,
+      followUp,
+      notes: notes ?? null,
+    });
+
+    await this.em.persistAndFlush(interaction);
+  }
 }

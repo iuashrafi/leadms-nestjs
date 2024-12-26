@@ -7,7 +7,7 @@ import {
   RestaurantLeadSchema,
   RestaurantStaffSchema,
 } from "./type";
-import { RestaurantStaffRole } from "../enum";
+import { RestaurantInteractionType, RestaurantStaffRole } from "../enum";
 
 const c = initContract();
 
@@ -134,6 +134,22 @@ export const leadContract = c.router(
       body: z.object({
         staffId: z.number(),
         leadId: z.number(),
+      }),
+      responses: {
+        200: SuccessSchema,
+      },
+    },
+
+    createInteraction: {
+      method: "POST",
+      path: "/createInteraction",
+      body: z.object({
+        staffId: z.number(),
+        leadId: z.number(),
+        dateOfInteraction: z.date(),
+        type: z.nativeEnum(RestaurantInteractionType),
+        notes: z.string().nullable(),
+        followUp: z.boolean(),
       }),
       responses: {
         200: SuccessSchema,

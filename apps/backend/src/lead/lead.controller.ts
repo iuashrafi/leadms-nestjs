@@ -146,4 +146,18 @@ export class LeadController
       },
     };
   }
+
+  @TsRest(leadContractController.createInteraction)
+  async createInteraction(
+    @TsRestRequest() { body }: LeadRequestShapes['createInteraction'],
+  ) {
+    await this.leadService.createInteraction(body);
+    return {
+      status: 200 as const,
+      body: {
+        success: true,
+        message: 'Interaction added.',
+      },
+    };
+  }
 }
