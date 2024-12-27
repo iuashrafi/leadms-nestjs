@@ -9,6 +9,7 @@ import {
   TsRest,
   TsRestRequest,
 } from '@ts-rest/nest';
+import { createPaginatedResponse } from 'contract/utils';
 
 export const leadContractController: NestControllerContract<
   typeof contract.lead
@@ -60,10 +61,15 @@ export class LeadController
   async getAllLeads(
     @TsRestRequest() { query }: LeadRequestShapes['getAllLeads'],
   ) {
-    const leads = await this.leadService.getAllLeads(query);
+    const { data, total } = await this.leadService.getAllLeads(query);
     return {
       status: 200 as const,
-      body: leads,
+      body: createPaginatedResponse({
+        results: data,
+        totalCount: total,
+        pageNumber: query.pageNumber,
+        pageSize: query.pageSize,
+      }),
     };
   }
 
@@ -110,7 +116,7 @@ export class LeadController
 
   @TsRest(leadContractController.getAllStaffs)
   async getAllStaffs(
-    @TsRestRequest() { query }: LeadRequestShapes['getAllLeads'],
+    @TsRestRequest() { query }: LeadRequestShapes['getAllStaffs'],
   ) {
     const staffs = await this.leadService.getAllStaffs(query);
     return {

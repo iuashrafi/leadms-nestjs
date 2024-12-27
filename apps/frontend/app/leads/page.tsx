@@ -1,14 +1,12 @@
 "use client";
-import { TableDemo } from "@/components/TableDemo";
-import { Badge } from "@/components/ui/badge";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { getQueryClient } from "@/lib/api";
-import { MapPin, Phone, Search } from "lucide-react";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import { Search } from "lucide-react";
 import { contract } from "contract";
 import { Input } from "@/components/ui/input";
 import RestaurantCard from "./_components/RestaurantCard";
+import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 
 const page = () => {
   const [searchText, setSearchText] = useState<string>("");
@@ -34,21 +32,49 @@ const page = () => {
   //   getLeads();
   // }, []);
 
-  const { data, isError, isLoading } =
-    getQueryClient().lead.getAllLeads.useQuery(
-      [contract.lead.getAllLeads.path],
-      {}
-    );
+  const {
+    data,
+    isLoading,
+    error,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+  } = getQueryClient().lead.getAllLeads.useInfiniteQuery(
+    [contract.lead.getAllLeads.path],
+    ({ pageParam = { pageNumber: 1 } }) => {
+      return {
+        query: {
+          pageNumber: String(pageParam.pageNumber),
+          pageSize: String(3),
+        },
+      };
+    },
+    {
+      getNextPageParam: (lastPage) => {
+        if (
+          lastPage.status === 200 &&
+          lastPage.body.currentPageNumber < lastPage.body.totalPages
+        ) {
+          return { pageNumber: lastPage.body.currentPageNumber + 1 };
+        }
+        return undefined;
+      },
+    }
+  );
+
+  const observeElement = useInfiniteScroll(
+    isLoading || isFetchingNextPage,
+    Boolean(hasNextPage),
+    () => fetchNextPage()
+  );
 
   if (isLoading) {
     return <>Loading...</>;
-  } else if (isError) {
+  } else if (error) {
     return <>En Error occurred!</>;
   }
 
-  if (data?.status !== 200) return <>Error : Leads fetching error</>;
-
-  const leads = data.body;
+  const leads = data.pages.flatMap((items) => items.body.results);
 
   const handleChange = (value: string) => {
     setSearchText(value);
@@ -77,6 +103,7 @@ const page = () => {
           <RestaurantCard key={lead.id} lead={lead} />
         ))}
       </div>
+      <div className="p-8">{observeElement}</div>
     </div>
   );
 };

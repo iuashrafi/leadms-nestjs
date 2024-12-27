@@ -76,37 +76,70 @@ export class LeadService {
   }
 
   async getAllLeads(query: LeadRequestShapes['getAllLeads']['query']) {
-    const { searchText } = query;
+    const { searchText, pageNumber, pageSize } = query;
 
-    let sqlQuery = `select r.id, r.name, r.address, r.assigned_kam, r.contact_number, r.restaurant_lead_status
-                    from restaurant_lead r
-                    where 1=1`;
+    let sqlQuery = `
+      SELECT r.id, r.name, r.address, r.assigned_kam, r.contact_number, r.restaurant_lead_status
+      FROM restaurant_lead r
+      WHERE 1=1
+    `;
+
+    let countQuery = `
+      SELECT COUNT(*) as total
+      FROM restaurant_lead r
+      WHERE 1=1
+    `;
 
     if (searchText?.trim().length > 0) {
-      sqlQuery += ` and ( r.name ilike '%${searchText}%' or
-                          r.address ilike '%${searchText}%' or 
-                          r.assigned_kam ilike '%${searchText}%' or
-                          r.contact_number ilike '%${searchText}%' or 
-                          r.restaurant_lead_status ilike '%${searchText}%' ) `;
+      const filter = `
+        AND (
+          r.name ILIKE '%${searchText}%' OR
+          r.address ILIKE '%${searchText}%' OR
+          r.assigned_kam ILIKE '%${searchText}%' OR
+          r.contact_number ILIKE '%${searchText}%' OR
+          r.restaurant_lead_status ILIKE '%${searchText}%'
+        )
+      `;
+      sqlQuery += filter;
+      countQuery += filter;
     }
 
-    sqlQuery += ` order by r.created_at `;
+    const offset = (pageNumber - 1) * pageSize;
+    sqlQuery += `
+      ORDER BY r.created_at
+      LIMIT ${pageSize}
+      OFFSET ${offset}
+    `;
 
     try {
-      const leads = await this.em.getKnex().raw(sqlQuery);
-      // console.log('leads rows= ', leads.rows);
+      const leadsPromise = this.em.getKnex().raw(sqlQuery);
+      const countPromise = this.em.getKnex().raw(countQuery);
 
-      return leads.rows.map((lead) => ({
-        id: lead.id,
-        restaurantName: lead.name,
-        address: lead.address,
-        contactNumber: lead.contact_number,
-        restaurantLeadStatus: lead.restaurant_lead_status,
-        assignedKAM: lead.assigned_kam,
-      }));
+      const [leadsResult, countResult] = await Promise.all([
+        leadsPromise,
+        countPromise,
+      ]);
+
+      const leads = leadsResult.rows;
+      const total = parseInt(countResult.rows[0].total, 10);
+
+      return {
+        data: leads.map((lead) => ({
+          id: lead.id,
+          restaurantName: lead.name,
+          address: lead.address,
+          contactNumber: lead.contact_number,
+          restaurantLeadStatus: lead.restaurant_lead_status,
+          assignedKAM: lead.assigned_kam,
+        })),
+        total,
+      };
     } catch (error) {
-      console.error('[Search Error] Error while searching, ', error);
-      return [];
+      console.error('[Search Error] Error while searching: ', error);
+      return {
+        data: [],
+        total: 0,
+      };
     }
   }
 

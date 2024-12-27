@@ -8,6 +8,7 @@ import {
   RestaurantStaffSchema,
 } from "./type";
 import { RestaurantInteractionType, RestaurantStaffRole } from "../enum";
+import { createPaginatedResponseSchema } from "contract/utils";
 
 const c = initContract();
 
@@ -35,9 +36,11 @@ export const leadContract = c.router(
       path: "/getAllLeads",
       query: z.object({
         searchText: z.string().optional(),
+        pageNumber: z.string().transform(Number),
+        pageSize: z.string().transform(Number),
       }),
       responses: {
-        200: z.array(RestaurantLeadSchema),
+        200: createPaginatedResponseSchema(RestaurantLeadSchema),
       },
     },
 
