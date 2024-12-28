@@ -1,7 +1,15 @@
-import { Entity, Enum, ManyToOne, Property } from '@mikro-orm/core';
+import {
+  Collection,
+  Entity,
+  Enum,
+  ManyToOne,
+  OneToMany,
+  Property,
+} from '@mikro-orm/core';
 import { RestaurantStaffRole } from 'contract/enum';
 import { BaseEntity } from 'src/base.entity';
 import { RestaurantLead } from './restaurantLead.entity';
+import { RestaurantInteraction } from './restaurantInteraction.entity';
 
 @Entity()
 export class RestaurantStaff extends BaseEntity {
@@ -19,6 +27,9 @@ export class RestaurantStaff extends BaseEntity {
 
   @ManyToOne(() => RestaurantLead)
   restaurantLead: RestaurantLead;
+
+  @OneToMany(() => RestaurantInteraction, (interaction) => interaction.staff)
+  interactions = new Collection<RestaurantInteraction>(this);
 
   constructor({
     name,
