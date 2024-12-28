@@ -10,9 +10,8 @@ import { BaseEntity } from 'src/base.entity';
 
 @Entity()
 export class RestaurantInteraction extends BaseEntity {
-  // createdAt can be treated as the date of interaction, but for simplicity, we will make seperate field interactionDate
-  @Property({ onCreate: () => new Date() })
-  interactionDate: Date = new Date();
+  @Property({ type: 'date' })
+  interactionDate: Date;
 
   @Enum({ items: () => RestaurantInteractionType })
   interactionType: RestaurantInteractionType;
