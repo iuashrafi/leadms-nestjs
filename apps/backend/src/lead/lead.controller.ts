@@ -166,4 +166,20 @@ export class LeadController
       },
     };
   }
+
+  @TsRest(leadContractController.getAllInteractions)
+  async getAllInteractions(
+    @TsRestRequest() { query }: LeadRequestShapes['getAllInteractions'],
+  ) {
+    const { data, total } = await this.leadService.getAllInteractions(query);
+    return {
+      status: 200 as const,
+      body: createPaginatedResponse({
+        results: data,
+        totalCount: total,
+        pageNumber: query.pageNumber,
+        pageSize: query.pageSize,
+      }),
+    };
+  }
 }

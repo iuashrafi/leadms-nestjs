@@ -1,4 +1,4 @@
-import { EntityManager, wrap } from '@mikro-orm/postgresql';
+import { EntityManager, QueryOrder, wrap } from '@mikro-orm/postgresql';
 import { LeadRequestShapes } from './lead.controller';
 import { Injectable } from '@nestjs/common';
 import { RestaurantLead } from './entities/restaurantLead.entity';
@@ -11,30 +11,61 @@ export class LeadService {
   constructor(private readonly em: EntityManager) {}
 
   async getDashboardData() {
-    const [restaurantsCount, restaurantStaffsCount, restaurantInteractions] =
-      await Promise.all([
-        this.em.count(RestaurantLead, {}),
-        this.em.count(RestaurantStaff, {}),
-        this.em.count(RestaurantInteraction, {}),
-      ]);
+    const [restaurantStaffsCount] = await Promise.all([
+      this.em.count(RestaurantStaff, {}),
+    ]);
 
-    return [
+    const [restaurants, restaurantsCount] = await this.em.findAndCount(
+      RestaurantLead,
+      {},
       {
-        title: 'Restaurants',
-        link: '/leads',
-        itemsCount: restaurantsCount,
+        limit: 5,
+        orderBy: { createdAt: QueryOrder.DESC },
       },
+    );
+
+    const [interactions, interactionsCount] = await this.em.findAndCount(
+      RestaurantInteraction,
+      {},
       {
-        title: 'Staffs',
-        link: '/staffs',
-        itemsCount: restaurantStaffsCount,
+        limit: 5,
+        orderBy: { createdAt: QueryOrder.DESC },
+        populate: ['staff'],
       },
-      {
-        title: 'Interaction',
-        link: '/',
-        itemsCount: restaurantInteractions,
-      },
-    ];
+    );
+
+    return {
+      dashboardCards: [
+        {
+          title: 'Total Restaurants',
+          subTitle: 'Leads',
+          link: '/leads',
+          itemsCount: restaurantsCount,
+        },
+        {
+          title: 'Staffs',
+          subTitle: 'Owners, Managers, Chef, etc',
+          link: '/staffs',
+          itemsCount: restaurantStaffsCount,
+        },
+        {
+          title: 'Interaction',
+          subTitle: 'Calls, Visits, Orders etc',
+          link: '/',
+          itemsCount: interactionsCount,
+        },
+      ],
+
+      recentRestaurants: restaurants,
+      recentInteractions: interactions.map((interaction) => ({
+        id: interaction.id,
+        staffName: interaction.staff.name,
+        staffEmail: interaction.staff.email,
+        interactionType: interaction.interactionType,
+        interactionDate: interaction.interactionDate,
+        notes: interaction.notes,
+      })),
+    };
   }
 
   async createLead(body: LeadRequestShapes['createLead']['body']) {
@@ -277,20 +308,35 @@ export class LeadService {
   async createInteraction(
     body: LeadRequestShapes['createInteraction']['body'],
   ) {
-    const { staffId, leadId, dateOfInteraction, followUp, type, notes } = body;
+    const { staffId, interactionDate, followUp, type, notes } = body;
     const staff = await this.em.findOneOrFail(RestaurantStaff, {
       id: staffId,
     });
 
-    // TODO  : Add relation between staff, lead and Interaction table
-    // TODO  : Remove interactionDate From table and it as date selector
-
     const interaction = new RestaurantInteraction({
+      interactionDate,
       interactionType: type,
       followUp,
       notes: notes ?? null,
+      staff,
     });
 
     await this.em.persistAndFlush(interaction);
+  }
+
+  async getAllInteractions(
+    query: LeadRequestShapes['getAllInteractions']['query'],
+  ) {
+    const { pageNumber, pageSize } = query;
+    const [interactions, total] = await this.em.findAndCount(
+      RestaurantInteraction,
+      {},
+      {
+        limit: pageNumber,
+        offset: (pageNumber - 1) * pageSize,
+      },
+    );
+
+    return { data: interactions, total };
   }
 }

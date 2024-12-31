@@ -1,13 +1,41 @@
-import { RestaurantLeadStatus, RestaurantStaffRole } from "../enum";
+import {
+  RestaurantInteractionType,
+  RestaurantLeadStatus,
+  RestaurantStaffRole,
+} from "../enum";
 import { z } from "zod";
 
-export const DashboardResponseSchema = z
-  .object({
-    title: z.string(),
-    link: z.string(),
-    itemsCount: z.number(),
-  })
-  .array();
+export const DashboardResponseSchema = z.object({
+  dashboardCards: z
+    .object({
+      title: z.string(),
+      subTitle: z.string(),
+      link: z.string(),
+      itemsCount: z.number(),
+    })
+    .array(),
+
+  recentRestaurants: z.array(
+    z.object({
+      id: z.number(),
+      name: z.string(),
+      restaurantLeadStatus: z.string(),
+      contactNumber: z.string(),
+      address: z.string(),
+    })
+  ),
+
+  recentInteractions: z.array(
+    z.object({
+      id: z.number(),
+      staffName: z.string(),
+      staffEmail: z.string(),
+      interactionType: z.nativeEnum(RestaurantInteractionType),
+      interactionDate: z.date(),
+      notes: z.string(),
+    })
+  ),
+});
 
 export const CreateLeadSchema = z.object({
   restaurantName: z.string(),

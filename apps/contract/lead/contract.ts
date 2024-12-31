@@ -148,14 +148,34 @@ export const leadContract = c.router(
       path: "/createInteraction",
       body: z.object({
         staffId: z.number(),
-        leadId: z.number(),
-        dateOfInteraction: z.date(),
+        interactionDate: z.string().transform((val) => new Date(val)),
         type: z.nativeEnum(RestaurantInteractionType),
         notes: z.string().nullable(),
         followUp: z.boolean(),
       }),
       responses: {
         200: SuccessSchema,
+      },
+    },
+
+    getAllInteractions: {
+      method: "GET",
+      path: "/getAllInteractions",
+      query: z.object({
+        pageNumber: z.string().transform(Number),
+        pageSize: z.string().transform(Number),
+      }),
+      responses: {
+        200: createPaginatedResponseSchema(
+          z.object({
+            id: z.number(),
+            staffId: z.number(),
+            interactionType: z.nativeEnum(RestaurantInteractionType),
+            notes: z.string(),
+            interactionDate: z.date(),
+            followUp: z.boolean(),
+          })
+        ),
       },
     },
   },
