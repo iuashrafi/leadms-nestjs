@@ -118,10 +118,16 @@ export class LeadController
   async getAllStaffs(
     @TsRestRequest() { query }: LeadRequestShapes['getAllStaffs'],
   ) {
-    const staffs = await this.leadService.getAllStaffs(query);
+    const { data, total } = await this.leadService.getAllStaffs(query);
     return {
       status: 200 as const,
-      body: staffs,
+      // body: staffs,
+      body: createPaginatedResponse({
+        results: data,
+        totalCount: total,
+        pageNumber: query.pageNumber,
+        pageSize: query.pageSize,
+      }),
     };
   }
 

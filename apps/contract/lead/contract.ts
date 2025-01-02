@@ -1,5 +1,5 @@
 import { initContract } from "@ts-rest/core";
-import { SuccessSchema } from "../common";
+import { PaginationQuerySchema, SuccessSchema } from "../common";
 import { z } from "zod";
 import {
   CreateLeadSchema,
@@ -103,7 +103,7 @@ export const leadContract = c.router(
     getAllStaffs: {
       method: "GET",
       path: "/getAllStaffs",
-      query: z.object({
+      query: PaginationQuerySchema.extend({
         searchText: z.string().optional(),
         roles: z
           .string()
@@ -111,7 +111,8 @@ export const leadContract = c.router(
           .optional(),
       }),
       responses: {
-        200: RestaurantStaffSchema.array(),
+        // 200: RestaurantStaffSchema.array(),
+        200: createPaginatedResponseSchema(RestaurantStaffSchema),
       },
     },
 
@@ -119,7 +120,6 @@ export const leadContract = c.router(
       method: "PUT",
       path: "/updateStaff",
       body: z.object({
-        leadId: z.number(),
         staffId: z.number(),
         name: z.string(),
         role: z.nativeEnum(RestaurantStaffRole),
@@ -136,7 +136,7 @@ export const leadContract = c.router(
       path: "/deleteStaff",
       body: z.object({
         staffId: z.number(),
-        leadId: z.number(),
+        // leadId: z.number(),
       }),
       responses: {
         200: SuccessSchema,

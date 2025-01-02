@@ -43,13 +43,13 @@ export class LeadService {
           itemsCount: restaurantsCount,
         },
         {
-          title: 'Staffs',
+          title: 'Total Staffs',
           subTitle: 'Owners, Managers, Chef, etc',
           link: '/staffs',
           itemsCount: restaurantStaffsCount,
         },
         {
-          title: 'Interaction',
+          title: 'Total Interactions',
           subTitle: 'Calls, Visits, Orders etc',
           link: '/',
           itemsCount: interactionsCount,
@@ -224,63 +224,102 @@ export class LeadService {
   }
 
   async getAllStaffs(query: LeadRequestShapes['getAllStaffs']['query']) {
-    const { searchText, roles } = query;
+    const { searchText, roles, pageNumber, pageSize } = query;
 
     let sqlQuery = `select  s.id, s.name, s.contact_number, s.email, s.role, s.restaurant_lead_id, rl.name from restaurant_staff s
               join restaurant_lead rl on s.restaurant_lead_id = rl.id
                     where 1=1`;
 
+    let countQuery = `
+                    SELECT 
+                      COUNT(*) as total
+                    FROM 
+                      restaurant_staff s
+                    JOIN 
+                      restaurant_lead rl 
+                    ON 
+                      s.restaurant_lead_id = rl.id
+                    WHERE 1=1
+                  `;
+
     if (searchText?.trim().length > 0) {
-      sqlQuery += ` and ( s.name ilike '%${searchText}%' or
-                          rl.name ilike '%${searchText}%' ) `;
+      const filter = `
+                          AND (
+                            s.name ILIKE '%${searchText}%' OR
+                            rl.name ILIKE '%${searchText}%'
+                          )
+                        `;
+      sqlQuery += filter;
+      countQuery += filter;
     }
 
     if (roles && roles.length > 0) {
       const rolesFilters = roles
-        .map((r) => ` s.role ilike '%${r}%' `)
-        .join(' or ');
+        .map((r) => `s.role ILIKE '%${r}%'`)
+        .join(' OR ');
 
-      sqlQuery += ` and (${rolesFilters})`;
+      const roleCondition = ` AND (${rolesFilters}) `;
+      sqlQuery += roleCondition;
+      countQuery += roleCondition;
     }
 
-    sqlQuery += ` order by s.created_at `;
+    const offset = (pageNumber - 1) * pageSize;
+    sqlQuery += `
+      ORDER BY s.created_at
+      LIMIT ${pageSize}
+      OFFSET ${offset}
+    `;
 
-    // const staffs = await this.em.find(
-    //   RestaurantStaff,
-    //   {},
-    //   {
-    //     populate: ['restaurantLead'],
-    //     fields: [
-    //       'id',
-    //       'name',
-    //       'role',
-    //       'contactNumber',
-    //       'email',
-    //       'restaurantLead.name',
-    //     ],
-    //   },
-    // );
+    try {
+      const staffsPromise = this.em.getKnex().raw(sqlQuery);
+      const countPromise = this.em.getKnex().raw(countQuery);
 
-    const staffs = await this.em.getKnex().raw(sqlQuery);
-    return staffs.rows.map((staff) => ({
-      id: staff.id,
-      name: staff.name,
-      role: staff.role,
-      contactNumber: staff.contact_number,
-      email: staff.email,
-      // lead: staff.restaurantLead,
-    }));
+      const [staffsResult, countResult] = await Promise.all([
+        staffsPromise,
+        countPromise,
+      ]);
+
+      const staffs = staffsResult.rows;
+      const total = parseInt(countResult.rows[0].total, 10);
+
+      return {
+        data: staffs.map((staff) => ({
+          id: staff.id,
+          name: staff.name,
+          role: staff.role,
+          contactNumber: staff.contact_number,
+          email: staff.email,
+        })),
+        total,
+      };
+    } catch (error) {
+      console.error('[Search Error] Error while fetching staffs: ', error);
+      return {
+        data: [],
+        total: 0,
+      };
+    }
+
+    // const staffs = await this.em.getKnex().raw(sqlQuery);
+    // return staffs.rows.map((staff) => ({
+    //   id: staff.id,
+    //   name: staff.name,
+    //   role: staff.role,
+    //   contactNumber: staff.contact_number,
+    //   email: staff.email,
+    //   // lead: staff.restaurantLead,
+    // }));
   }
 
   async updateStaff(body: LeadRequestShapes['updateStaff']['body']) {
-    const { leadId, staffId, email, name, role, contactNumber } = body;
-    const restaurantLead = await this.em.findOneOrFail(RestaurantLead, {
-      id: leadId,
-    });
+    const { staffId, email, name, role, contactNumber } = body;
+    // const restaurantLead = await this.em.findOneOrFail(RestaurantLead, {
+    //   id: leadId,
+    // });
 
     const staff = await this.em.findOneOrFail(RestaurantStaff, {
       id: staffId,
-      restaurantLead,
+      // restaurantLead,
     });
 
     wrap(staff).assign({
@@ -294,14 +333,18 @@ export class LeadService {
   }
 
   async deleteStaff(body: LeadRequestShapes['deleteStaff']['body']) {
-    const { leadId, staffId } = body;
-    const restaurantLead = await this.em.findOneOrFail(RestaurantLead, {
-      id: leadId,
-    });
+    const { staffId } = body;
+    // const restaurantLead = await this.em.findOneOrFail(RestaurantLead, {
+    //   id: leadId,
+    // });
     const staff = await this.em.findOneOrFail(RestaurantStaff, {
       id: staffId,
-      restaurantLead,
+      // restaurantLead,
     });
+
+    // Cascading - Before deleting staff, lets delete all the Interactions with the current staff
+    await this.em.nativeDelete(RestaurantInteraction, { staff: staff.id });
+
     await this.em.removeAndFlush(staff);
   }
 
