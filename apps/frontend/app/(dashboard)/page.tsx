@@ -6,6 +6,7 @@ import DashboardCard from "./_components/DashboardCard";
 import RecentRestaurants from "./_components/RecentRestaurants";
 import RecentInteractions from "./_components/RecentInteractions";
 import TodaysPendingCalls from "./_components/TodaysPendingCalls";
+import PreLoader from "@/components/PreLoader";
 
 export default function DashboardPage() {
   const { data, isError, isLoading } =
@@ -15,7 +16,7 @@ export default function DashboardPage() {
     );
 
   if (isLoading) {
-    return <>Loading...</>;
+    return <PreLoader />;
   } else if (isError) {
     return <>En Error occurred!</>;
   }

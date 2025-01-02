@@ -47,11 +47,11 @@ const page = () => {
   // const staffs = data.body.results;
   return (
     <div>
-      <div className="py-4">
-        <h1 className="text-3xl font-bold text-indigo-950 text-center">
+      <div className="p-4">
+        <h1 className="text-xl font-bold text-indigo-950">
           Restaurants Staffs
         </h1>
-        <div className="mt-4 mb-8 flex justify-center space-x-3">
+        <div className="mt-4 mb-6 flex">
           <StaffsSearchForm
             searchForm={searchForm}
             onStaffsSearch={onStaffsSearch}

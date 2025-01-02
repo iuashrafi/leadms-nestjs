@@ -9,6 +9,7 @@ import RestaurantCard from "./_components/RestaurantCard";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import DialogWrapper from "@/components/DialogWrapper";
 import CreateLeadForm from "./_components/CreateLeadForm";
+import PreLoader from "@/components/PreLoader";
 
 const page = () => {
   const [searchText, setSearchText] = useState<string>("");
@@ -55,7 +56,7 @@ const page = () => {
   );
 
   if (isLoading) {
-    return <>Loading...</>;
+    return <PreLoader />;
   } else if (error) {
     return <>En Error occurred!</>;
   }
@@ -67,29 +68,30 @@ const page = () => {
   };
 
   return (
-    <div className="">
-      <div className="py-4">
-        <h1 className="text-3xl font-bold text-indigo-950 text-center">
-          Restaurants Leads
-        </h1>
-        <div className="mt-4 mb-8 flex justify-center space-x-3">
-          <Input
-            placeholder="Search for Restaurant Name"
-            className="rounded-3xl h-[43px] max-w-md px-4 bg-white"
-            onChange={(e) => handleChange(e.currentTarget.value)}
-            value={searchText}
-          />
-          <Button className="rounded-3xl text-md" size="lg">
-            Search <Search />
-          </Button>
+    <div className="bg-green-00">
+      <div className="p-4 bg-red-00 ">
+        <h1 className="text-xl font-bold text-indigo-950">Restaurants Leads</h1>
+        <div className="flex flex-wrap justify-between gap-4 ">
+          <div className="flex space-x-2">
+            <Input
+              placeholder="Search for Restaurant Name"
+              className="rounded-lg min-w-full px-4 bg-white"
+              onChange={(e) => handleChange(e.currentTarget.value)}
+              value={searchText}
+            />
+            <Button className="rounded-lg text-md">
+              Search <Search />
+            </Button>
+          </div>
+          <div>
+            <Button variant="default" onClick={() => setIsModalOpen(true)}>
+              Add new Lead
+            </Button>
+          </div>
         </div>
         <div>
-          <Button variant="default" onClick={() => setIsModalOpen(true)}>
-            Create Lead
-          </Button>
-
           <DialogWrapper
-            title="Create Lead"
+            title="Add New Lead"
             isOpen={isModalOpen}
             onClose={closeModal}
           >

@@ -36,7 +36,7 @@ const StaffsSearchForm = ({
   return (
     <div>
       <Form {...searchForm}>
-        <form onSubmit={handleSubmit(onStaffsSearch)}>
+        <form onSubmit={handleSubmit(onStaffsSearch)} className="flex gap-2">
           <FormField
             control={searchForm.control}
             name="searchText"
@@ -45,15 +45,45 @@ const StaffsSearchForm = ({
                 <FormControl>
                   <Input
                     placeholder="Search for Staff Name, Restaurant"
-                    className="rounded-full h-[43px] max-w-md px-4 bg-white"
+                    className="rounded-lg h-[43px] max-w-md px-4 bg-white"
                     {...field}
                   />
                 </FormControl>
               </FormItem>
             )}
           />
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size={"lg"} className="rounded-lg">
+                Roles <ChevronDown />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuSeparator />
+              <DropdownMenuCheckboxItem
+                checked={showStatusBar}
+                onCheckedChange={setShowStatusBar}
+              >
+                Chef
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={showActivityBar}
+                onCheckedChange={setShowActivityBar}
+              >
+                Owner
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={showPanel}
+                onCheckedChange={setShowPanel}
+              >
+                Others
+              </DropdownMenuCheckboxItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           <Button
-            className="rounded-full text-md"
+            className="rounded-lg text-md"
             size="lg"
             onClick={handleSubmit(onStaffsSearch)}
           >
@@ -61,35 +91,6 @@ const StaffsSearchForm = ({
           </Button>
         </form>
       </Form>
-
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" size={"lg"} className="rounded-full">
-            Roles <ChevronDown />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuSeparator />
-          <DropdownMenuCheckboxItem
-            checked={showStatusBar}
-            onCheckedChange={setShowStatusBar}
-          >
-            Chef
-          </DropdownMenuCheckboxItem>
-          <DropdownMenuCheckboxItem
-            checked={showActivityBar}
-            onCheckedChange={setShowActivityBar}
-          >
-            Owner
-          </DropdownMenuCheckboxItem>
-          <DropdownMenuCheckboxItem
-            checked={showPanel}
-            onCheckedChange={setShowPanel}
-          >
-            Others
-          </DropdownMenuCheckboxItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
     </div>
   );
 };
