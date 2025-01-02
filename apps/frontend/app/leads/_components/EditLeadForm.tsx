@@ -27,57 +27,57 @@ import { CreateLeadSchema, CreateLeadSchemaDto } from "@/lib/schema";
 import { RestaurantLeadStatus } from "contract/enum";
 import { useApi } from "@/hooks/useApi";
 import { getQueryClient } from "@/lib/api";
+import { contract } from "contract";
+import { useQueryClient } from "@tanstack/react-query";
 
-const initialValues: CreateLeadSchemaDto = {
-  restaurantName: "",
-  restaurantAddress: "",
-  contactNumber: "",
-  restaurantLeadStatus: RestaurantLeadStatus.New,
-  assignedKAM: "",
-};
+// const initialValues: CreateLeadSchemaDto = {
+//   restaurantName: "",
+//   restaurantAddress: "",
+//   contactNumber: "",
+//   restaurantLeadStatus: RestaurantLeadStatus.New,
+//   assignedKAM: "",
+// };
 
-const CreateLeadForm = () => {
+const EditLeadForm = ({ data }: any) => {
   const { makeApiCall } = useApi();
+  const invalidationQueryClient = useQueryClient();
 
   const form = useForm<CreateLeadSchemaDto>({
     resolver: zodResolver(CreateLeadSchema),
-    defaultValues: initialValues,
+    defaultValues: {
+      restaurantName: data.restaurantName,
+      restaurantAddress: data.address,
+      contactNumber: data.contactNumber,
+      restaurantLeadStatus: data.currentStatus,
+      assignedKAM: data.assignedKAM,
+    },
   });
 
   function onSubmit(values: CreateLeadSchemaDto) {
-    console.log(values);
     const body = {
+      id: Number(data.id),
       restaurantName: values.restaurantName,
       address: values.restaurantAddress,
       contactNumber: values.contactNumber,
       currentStatus: values.restaurantLeadStatus,
       assignedKAM: values.assignedKAM,
     };
+    console.log(body);
     makeApiCall({
       fetcherFn: async () => {
-        return await getQueryClient().lead.createLead.mutation({
+        return await getQueryClient().lead.updateLead.mutation({
           body,
         });
       },
       successMsgProps: {
-        title: `Lead created successfully`,
+        title: `Lead updated successfully`,
         duration: 2000,
       },
       onSuccessFn: () => {
-        // invalidationQueryClient.invalidateQueries({
-        //   queryKey: [contract.search.homepageSearch.path],
-        //   refetchType: "active",
-        // });
-        // invalidationQueryClient.invalidateQueries({
-        //   queryKey: [contract.search.savedProfilesSearch.path],
-        //   refetchType: "active",
-        // });
-        // invalidationQueryClient.invalidateQueries({
-        //   queryKey: [contract.search.viewedProfilesSearch.path],
-        //   refetchType: "active",
-        // });
-
-        form.reset(initialValues);
+        invalidationQueryClient.invalidateQueries({
+          queryKey: [contract.lead.getLeadById.path],
+          refetchType: "active",
+        });
       },
     });
   }
@@ -170,11 +170,11 @@ const CreateLeadForm = () => {
               </FormItem>
             )}
           />
-          <Button type="submit">Create Lead</Button>
+          <Button type="submit">Update Lead</Button>
         </form>
       </Form>
     </div>
   );
 };
 
-export default CreateLeadForm;
+export default EditLeadForm;

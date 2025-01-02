@@ -7,30 +7,16 @@ import { contract } from "contract";
 import { Input } from "@/components/ui/input";
 import RestaurantCard from "./_components/RestaurantCard";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import DialogWrapper from "@/components/DialogWrapper";
+import CreateLeadForm from "./_components/CreateLeadForm";
 
 const page = () => {
   const [searchText, setSearchText] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // const [leads, setLeads] = useState([]);
-
-  // useEffect(() => {
-  //   const getLeads = async () => {
-  //     try {
-  //       const response = await fetch("http://localhost:3000/lead/getAllLeads");
-  //       if (!response.ok) {
-  //         throw new Error(`Response status: ${response.status}`);
-  //       }
-  //       const json = await response.json();
-  //       console.log(json);
-  //       setLeads(json);
-
-  //       console.log(leads);
-  //     } catch (error) {
-  //       console.log("Error fetching leads, error= ", error);
-  //     }
-  //   };
-  //   getLeads();
-  // }, []);
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   const {
     data,
@@ -96,6 +82,19 @@ const page = () => {
           <Button className="rounded-3xl text-md" size="lg">
             Search <Search />
           </Button>
+        </div>
+        <div>
+          <Button variant="default" onClick={() => setIsModalOpen(true)}>
+            Create Lead
+          </Button>
+
+          <DialogWrapper
+            title="Create Lead"
+            isOpen={isModalOpen}
+            onClose={closeModal}
+          >
+            <CreateLeadForm />
+          </DialogWrapper>
         </div>
       </div>
       <div className="w-full grid grid-cols-12 gap-4">

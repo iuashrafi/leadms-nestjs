@@ -36,7 +36,7 @@ const RestaurantCard = ({ lead }: any) => {
       </ul>
       <Button
         asChild
-        className="w-full rounded-lg mt-3 text-md text-gray-800 font-medium bg-gradient-to-tr group-hover:bg-violet-500   group-hover:border-violet-600/30 group-hover:text-white"
+        className="w-full rounded-lg mt-3 text-md text-gray-800 font-medium bg-gradient-to-tr group-hover:bg-zinc-900   group-hover:border-zinc-600/30 group-hover:text-white"
         variant={"outline"}
         size={"lg"}
       >

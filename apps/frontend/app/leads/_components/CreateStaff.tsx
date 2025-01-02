@@ -4,7 +4,6 @@ import ModalWrapper from "@/components/ModalWrapper";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -13,7 +12,7 @@ import {
 import { useApi } from "@/hooks/useApi";
 import { CreateStaffFormSchema, CreateStaffFormSchemaDto } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RestaurantStaffRole } from "../../../../../contract/enum";
+import { RestaurantStaffRole } from "contract/enum";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -25,7 +24,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { getQueryClient } from "@/lib/api";
 import { useQueryClient } from "@tanstack/react-query";
-import { contract } from "../../../../../contract";
+import { contract } from "contract";
 
 const initialValues = {
   name: "",

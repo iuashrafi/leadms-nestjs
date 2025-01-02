@@ -1,4 +1,5 @@
 import {
+  RestaurantInteractionType,
   RestaurantLeadStatus,
   RestaurantStaffRole,
 } from "./../../contract/enum";
@@ -22,3 +23,18 @@ export const CreateStaffFormSchema = z.object({
 });
 
 export type CreateStaffFormSchemaDto = z.infer<typeof CreateStaffFormSchema>;
+
+export const CreateInteractionSchema = z.object({
+  interactionType: z.nativeEnum(RestaurantInteractionType),
+  notes: z.string(),
+  followUp: z.string(),
+  interactionDate: z.date(),
+});
+
+export type CreateInteractionSchemaDto = z.infer<
+  typeof CreateInteractionSchema
+>;
+
+export type StaffsSearchFormType = {
+  searchText: string;
+};
