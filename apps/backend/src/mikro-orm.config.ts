@@ -1,4 +1,10 @@
-import { defineConfig, Platform, TextType, Type } from '@mikro-orm/core';
+import {
+  defineConfig,
+  LoadStrategy,
+  Platform,
+  TextType,
+  Type,
+} from '@mikro-orm/core';
 import { PostgreSqlDriver } from '@mikro-orm/postgresql';
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
 import { NotFoundException } from '@nestjs/common';
@@ -8,11 +14,13 @@ export default defineConfig({
   entities: ['dist/**/*.entity.js'],
   entitiesTs: ['src/**/*.entity.ts'],
   driver: PostgreSqlDriver,
+  // clientUrl: process.env['DATABASE_URL'],
   dbName: process.env.DB_NAME as string,
   host: process.env.DB_HOST as string,
   password: process.env.DB_PASSWORD as string,
   user: process.env.DB_USERNAME as string,
   port: Number(process.env.DB_PORT),
+  loadStrategy: LoadStrategy.JOINED,
 
   metadataProvider: TsMorphMetadataProvider,
 
@@ -25,6 +33,13 @@ export default defineConfig({
         return Type.getType(TextType);
       }
       return platform.getDefaultMappedType(type);
+    },
+  },
+  driverOptions: {
+    connection: {
+      ssl: {
+        rejectUnauthorized: false,
+      },
     },
   },
   migrations: {
