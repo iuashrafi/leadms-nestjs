@@ -28,6 +28,9 @@ importers:
       '@mikro-orm/sql-highlighter':
         specifier: ^1.0.1
         version: 1.0.1
+      '@nestjs/cli':
+        specifier: ^10.0.0
+        version: 10.4.9
       '@nestjs/common':
         specifier: ^10.0.0
         version: 10.4.15(reflect-metadata@0.2.2)(rxjs@7.8.1)
@@ -62,9 +65,6 @@ importers:
       '@mikro-orm/cli':
         specifier: ^6.4.0
         version: 6.4.2(pg@8.13.1)
-      '@nestjs/cli':
-        specifier: ^10.0.0
-        version: 10.4.9
       '@nestjs/schematics':
         specifier: ^10.0.0
         version: 10.2.3(chokidar@3.6.0)(typescript@5.7.2)
