@@ -1,23 +1,53 @@
 import { Button } from "@/components/ui/button";
+import { useApi } from "@/hooks/useApi";
+import { getQueryClient } from "@/lib/api";
+import { useQueryClient } from "@tanstack/react-query";
+import { contract } from "contract";
 
-const DeleteInteraction = () =>
-  //TODO: uncommend when adding delete interaction
-  //   {
-  //   interactionId,
-  //   onClose,
-  // }: {
-  //   interactionId: number;
-  //   onClose: () => void;
-  // }
-  {
-    return (
-      <div>
-        <p>Are you sure you want to delete this interaction ?</p>
-        <div className="flex justify-end">
-          <Button variant={"destructive"}>Delete</Button>
-        </div>
+const DeleteInteraction = ({
+  interactionId,
+  closeModal,
+}: {
+  interactionId: number;
+  closeModal: () => void;
+}) => {
+  const { makeApiCall } = useApi();
+  const invalidationQueryClient = useQueryClient();
+
+  function handleDelete() {
+    const body = {
+      interactionId,
+    };
+    makeApiCall({
+      fetcherFn: async () => {
+        return await getQueryClient().lead.deleteInteraction.mutation({
+          body,
+        });
+      },
+      successMsgProps: {
+        title: `Interaction deleted successfully`,
+        duration: 2000,
+      },
+      onSuccessFn: () => {
+        invalidationQueryClient.invalidateQueries({
+          queryKey: [contract.lead.getAllInteractions.path],
+          refetchType: "active",
+        });
+        closeModal();
+      },
+    });
+  }
+
+  return (
+    <div>
+      <p>Are you sure you want to delete this interaction ?</p>
+      <div className="flex justify-end">
+        <Button variant={"destructive"} onClick={handleDelete}>
+          Delete
+        </Button>
       </div>
-    );
-  };
+    </div>
+  );
+};
 
 export default DeleteInteraction;

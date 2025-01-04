@@ -22,6 +22,7 @@ import CustomPagination from "@/components/CustomPagination";
 import { contract } from "contract";
 import { getQueryClient } from "@/lib/api";
 import { SearchFormType } from "@/types/common";
+import { InteractionForm } from "./InteractionForm";
 
 export function StaffTable({
   allStaffsSearchQuery,
@@ -31,8 +32,7 @@ export function StaffTable({
   const { searchText, role } = allStaffsSearchQuery;
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  //TODO: change the state when the selection is changed
-  const [_, setSelectedStaffId] = useState<number | null>(null);
+  const [selectedStaffId, setSelectedStaffId] = useState<number>(0);
 
   const handleInteraction = (staffId: number) => {
     setSelectedStaffId(staffId);
@@ -41,7 +41,7 @@ export function StaffTable({
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setSelectedStaffId(null);
+    setSelectedStaffId(0);
   };
 
   useEffect(() => {
@@ -63,7 +63,7 @@ export function StaffTable({
           return {
             query: {
               pageNumber: String(pageNumber),
-              pageSize: String(2),
+              pageSize: String(5),
               searchText: searchText,
               roles: role,
             },
@@ -101,8 +101,7 @@ export function StaffTable({
         isOpen={isModalOpen}
         onClose={closeModal}
       >
-        intersction form to be here
-        {/* <InteractionForm staffId={selectedStaffId} onClose={closeModal} /> */}
+        <InteractionForm staffId={selectedStaffId} closeModal={closeModal} />
       </DialogWrapper>
       <Table className="">
         <TableHeader>
@@ -134,9 +133,9 @@ export function StaffTable({
                     >
                       Interact
                     </DropdownMenuItem>
-                    <DropdownMenuItem>Billing</DropdownMenuItem>
-                    <DropdownMenuItem>Team</DropdownMenuItem>
-                    <DropdownMenuItem>Subscription</DropdownMenuItem>
+                    <DropdownMenuItem>View Interactions</DropdownMenuItem>
+                    <DropdownMenuItem>Edit Staff</DropdownMenuItem>
+                    <DropdownMenuItem>Delete Staff</DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </TableCell>
