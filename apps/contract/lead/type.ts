@@ -5,36 +5,38 @@ import {
 } from "../enum";
 import { z } from "zod";
 
+export const DashboardCardSchema = z.object({
+  title: z.string(),
+  subTitle: z.string(),
+  link: z.string(),
+  itemsCount: z.number(),
+});
+
+export const RecentRestaurantsSchema = z.array(
+  z.object({
+    id: z.number(),
+    name: z.string(),
+    restaurantLeadStatus: z.string(),
+    contactNumber: z.string(),
+    address: z.string(),
+  })
+);
+
+export const RecentInterationsSchema = z.array(
+  z.object({
+    id: z.number(),
+    staffName: z.string(),
+    staffEmail: z.string(),
+    interactionType: z.nativeEnum(RestaurantInteractionType),
+    interactionDate: z.date(),
+    notes: z.string(),
+  })
+);
+
 export const DashboardResponseSchema = z.object({
-  dashboardCards: z
-    .object({
-      title: z.string(),
-      subTitle: z.string(),
-      link: z.string(),
-      itemsCount: z.number(),
-    })
-    .array(),
-
-  recentRestaurants: z.array(
-    z.object({
-      id: z.number(),
-      name: z.string(),
-      restaurantLeadStatus: z.string(),
-      contactNumber: z.string(),
-      address: z.string(),
-    })
-  ),
-
-  recentInteractions: z.array(
-    z.object({
-      id: z.number(),
-      staffName: z.string(),
-      staffEmail: z.string(),
-      interactionType: z.nativeEnum(RestaurantInteractionType),
-      interactionDate: z.date(),
-      notes: z.string(),
-    })
-  ),
+  dashboardCards: DashboardCardSchema.array(),
+  recentRestaurants: RecentRestaurantsSchema,
+  recentInteractions: RecentInterationsSchema,
 });
 
 export const CreateLeadSchema = z.object({

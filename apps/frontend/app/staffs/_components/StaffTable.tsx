@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Table,
   TableBody,
@@ -28,19 +29,15 @@ import DialogWrapper from "@/components/DialogWrapper";
 import { useEffect, useState } from "react";
 import { getQueryClient } from "@/lib/api";
 import { contract } from "contract";
-import { StaffsSearchFormType } from "@/lib/schema";
-import PreLoader from "@/components/PreLoader";
+import { SearchFormType } from "@/lib/schema";
 
 export function StaffTable({
   allStaffsSearchQuery,
-  // searchForm,
 }: {
-  allStaffsSearchQuery: StaffsSearchFormType;
-  // searchForm: UseFormReturn<StaffsSearchFormType>;
+  allStaffsSearchQuery: SearchFormType;
 }) {
-  const { searchText } = allStaffsSearchQuery;
+  const { searchText, role } = allStaffsSearchQuery;
   const [pageNumber, setPageNumber] = useState<number>(1);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedStaffId, setSelectedStaffId] = useState<number | null>(null);
 
@@ -72,6 +69,7 @@ export function StaffTable({
             pageNumber: String(pageNumber),
             pageSize: String(4),
             searchText: searchText,
+            roles: role,
           },
         };
       },
@@ -103,7 +101,7 @@ export function StaffTable({
   console.log("fetched staff data=  ", staffsList);
 
   const handlePrev = () => {
-    setPageNumber((prev) => (prev === 0 ? 0 : prev - 1));
+    setPageNumber((prev) => (prev === 1 ? 1 : prev - 1));
   };
 
   const handleNext = () => {
@@ -162,16 +160,16 @@ export function StaffTable({
       </Table>
 
       <div className="flex gap-1">
-        {/* pagination */}
         <Pagination>
           <PaginationContent>
             <PaginationItem>
               <PaginationPrevious
                 href="#"
                 onClick={(e) => {
-                  e.preventDefault(); // Prevent default anchor behavior
+                  e.preventDefault();
                   handlePrev();
                 }}
+                className={`${pageNumber === 1 ? "cursor-not-allowed" : "cursor-pointer"}`}
               />
             </PaginationItem>
 
@@ -194,16 +192,19 @@ export function StaffTable({
                   </PaginationItem>
                 );
               })}
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
+            {totalPages > 2 && (
+              <PaginationItem>
+                <PaginationEllipsis />
+              </PaginationItem>
+            )}
             <PaginationItem>
               <PaginationNext
                 href="#"
                 onClick={(e) => {
-                  e.preventDefault(); // Prevent default anchor behavior
+                  e.preventDefault();
                   handleNext();
                 }}
+                className={`${pageNumber === totalPages ? "cursor-not-allowed" : "cursor-pointer"}`}
               />
             </PaginationItem>
           </PaginationContent>

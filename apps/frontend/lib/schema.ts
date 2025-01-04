@@ -1,8 +1,9 @@
+import { ReactNode } from "react";
 import {
   RestaurantInteractionType,
   RestaurantLeadStatus,
   RestaurantStaffRole,
-} from "./../../contract/enum";
+} from "contract/enum";
 import { z } from "zod";
 
 export const CreateLeadSchema = z.object({
@@ -35,13 +36,18 @@ export type CreateInteractionSchemaDto = z.infer<
   typeof CreateInteractionSchema
 >;
 
-export type StaffsSearchFormType = {
+export type SearchFormType = {
   searchText: string;
+  role: string;
 };
 
-export type LeadsSearchFormType = {
-  searchText: string;
-};
+export interface ModalWrapperProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  description?: string;
+  children: ReactNode;
+}
 
 export type InteractionsSearchFormType = {
   searchText: string;

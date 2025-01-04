@@ -36,6 +36,12 @@ export const leadContract = c.router(
       path: "/getAllLeads",
       query: PaginationQuerySchema.extend({
         searchText: z.string().optional(),
+        pageNumber: z.string().transform(Number),
+        pageSize: z.string().transform(Number),
+        roles: z
+          .string()
+          .transform((val) => val.split(","))
+          .optional(),
       }),
       responses: {
         200: createPaginatedResponseSchema(RestaurantLeadSchema),
