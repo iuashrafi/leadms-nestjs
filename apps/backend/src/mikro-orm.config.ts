@@ -14,12 +14,12 @@ export default defineConfig({
   entities: ['dist/**/*.entity.js'],
   entitiesTs: ['src/**/*.entity.ts'],
   driver: PostgreSqlDriver,
-  clientUrl: process.env['DATABASE_URL'],
-  // dbName: process.env.DB_NAME as string,
-  // host: process.env.DB_HOST as string,
-  // password: process.env.DB_PASSWORD as string,
-  // user: process.env.DB_USERNAME as string,
-  // port: Number(process.env.DB_PORT),
+  // clientUrl: process.env['DATABASE_URL'],
+  dbName: process.env.DB_NAME as string,
+  host: process.env.DB_HOST as string,
+  password: process.env.DB_PASSWORD as string,
+  user: process.env.DB_USERNAME as string,
+  port: Number(process.env.DB_PORT),
   loadStrategy: LoadStrategy.JOINED,
 
   metadataProvider: TsMorphMetadataProvider,
@@ -35,13 +35,14 @@ export default defineConfig({
       return platform.getDefaultMappedType(type);
     },
   },
-  driverOptions: {
-    connection: {
-      ssl: {
-        rejectUnauthorized: false,
-      },
-    },
-  },
+  // when using locally, comment it ! only it is required when using it in cloud
+  // driverOptions: {
+  //   connection: {
+  //     ssl: {
+  //       rejectUnauthorized: false,
+  //     },
+  //   },
+  // },
   migrations: {
     tableName: 'mikro_orm_migrations',
     path: './migrations',
