@@ -1,5 +1,5 @@
 import { Input } from "@/components/ui/input";
-import { SearchFormType } from "@/lib/schema";
+import { SearchFormType } from "@/types/common";
 import {
   Select,
   SelectContent,
@@ -12,22 +12,22 @@ import { Search } from "lucide-react";
 import { SubmitHandler, UseFormReturn } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { getLeadOptions } from "@/utils/staffs";
+import { getLeadOptions } from "@/utils/leads";
 import { Fragment } from "react";
 
 const LeadsSearchForm = ({
   searchForm,
-  onLeadsSearch,
+  onSearchLeads,
 }: {
   searchForm: UseFormReturn<SearchFormType>;
-  onLeadsSearch: SubmitHandler<SearchFormType>;
+  onSearchLeads: SubmitHandler<SearchFormType>;
 }) => {
   const { handleSubmit, control } = searchForm;
   const leadsOptions = getLeadOptions();
 
   return (
     <Form {...searchForm}>
-      <form onSubmit={handleSubmit(onLeadsSearch)} className="flex gap-2">
+      <form onSubmit={handleSubmit(onSearchLeads)} className="flex gap-2">
         <FormField
           control={searchForm.control}
           name="searchText"
@@ -71,7 +71,7 @@ const LeadsSearchForm = ({
         <Button
           className="rounded-lg text-md"
           size="lg"
-          onClick={handleSubmit(onLeadsSearch)}
+          onClick={handleSubmit(onSearchLeads)}
         >
           Search <Search />
         </Button>

@@ -4,7 +4,7 @@ import { useQueryState } from "@/hooks/useQueryState";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { StaffTable } from "./_components/StaffTable";
 import StaffsSearchForm from "./_components/StaffsSearchForm";
-import { SearchFormType } from "@/lib/schema";
+import { SearchFormType } from "@/types/common";
 
 const page = () => {
   const [allStaffsSearchQuery, setAllStaffsSearchQuery] =
