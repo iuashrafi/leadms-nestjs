@@ -1,5 +1,4 @@
 "use client";
-
 import { getQueryClient } from "@/lib/api";
 import { contract } from "contract";
 import DashboardCard from "./_components/DashboardCard";

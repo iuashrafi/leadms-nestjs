@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,8 +17,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { RecentRestaurantsType } from "@/types/dashboard";
 
-const RecentRestaurants = ({ restaurants }) => {
+const RecentRestaurants = ({
+  restaurants,
+}: {
+  restaurants: RecentRestaurantsType;
+}) => {
   return (
     <Card className="xl:col-span-2">
       <CardHeader className="flex flex-row items-center">

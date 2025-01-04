@@ -1,7 +1,12 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { RecentInterationsType } from "@/types/dashboard";
 
-const RecentInteractions = ({ interactions }) => {
+const RecentInteractions = ({
+  interactions,
+}: {
+  interactions: RecentInterationsType;
+}) => {
   return (
     <Card>
       <CardHeader>

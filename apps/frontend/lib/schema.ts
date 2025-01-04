@@ -3,7 +3,7 @@ import {
   RestaurantInteractionType,
   RestaurantLeadStatus,
   RestaurantStaffRole,
-} from "./../../contract/enum";
+} from "contract/enum";
 import { z } from "zod";
 
 export const CreateLeadSchema = z.object({
