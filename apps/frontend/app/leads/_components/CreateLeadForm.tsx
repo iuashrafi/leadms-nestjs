@@ -20,27 +20,20 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { CreateLeadSchema, CreateLeadSchemaDto } from "@/lib/schema";
 import { RestaurantLeadStatus } from "contract/enum";
 import { useApi } from "@/hooks/useApi";
 import { getQueryClient } from "@/lib/api";
 import { useQueryClient } from "@tanstack/react-query";
 import { contract } from "contract";
-
-const initialValues: CreateLeadSchemaDto = {
-  restaurantName: "",
-  restaurantAddress: "",
-  contactNumber: "",
-  restaurantLeadStatus: RestaurantLeadStatus.New,
-  assignedKAM: "",
-};
+import { intialLeadValues } from "@/utils/dashboard";
+import { CreateLeadSchema, CreateLeadSchemaDto } from "@/types/dashboard";
 
 const CreateLeadForm = ({ closeModal }: { closeModal: () => void }) => {
   const { makeApiCall } = useApi();
 
   const form = useForm<CreateLeadSchemaDto>({
     resolver: zodResolver(CreateLeadSchema),
-    defaultValues: initialValues,
+    defaultValues: intialLeadValues,
   });
 
   const invalidationQueryClient = useQueryClient();
@@ -68,7 +61,7 @@ const CreateLeadForm = ({ closeModal }: { closeModal: () => void }) => {
           queryKey: [contract.lead.getAllLeads.path],
         });
         closeModal();
-        form.reset(initialValues);
+        form.reset(intialLeadValues);
       },
     });
   }

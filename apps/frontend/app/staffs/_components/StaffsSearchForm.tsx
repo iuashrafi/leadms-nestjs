@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import { SubmitHandler, UseFormReturn } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import { SearchFormType } from "@/lib/schema";
+import { SearchFormType } from "@/types/common";
 import { getRoleOptions } from "@/utils/staffs";
 import { Fragment } from "react";
 

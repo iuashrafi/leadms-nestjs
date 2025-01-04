@@ -1,11 +1,11 @@
-import { SearchFormType } from "@/lib/schema";
 import RestaurantCard from "./RestaurantCard";
 import PreLoader from "@/components/PreLoader";
-import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
-import { getQueryClient } from "@/lib/api";
 import { contract } from "contract";
 import { Button } from "@/components/ui/button";
 import CustomErrorMessage from "@/components/CustomErrorMessage";
+import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import { getQueryClient } from "@/lib/api";
+import { SearchFormType } from "@/types/common";
 
 const LeadsListing = ({
   allLeadsSearchQuery,

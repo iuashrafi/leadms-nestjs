@@ -29,7 +29,7 @@ import DialogWrapper from "@/components/DialogWrapper";
 import { useEffect, useState } from "react";
 import { getQueryClient } from "@/lib/api";
 import { contract } from "contract";
-import { SearchFormType } from "@/lib/schema";
+import { SearchFormType } from "@/types/common";
 import PreLoader from "@/components/PreLoader";
 
 export function StaffTable({

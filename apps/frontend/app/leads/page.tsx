@@ -1,13 +1,13 @@
 "use client";
 import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import DialogWrapper from "@/components/DialogWrapper";
 import CreateLeadForm from "./_components/CreateLeadForm";
 import LeadsSearchForm from "./_components/LeadsSearchForm";
-import { useQueryState } from "@/hooks/useQueryState";
-import { SearchFormType } from "@/lib/schema";
-import { SubmitHandler, useForm } from "react-hook-form";
 import LeadsListing from "./_components/LeadsListing";
+import { useQueryState } from "@/hooks/useQueryState";
+import { SearchFormType } from "@/types/common";
 
 const page = () => {
   const [allLeadsSearchQuery, setAllLeadsSearchQuery] =
@@ -23,7 +23,7 @@ const page = () => {
     },
   });
 
-  const onLeadsSearch: SubmitHandler<SearchFormType> = (data) => {
+  const onSearchLeads: SubmitHandler<SearchFormType> = (data) => {
     setAllLeadsSearchQuery(data);
   };
 
@@ -44,7 +44,7 @@ const page = () => {
           <div className="flex space-x-2">
             <LeadsSearchForm
               searchForm={searchForm}
-              onLeadsSearch={onLeadsSearch}
+              onSearchLeads={onSearchLeads}
             />
           </div>
           <div>
