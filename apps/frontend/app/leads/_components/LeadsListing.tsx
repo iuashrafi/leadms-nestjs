@@ -1,4 +1,4 @@
-import { LeadsSearchFormType } from "@/lib/schema";
+import { SearchFormType } from "@/lib/schema";
 import RestaurantCard from "./RestaurantCard";
 import PreLoader from "@/components/PreLoader";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
@@ -11,11 +11,10 @@ const LeadsListing = ({
   allLeadsSearchQuery,
   openLeadsModal,
 }: {
-  allLeadsSearchQuery: LeadsSearchFormType;
+  allLeadsSearchQuery: SearchFormType;
   openLeadsModal: () => void;
 }) => {
-  const { searchText } = allLeadsSearchQuery;
-
+  const { searchText, role } = allLeadsSearchQuery;
   const {
     data,
     isLoading,
@@ -31,6 +30,7 @@ const LeadsListing = ({
           pageNumber: String(pageParam.pageNumber),
           pageSize: String(4),
           searchText,
+          roles: role,
         },
       };
     },

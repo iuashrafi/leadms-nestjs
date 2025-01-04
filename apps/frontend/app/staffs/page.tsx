@@ -4,11 +4,11 @@ import { useQueryState } from "@/hooks/useQueryState";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { StaffTable } from "./_components/StaffTable";
 import StaffsSearchForm from "./_components/StaffsSearchForm";
-import { StaffsSearchFormType } from "@/lib/schema";
+import { SearchFormType } from "@/lib/schema";
 
 const page = () => {
   const [allStaffsSearchQuery, setAllStaffsSearchQuery] =
-    useQueryState<StaffsSearchFormType>("StaffSearchQuery", {
+    useQueryState<SearchFormType>("StaffSearchQuery", {
       searchText: "",
       role: "",
     });
@@ -20,32 +20,9 @@ const page = () => {
     },
   });
 
-  // const { reset } = searchForm;
-
-  const onStaffsSearch: SubmitHandler<StaffsSearchFormType> = (data) => {
+  const onStaffsSearch: SubmitHandler<SearchFormType> = (data) => {
     setAllStaffsSearchQuery(data);
   };
-
-  // const { data, isError, isLoading } =
-  //   getQueryClient().lead.getAllStaffs.useQuery(
-  //     [contract.lead.getAllStaffs.path],
-  //     {
-  //       query: {
-  //         pageNumber: String(1),
-  //         pageSize: String(5),
-  //       },
-  //     }
-  //   );
-
-  // if (isLoading) {
-  //   return <>Loading...</>;
-  // } else if (isError) {
-  //   return <>En Error occurred!</>;
-  // }
-
-  // if (data?.status !== 200) return <>Error : Leads fetching error</>;
-
-  // const staffs = data.body.results;
   return (
     <div>
       <div className="p-4">
@@ -59,10 +36,7 @@ const page = () => {
           />
         </div>
       </div>
-      <StaffTable
-        allStaffsSearchQuery={allStaffsSearchQuery}
-        searchForm={searchForm}
-      />
+      <StaffTable allStaffsSearchQuery={allStaffsSearchQuery} />
     </div>
   );
 };

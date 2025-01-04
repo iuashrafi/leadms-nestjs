@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import { SubmitHandler, UseFormReturn } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import { StaffsSearchFormType } from "@/lib/schema";
+import { SearchFormType } from "@/lib/schema";
 import { getRoleOptions } from "@/utils/staffs";
 import { Fragment } from "react";
 
@@ -20,8 +20,8 @@ const StaffsSearchForm = ({
   searchForm,
   onStaffsSearch,
 }: {
-  searchForm: UseFormReturn<StaffsSearchFormType>;
-  onStaffsSearch: SubmitHandler<StaffsSearchFormType>;
+  searchForm: UseFormReturn<SearchFormType>;
+  onStaffsSearch: SubmitHandler<SearchFormType>;
 }) => {
   const { handleSubmit } = searchForm;
   const { control } = searchForm;

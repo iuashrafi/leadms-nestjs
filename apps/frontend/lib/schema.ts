@@ -36,13 +36,9 @@ export type CreateInteractionSchemaDto = z.infer<
   typeof CreateInteractionSchema
 >;
 
-export type StaffsSearchFormType = {
+export type SearchFormType = {
   searchText: string;
   role: string;
-};
-
-export type LeadsSearchFormType = {
-  searchText: string;
 };
 
 export interface ModalWrapperProps {

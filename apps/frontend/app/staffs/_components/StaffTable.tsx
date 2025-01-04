@@ -1,23 +1,17 @@
 "use client";
-import { Input } from "@/components/ui/input";
+
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu";
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -33,21 +27,17 @@ import {
 import { Ellipsis } from "lucide-react";
 import DialogWrapper from "@/components/DialogWrapper";
 import { useEffect, useState } from "react";
-import { UseFormReturn } from "react-hook-form";
 import { getQueryClient } from "@/lib/api";
 import { contract } from "contract";
-import { StaffsSearchFormType } from "@/lib/schema";
+import { SearchFormType } from "@/lib/schema";
 
 export function StaffTable({
   allStaffsSearchQuery,
-  searchForm,
 }: {
-  allStaffsSearchQuery: StaffsSearchFormType;
-  searchForm: UseFormReturn<StaffsSearchFormType>;
+  allStaffsSearchQuery: SearchFormType;
 }) {
   const { searchText, role } = allStaffsSearchQuery;
   const [pageNumber, setPageNumber] = useState<number>(1);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedStaffId, setSelectedStaffId] = useState<number | null>(null);
 

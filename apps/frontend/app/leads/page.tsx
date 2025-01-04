@@ -5,24 +5,25 @@ import DialogWrapper from "@/components/DialogWrapper";
 import CreateLeadForm from "./_components/CreateLeadForm";
 import LeadsSearchForm from "./_components/LeadsSearchForm";
 import { useQueryState } from "@/hooks/useQueryState";
-import { LeadsSearchFormType } from "@/lib/schema";
+import { SearchFormType } from "@/lib/schema";
 import { SubmitHandler, useForm } from "react-hook-form";
 import LeadsListing from "./_components/LeadsListing";
 
 const page = () => {
   const [allLeadsSearchQuery, setAllLeadsSearchQuery] =
-    useQueryState<LeadsSearchFormType>("LeadsSearchQuery", {
+    useQueryState<SearchFormType>("LeadsSearchQuery", {
       searchText: "",
+      role: "",
     });
 
   const searchForm = useForm({
     defaultValues: {
       searchText: "",
+      role: "",
     },
   });
 
-  const onLeadsSearch: SubmitHandler<LeadsSearchFormType> = (data) => {
-    console.log("setting data = ", data);
+  const onLeadsSearch: SubmitHandler<SearchFormType> = (data) => {
     setAllLeadsSearchQuery(data);
   };
 
