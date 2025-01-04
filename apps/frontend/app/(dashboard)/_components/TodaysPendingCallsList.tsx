@@ -18,7 +18,7 @@ const TodaysPendingCallsList = ({
     );
 
   return (
-    <CardContent className="grid gap-8">
+    <CardContent className="grid gap-5 px-0 py-2">
       {interactions.map((interaction) => (
         <div key={interaction.id} className="flex items-center gap-4">
           <Avatar className="hidden h-9 w-9 sm:flex">

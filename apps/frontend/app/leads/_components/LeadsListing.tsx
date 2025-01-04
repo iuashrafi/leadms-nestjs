@@ -15,6 +15,7 @@ const LeadsListing = ({
   openLeadsModal: () => void;
 }) => {
   const { searchText, role } = allLeadsSearchQuery;
+
   const {
     data,
     isLoading,
@@ -30,7 +31,7 @@ const LeadsListing = ({
           pageNumber: String(pageParam.pageNumber),
           pageSize: String(4),
           searchText,
-          roles: role,
+          roles: role.trim().length === 0 ? undefined : role,
         },
       };
     },

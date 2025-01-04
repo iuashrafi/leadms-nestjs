@@ -69,8 +69,6 @@ export function EditInteractionForm({
       followUp: values.followUp === "Yes" ? true : false,
     };
 
-    console.log("body to submit  = ", body);
-
     // makeApiCall({
     //   fetcherFn: async () => {
     //     return await getQueryClient().lead.createInteraction.mutation({

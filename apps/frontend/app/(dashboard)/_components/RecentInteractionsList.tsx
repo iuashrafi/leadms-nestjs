@@ -18,7 +18,7 @@ const RecentInteractionsList = ({
     );
 
   return (
-    <CardContent className="grid gap-8">
+    <CardContent className="grid gap-5 px-0 py-2">
       {interactions.map((interaction) => (
         <div key={interaction.id} className="flex items-center gap-4">
           <Avatar className="hidden h-9 w-9 sm:flex">
@@ -33,7 +33,7 @@ const RecentInteractionsList = ({
               {interaction.staffEmail}
             </p>
           </div>
-          <div className="ml-auto font-medium">
+          <div className="ml-auto font-medium text-sm">
             {interaction.interactionType}
           </div>
         </div>

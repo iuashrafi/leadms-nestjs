@@ -9,7 +9,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useApi } from "@/hooks/useApi";
-import { CreateStaffFormSchema, CreateStaffFormSchemaDto } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RestaurantStaffRole } from "contract/enum";
 import { Input } from "@/components/ui/input";
@@ -24,13 +23,12 @@ import { Button } from "@/components/ui/button";
 import { getQueryClient } from "@/lib/api";
 import { useQueryClient } from "@tanstack/react-query";
 import { contract } from "contract";
+import {
+  CreateStaffFormSchema,
+  CreateStaffFormSchemaDto,
+} from "@/types/staffs";
+import { initialStaffValue } from "@/utils/leads";
 
-const initialValues = {
-  name: "",
-  role: RestaurantStaffRole.Owner,
-  contactNumber: "",
-  email: "",
-};
 const EditStaffForm = ({
   staff,
   closeModal,
@@ -50,7 +48,7 @@ const EditStaffForm = ({
           contactNumber: staff.contactNumber,
           email: staff.email,
         }
-      : initialValues,
+      : initialStaffValue,
   });
 
   function onSubmit(values: CreateStaffFormSchemaDto) {

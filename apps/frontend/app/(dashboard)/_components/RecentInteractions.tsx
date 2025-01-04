@@ -1,6 +1,6 @@
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import RecentInteractionsList from "@/app/(dashboard)/_components/RecentInteractionsList";
 import { RecentInterationsType } from "@/types/dashboard";
-import RecentInteractionsList from "./RecentInteractionsList";
 
 const RecentInteractions = ({
   interactions,

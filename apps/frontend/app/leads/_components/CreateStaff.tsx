@@ -1,5 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useQueryClient } from "@tanstack/react-query";
 import ModalWrapper from "@/components/ModalWrapper";
 import {
   Form,
@@ -10,7 +11,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useApi } from "@/hooks/useApi";
-import { CreateStaffFormSchema, CreateStaffFormSchemaDto } from "@/lib/schema";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RestaurantStaffRole } from "contract/enum";
 import { Input } from "@/components/ui/input";
@@ -23,22 +24,20 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { getQueryClient } from "@/lib/api";
-import { useQueryClient } from "@tanstack/react-query";
 import { contract } from "contract";
+import {
+  CreateStaffFormSchema,
+  CreateStaffFormSchemaDto,
+} from "@/types/staffs";
+import { initialStaffValue } from "@/utils/leads";
 
-const initialValues = {
-  name: "",
-  role: RestaurantStaffRole.Owner,
-  contactNumber: "",
-  email: "",
-};
 const CreateStaff = ({ leadId }: { leadId: number }) => {
   const { makeApiCall } = useApi();
   const invalidationQueryClient = useQueryClient();
 
   const form = useForm<CreateStaffFormSchemaDto>({
     resolver: zodResolver(CreateStaffFormSchema),
-    defaultValues: initialValues,
+    defaultValues: initialStaffValue,
   });
 
   function onSubmit(values: CreateStaffFormSchemaDto) {
@@ -63,7 +62,7 @@ const CreateStaff = ({ leadId }: { leadId: number }) => {
           queryKey: [contract.lead.getLeadById.path],
           refetchType: "active",
         });
-        form.reset(initialValues);
+        form.reset(initialStaffValue);
       },
     });
   }

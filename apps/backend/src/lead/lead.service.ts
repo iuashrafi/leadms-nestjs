@@ -107,7 +107,7 @@ export class LeadService {
   }
 
   async getAllLeads(query: LeadRequestShapes['getAllLeads']['query']) {
-    const { searchText, pageNumber, pageSize } = query;
+    const { searchText, pageNumber, pageSize, roles: leadStatus } = query;
 
     let sqlQuery = `
       SELECT r.id, r.name, r.address, r.assigned_kam, r.contact_number, r.restaurant_lead_status
@@ -133,6 +133,17 @@ export class LeadService {
       `;
       sqlQuery += filter;
       countQuery += filter;
+    }
+
+    if (leadStatus && leadStatus.length > 0) {
+      console.log(leadStatus);
+      const leadStatusFilters = leadStatus
+        .map((r) => `r.restaurant_lead_status = '${r}'`)
+        .join(' OR ');
+
+      const leadStatusCondition = ` AND (${leadStatusFilters}) `;
+      sqlQuery += leadStatusCondition;
+      countQuery += leadStatusCondition;
     }
 
     const offset = (pageNumber - 1) * pageSize;
@@ -226,7 +237,7 @@ export class LeadService {
   async getAllStaffs(query: LeadRequestShapes['getAllStaffs']['query']) {
     const { searchText, roles, pageNumber, pageSize } = query;
 
-    let sqlQuery = `select  s.id, s.name, s.contact_number, s.email, s.role, s.restaurant_lead_id, rl.name from restaurant_staff s
+    let sqlQuery = `select  s.id, s.name as staff_name, s.contact_number, s.email, s.role, s.restaurant_lead_id, rl.name as lead_name  from restaurant_staff s
               join restaurant_lead rl on s.restaurant_lead_id = rl.id
                     where 1=1`;
 
@@ -285,7 +296,8 @@ export class LeadService {
       return {
         data: staffs.map((staff) => ({
           id: staff.id,
-          name: staff.name,
+          name: staff.staff_name,
+          leadName: staff.lead_name,
           role: staff.role,
           contactNumber: staff.contact_number,
           email: staff.email,

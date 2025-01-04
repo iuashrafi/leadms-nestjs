@@ -28,7 +28,7 @@ const InteractionsSearchForm = ({
               <FormControl>
                 <Input
                   placeholder="Search for Staff Name, Restaurant"
-                  className="rounded-lg h-[43px] max-w-md px-4 bg-white"
+                  className="rounded-lg h-[43px] max-w-md px-4 bg-white min-w-[300px]"
                   {...field}
                 />
               </FormControl>

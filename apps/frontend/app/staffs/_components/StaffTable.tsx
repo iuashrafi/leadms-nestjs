@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { Ellipsis } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -14,23 +16,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import { Ellipsis } from "lucide-react";
 import DialogWrapper from "@/components/DialogWrapper";
-import { useEffect, useState } from "react";
-import { getQueryClient } from "@/lib/api";
-import { contract } from "contract";
-import { SearchFormType } from "@/types/common";
 import PreLoader from "@/components/PreLoader";
+import CustomPagination from "@/components/CustomPagination";
+import { contract } from "contract";
+import { getQueryClient } from "@/lib/api";
+import { SearchFormType } from "@/types/common";
 
 export function StaffTable({
   allStaffsSearchQuery,
@@ -40,7 +31,8 @@ export function StaffTable({
   const { searchText, role } = allStaffsSearchQuery;
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedStaffId, setSelectedStaffId] = useState<number | null>(null);
+  //TODO: change the state when the selection is changed
+  const [_, setSelectedStaffId] = useState<number | null>(null);
 
   const handleInteraction = (staffId: number) => {
     setSelectedStaffId(staffId);
@@ -64,16 +56,19 @@ export function StaffTable({
         searchText,
         pageNumber,
       ],
-      ({ pageParam = { pageNumber: 1 } }) => {
-        return {
-          query: {
-            pageNumber: String(pageNumber),
-            pageSize: String(4),
-            searchText: searchText,
-            roles: role,
-          },
-        };
-      },
+      () =>
+        //TODO: uncomment when it is changed to createPaginatedResponse
+        // { pageParam = { pageNumber: 1 } }
+        {
+          return {
+            query: {
+              pageNumber: String(pageNumber),
+              pageSize: String(2),
+              searchText: searchText,
+              roles: role,
+            },
+          };
+        },
       {
         getNextPageParam: (lastPage) => {
           if (
@@ -98,16 +93,6 @@ export function StaffTable({
   const staffsList = data.pages.flatMap((eachPage) => eachPage.body.results);
 
   const totalPages = data.pages[0].body.totalPages;
-
-  console.log("fetched staff data=  ", staffsList);
-
-  const handlePrev = () => {
-    setPageNumber((prev) => (prev === 1 ? 1 : prev - 1));
-  };
-
-  const handleNext = () => {
-    setPageNumber((prev) => (prev === totalPages ? totalPages : prev + 1));
-  };
 
   return (
     <div className="rounded-md border bg-white p-2">
@@ -134,7 +119,7 @@ export function StaffTable({
           {staffsList.map((staff: any) => (
             <TableRow key={staff.id}>
               <TableCell className="font-medium">{staff.name}</TableCell>
-              <TableCell className="">{staff.name}</TableCell>
+              <TableCell className="">{staff.leadName}</TableCell>
               <TableCell>{staff.role}</TableCell>
               <TableCell>{staff.contactNumber}</TableCell>
               <TableCell className="">{staff.email}</TableCell>
@@ -160,57 +145,11 @@ export function StaffTable({
         </TableBody>
       </Table>
 
-      <div className="flex gap-1">
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handlePrev();
-                }}
-                className={`${pageNumber === 1 ? "cursor-not-allowed" : "cursor-pointer"}`}
-              />
-            </PaginationItem>
-
-            {Array()
-              .fill(totalPages)
-              .map((_, index) => {
-                const page = index + 1;
-                return (
-                  <PaginationItem key={page}>
-                    <PaginationLink
-                      href="#"
-                      isActive={pageNumber === page}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setPageNumber(page);
-                      }}
-                    >
-                      {page}
-                    </PaginationLink>
-                  </PaginationItem>
-                );
-              })}
-            {totalPages > 2 && (
-              <PaginationItem>
-                <PaginationEllipsis />
-              </PaginationItem>
-            )}
-            <PaginationItem>
-              <PaginationNext
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleNext();
-                }}
-                className={`${pageNumber === totalPages ? "cursor-not-allowed" : "cursor-pointer"}`}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </div>
+      <CustomPagination
+        pageNumber={pageNumber}
+        setPageNumber={setPageNumber}
+        totalPages={totalPages}
+      />
     </div>
   );
 }

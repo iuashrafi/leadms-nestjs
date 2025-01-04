@@ -1,6 +1,6 @@
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import TodaysPendingCallsList from "@/app/(dashboard)/_components/TodaysPendingCallsList";
 import { RecentInterationsType } from "@/types/dashboard";
-import TodaysPendingCallsList from "./TodaysPendingCallsList";
 
 const TodaysPendingCalls = ({
   interactions,
