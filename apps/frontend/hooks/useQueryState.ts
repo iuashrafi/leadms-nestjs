@@ -7,88 +7,59 @@ export function useQueryState<T>(
 ): [T, (value: T) => void] {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [state, setState] = useState<T>(defaultValue);
 
-  // useEffect(() => {
-  //   const value = searchParams.get(key);
+  // Initialize state from URL or default value
+  const [state, setState] = useState<T>(() => {
+    if (typeof window !== "undefined") {
+      const value = searchParams.get(key);
+      if (value) {
+        try {
+          return JSON.parse(value) as T;
+        } catch (e) {
+          console.error(`Error parsing query parameter ${key}:`, e);
+        }
+      }
+    }
+    return defaultValue;
+  });
 
-  //   if (typeof value === "string") {
-  //     try {
-  //       const parsedValue = JSON.parse(value) as T;
-  //       setState(parsedValue);
-  //     } catch (e) {
-  //       console.error(`Error parsing query parameter ${key}:`, e);
-  //       setState(defaultValue);
-  //     }
-  //   } else if (value === undefined) {
-  //     setState(defaultValue);
-  //   }
-  // }, [key, defaultValue]);
+  // Only sync from URL when searchParams changes and the value is different
+  useEffect(() => {
+    const value = searchParams.get(key);
+    const currentStateAsString = JSON.stringify(state);
+
+    // Only update if the URL value is different from current state
+    if (value && value !== currentStateAsString) {
+      try {
+        const parsedValue = JSON.parse(value) as T;
+        if (JSON.stringify(parsedValue) !== currentStateAsString) {
+          setState(parsedValue);
+        }
+      } catch (e) {
+        console.error(`Error parsing query parameter ${key}:`, e);
+      }
+    } else if (
+      !value &&
+      currentStateAsString !== JSON.stringify(defaultValue)
+    ) {
+      setState(defaultValue);
+    }
+  }, [searchParams, key, defaultValue]);
 
   const setQueryState = useCallback(
     (value: T) => {
-      const params = new URLSearchParams(
-        searchParams as unknown as Record<string, string>
-      );
-      params.set(key, JSON.stringify(value));
+      const params = new URLSearchParams(searchParams.toString());
+      const valueString = JSON.stringify(value);
 
-      router.replace(`?${params.toString()}`);
-      setState(value);
+      // Only update URL if the value is different
+      if (valueString !== params.get(key)) {
+        params.set(key, valueString);
+        router.replace(`?${params.toString()}`);
+        setState(value);
+      }
     },
-    [key, router]
+    [key, router, searchParams]
   );
 
   return [state, setQueryState];
 }
-
-// import { useRouter } from "next/navigation";
-// import { useRef, useCallback, useEffect, useState } from "react";
-
-// export function useQueryState<T>(
-//   key: string,
-//   defaultValue: T
-// ): [T, (value: T) => void] {
-//   const router = useRouter();
-//   const isFirstUpdate = useRef(true);
-//   const [state, setState] = useState<T>(defaultValue);
-
-//   useEffect(() => {
-//     const value = router.query[key];
-//     if (typeof value === "string") {
-//       try {
-//         const parsedValue = JSON.parse(value) as T;
-//         setState(parsedValue);
-//       } catch (e) {
-//         console.error(`Error parsing query parameter ${key}:`, e);
-//         setState(defaultValue);
-//       }
-//     } else if (value === undefined && router.isReady) {
-//       setState(defaultValue);
-//     }
-//   }, [router.query, key, router.isReady]);
-
-//   const setQueryState = useCallback(
-//     (value: T) => {
-//       const url = new URL(window.location.href);
-//       url.searchParams.set(key, JSON.stringify(value));
-
-//       if (isFirstUpdate.current) {
-//         router
-//           .push(url, undefined, { scroll: false, shallow: true })
-//           .then(() => {
-//             isFirstUpdate.current = false;
-//           })
-//           .catch(console.error);
-//       } else {
-//         router
-//           .replace(url, undefined, { scroll: false, shallow: true })
-//           .catch(console.error);
-//       }
-
-//       setState(value);
-//     },
-//     [key, router]
-//   );
-
-//   return [state, setQueryState];
-// }

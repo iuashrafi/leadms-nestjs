@@ -21,8 +21,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-
-import { useApi } from "@/hooks/useApi";
+// import { useApi } from "@/hooks/useApi";
 import {
   CreateInteractionSchema,
   CreateInteractionSchemaDto,
@@ -33,7 +32,7 @@ import { useForm } from "react-hook-form";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calender";
-import { getQueryClient } from "@/lib/api";
+// import { getQueryClient } from "@/lib/api";
 
 const initialValues: CreateInteractionSchemaDto = {
   interactionType: RestaurantInteractionType.Call,
@@ -48,7 +47,7 @@ export function EditInteractionForm({
   interactionId: number;
   onClose?: () => void;
 }) {
-  const { makeApiCall } = useApi();
+  // const { makeApiCall } = useApi();
 
   const form = useForm<CreateInteractionSchemaDto>({
     resolver: zodResolver(CreateInteractionSchema),
@@ -58,16 +57,19 @@ export function EditInteractionForm({
   function onSubmit(values: CreateInteractionSchemaDto) {
     console.log("form values=", values);
 
-    const body = {
-      interactionId,
-      interactionDate: values.interactionDate.toISOString(),
-      type: values.interactionType,
-      notes:
-        values.notes && values.notes.trim().length > 0
-          ? values.notes.trim()
-          : null,
-      followUp: values.followUp === "Yes" ? true : false,
-    };
+    //TODO: uncomment while adding interaction form
+    // const body = {
+    //   interactionId,
+    //   interactionDate: values.interactionDate.toISOString(),
+    //   type: values.interactionType,
+    //   notes:
+    //     values.notes && values.notes.trim().length > 0
+    //       ? values.notes.trim()
+    //       : null,
+    //   followUp: values.followUp === "Yes" ? true : false,
+    // };
+
+    // console.log("body to submit  = ", body);
 
     // makeApiCall({
     //   fetcherFn: async () => {

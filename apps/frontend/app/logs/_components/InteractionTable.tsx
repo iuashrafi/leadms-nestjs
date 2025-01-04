@@ -68,15 +68,18 @@ export function InteractionTable({
         searchText,
         pageNumber,
       ],
-      ({ pageParam = { pageNumber: 1 } }) => {
-        return {
-          query: {
-            pageNumber: String(pageNumber),
-            pageSize: String(4),
-            searchText: searchText,
-          },
-        };
-      },
+      () =>
+        //TODO: uncomment when it is changed to createPaginatedResponse
+        // { pageParam = { pageNumber: 1 } }
+        {
+          return {
+            query: {
+              pageNumber: String(pageNumber),
+              pageSize: String(4),
+              searchText: searchText,
+            },
+          };
+        },
       {
         getNextPageParam: (lastPage) => {
           if (
@@ -122,8 +125,9 @@ export function InteractionTable({
         onClose={closeDeleteModal}
       >
         <DeleteInteraction
-          interactionId={selectedInteractionId}
-          onClose={closeDeleteModal}
+        //TODO: uncommend when adding delete interaction
+        // interactionId={selectedInteractionId}
+        // onClose={closeDeleteModal}
         />
       </DialogWrapper>
       <Table className="">

@@ -6,7 +6,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, Fragment, SetStateAction } from "react";
 
 const CustomPagination = ({
   pageNumber,
@@ -45,18 +45,20 @@ const CustomPagination = ({
             .map((_, index) => {
               const page = index + 1;
               return (
-                <PaginationItem>
-                  <PaginationLink
-                    href="#"
-                    isActive={pageNumber === page}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setPageNumber(page);
-                    }}
-                  >
-                    {page}
-                  </PaginationLink>
-                </PaginationItem>
+                <Fragment key={index}>
+                  <PaginationItem>
+                    <PaginationLink
+                      href="#"
+                      isActive={pageNumber === page}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setPageNumber(page);
+                      }}
+                    >
+                      {page}
+                    </PaginationLink>
+                  </PaginationItem>
+                </Fragment>
               );
             })}
           <PaginationItem>
