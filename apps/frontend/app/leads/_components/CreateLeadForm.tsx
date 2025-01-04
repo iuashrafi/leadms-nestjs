@@ -36,7 +36,7 @@ const initialValues: CreateLeadSchemaDto = {
   assignedKAM: "",
 };
 
-const CreateLeadForm = () => {
+const CreateLeadForm = ({ closeModal }) => {
   const { makeApiCall } = useApi();
 
   const form = useForm<CreateLeadSchemaDto>({
@@ -45,7 +45,6 @@ const CreateLeadForm = () => {
   });
 
   function onSubmit(values: CreateLeadSchemaDto) {
-    console.log(values);
     const body = {
       restaurantName: values.restaurantName,
       address: values.restaurantAddress,
@@ -76,7 +75,7 @@ const CreateLeadForm = () => {
         //   queryKey: [contract.search.viewedProfilesSearch.path],
         //   refetchType: "active",
         // });
-
+        closeModal();
         form.reset(initialValues);
       },
     });

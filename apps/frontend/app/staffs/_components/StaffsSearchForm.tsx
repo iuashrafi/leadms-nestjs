@@ -14,11 +14,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { SubmitHandler, UseFormReturn } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { StaffsSearchFormType } from "@/lib/schema";
 
 type Checked = DropdownMenuCheckboxItemProps["checked"];
-type StaffsSearchFormType = {
-  searchText: string;
-};
 
 const StaffsSearchForm = ({
   searchForm,

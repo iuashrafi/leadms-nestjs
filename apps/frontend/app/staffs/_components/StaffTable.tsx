@@ -33,15 +33,10 @@ import {
 import { Ellipsis } from "lucide-react";
 import DialogWrapper from "@/components/DialogWrapper";
 import { useEffect, useState } from "react";
-import { InteractionForm } from "./InteractionForm";
 import { UseFormReturn } from "react-hook-form";
 import { getQueryClient } from "@/lib/api";
 import { contract } from "contract";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-
-type StaffsSearchFormType = {
-  searchText: string;
-};
+import { StaffsSearchFormType } from "@/lib/schema";
 
 export function StaffTable({
   allStaffsSearchQuery,

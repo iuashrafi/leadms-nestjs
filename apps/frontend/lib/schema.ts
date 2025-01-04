@@ -38,3 +38,7 @@ export type CreateInteractionSchemaDto = z.infer<
 export type StaffsSearchFormType = {
   searchText: string;
 };
+
+export type LeadsSearchFormType = {
+  searchText: string;
+};
