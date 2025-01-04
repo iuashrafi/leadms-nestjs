@@ -30,6 +30,7 @@ import { useEffect, useState } from "react";
 import { getQueryClient } from "@/lib/api";
 import { contract } from "contract";
 import { SearchFormType } from "@/lib/schema";
+import PreLoader from "@/components/PreLoader";
 
 export function StaffTable({
   allStaffsSearchQuery,
