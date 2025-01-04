@@ -23,12 +23,13 @@ import {
 } from "@/components/ui/select";
 
 import { Input } from "@/components/ui/input";
-import { CreateLeadSchema, CreateLeadSchemaDto } from "@/lib/schema";
 import { RestaurantLeadStatus } from "contract/enum";
 import { useApi } from "@/hooks/useApi";
 import { getQueryClient } from "@/lib/api";
 import { contract } from "contract";
 import { useQueryClient } from "@tanstack/react-query";
+import { CreateLeadSchemaDto } from "@/types/dashboard";
+import { CreateLeadSchema } from "contract/lead/type";
 
 // const initialValues: CreateLeadSchemaDto = {
 //   restaurantName: "",

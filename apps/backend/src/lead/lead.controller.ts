@@ -121,7 +121,6 @@ export class LeadController
     const { data, total } = await this.leadService.getAllStaffs(query);
     return {
       status: 200 as const,
-      // body: staffs,
       body: createPaginatedResponse({
         results: data,
         totalCount: total,

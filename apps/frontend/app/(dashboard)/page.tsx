@@ -1,11 +1,11 @@
 "use client";
-import { getQueryClient } from "@/lib/api";
-import { contract } from "contract";
-import DashboardCard from "./_components/DashboardCard";
-import RecentRestaurants from "./_components/RecentRestaurants";
-import RecentInteractions from "./_components/RecentInteractions";
-import TodaysPendingCalls from "./_components/TodaysPendingCalls";
+import DashboardCard from "@/app/(dashboard)/_components/DashboardCard";
+import RecentRestaurants from "@/app/(dashboard)/_components/RecentRestaurants";
+import RecentInteractions from "@/app/(dashboard)/_components/RecentInteractions";
+import TodaysPendingCalls from "@/app/(dashboard)/_components/TodaysPendingCalls";
 import PreLoader from "@/components/PreLoader";
+import { contract } from "contract";
+import { getQueryClient } from "@/lib/api";
 
 export default function DashboardPage() {
   const { data, isError, isLoading } =
