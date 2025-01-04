@@ -1,23 +1,16 @@
 "use client";
-import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu";
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -33,17 +26,17 @@ import {
 import { Ellipsis } from "lucide-react";
 import DialogWrapper from "@/components/DialogWrapper";
 import { useEffect, useState } from "react";
-import { UseFormReturn } from "react-hook-form";
 import { getQueryClient } from "@/lib/api";
 import { contract } from "contract";
 import { StaffsSearchFormType } from "@/lib/schema";
+import PreLoader from "@/components/PreLoader";
 
 export function StaffTable({
   allStaffsSearchQuery,
-  searchForm,
+  // searchForm,
 }: {
   allStaffsSearchQuery: StaffsSearchFormType;
-  searchForm: UseFormReturn<StaffsSearchFormType>;
+  // searchForm: UseFormReturn<StaffsSearchFormType>;
 }) {
   const { searchText } = allStaffsSearchQuery;
   const [pageNumber, setPageNumber] = useState<number>(1);
@@ -96,16 +89,14 @@ export function StaffTable({
     );
 
   if (isLoading) {
-    return <>loading staffs data....</>;
+    return <PreLoader />;
   }
 
   if (error) {
     return <>an error occurred while loading staffs</>;
   }
 
-  const staffsList = data.pages.flatMap((eachPage) => {
-    return eachPage.body.results;
-  });
+  const staffsList = data.pages.flatMap((eachPage) => eachPage.body.results);
 
   const totalPages = data.pages[0].body.totalPages;
 
@@ -168,16 +159,9 @@ export function StaffTable({
             </TableRow>
           ))}
         </TableBody>
-        {/* <TableFooter>
-        <TableRow>
-          <TableCell colSpan={4}>Total</TableCell>
-          <TableCell className="text-right">$2,500.00</TableCell>
-        </TableRow>
-      </TableFooter> */}
       </Table>
 
       <div className="flex gap-1">
-        {/* <ArrowLeft /> */}
         {/* pagination */}
         <Pagination>
           <PaginationContent>
@@ -224,7 +208,6 @@ export function StaffTable({
             </PaginationItem>
           </PaginationContent>
         </Pagination>
-        {/* <ArrowRight /> */}
       </div>
     </div>
   );

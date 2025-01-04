@@ -1,33 +1,36 @@
 "use client";
-import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu";
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Ellipsis } from "lucide-react";
 import DialogWrapper from "@/components/DialogWrapper";
-import { useState } from "react";
-import { InteractionForm } from "@/app/staffs/_components/InteractionForm";
+import { useState, useEffect } from "react";
 import { EditInteractionForm } from "./EditInteractionForm";
 import DeleteInteraction from "./DeleteInteraction";
+import { InteractionsSearchFormType } from "@/lib/schema";
+import { contract } from "contract";
+import { getQueryClient } from "@/lib/api";
+import PreLoader from "@/components/PreLoader";
 
-export function InteractionTable({ data }: any) {
+export function InteractionTable({
+  allInteractionsSearchQuery,
+}: {
+  allInteractionsSearchQuery: InteractionsSearchFormType;
+}) {
+  const { searchText } = allInteractionsSearchQuery;
+  const [pageNumber, setPageNumber] = useState<number>(1);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedInteractionId, setSelectedInteractionId] = useState<number>(0);
@@ -51,6 +54,64 @@ export function InteractionTable({ data }: any) {
     setIsDeleteModalOpen(false);
     setSelectedInteractionId(0);
   };
+
+  useEffect(() => {
+    setPageNumber(1);
+  }, [allInteractionsSearchQuery]);
+
+  const { data, isLoading, error } =
+    getQueryClient().lead.getAllInteractions.useInfiniteQuery(
+      [
+        contract.lead.getAllInteractions.path,
+        allInteractionsSearchQuery,
+        searchText,
+        pageNumber,
+      ],
+      ({ pageParam = { pageNumber: 1 } }) => {
+        return {
+          query: {
+            pageNumber: String(pageNumber),
+            pageSize: String(4),
+            searchText: searchText,
+          },
+        };
+      },
+      {
+        getNextPageParam: (lastPage) => {
+          if (
+            lastPage.status === 200 &&
+            lastPage.body.currentPageNumber < lastPage.body.totalPages
+          ) {
+            return { pageNumber: lastPage.body.currentPageNumber + 1 };
+          }
+          return undefined;
+        },
+      }
+    );
+
+  if (isLoading) {
+    return <PreLoader />;
+  }
+
+  if (error) {
+    return <>an error occurred while loading staffs</>;
+  }
+
+  const interactionsList = data.pages.flatMap(
+    (eachPage) => eachPage.body.results
+  );
+  const totalPages = data.pages[0].body.totalPages;
+
+  console.log("fetched interaction data = ", interactionsList);
+
+  const handlePrev = () => {
+    setPageNumber((prev) => (prev === 0 ? 0 : prev - 1));
+  };
+
+  const handleNext = () => {
+    setPageNumber((prev) => (prev === totalPages ? totalPages : prev + 1));
+  };
+
   return (
     <div className="rounded-md border bg-white p-2">
       <DialogWrapper
@@ -86,7 +147,7 @@ export function InteractionTable({ data }: any) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data.map((interaction: any) => (
+          {interactionsList.map((interaction: any) => (
             <TableRow key={interaction.id}>
               <TableCell className="font-medium">{interaction.id}</TableCell>
               <TableCell className="">{interaction.staffId}</TableCell>

@@ -18,6 +18,8 @@ import EditStaffForm from "../_components/EditStaffForm";
 import { useApi } from "@/hooks/useApi";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import PreLoader from "@/components/PreLoader";
+import { InteractionForm } from "@/app/staffs/_components/InteractionForm";
 
 const page = () => {
   const params = useParams();
@@ -79,7 +81,7 @@ const page = () => {
     );
 
   if (isLoading) {
-    return <>Loading...</>;
+    return <PreLoader />;
   } else if (isError) {
     return <>En Error occurred!</>;
   }
@@ -302,7 +304,7 @@ const EditStaffWrapper = ({
   console.log("inside edit staff wrapper, staff=", staff);
   return (
     <DialogWrapper title="Edit Staff" isOpen={isOpen} onClose={onClose}>
-      <EditStaffForm staff={staff} />
+      <EditStaffForm staff={staff} closeModal={onClose} />
     </DialogWrapper>
   );
 };
@@ -320,7 +322,6 @@ const DeleteStaffWrapper = ({
 
   function handleDelete() {
     const body = {
-      leadId: 1,
       staffId: staff.staffId,
     };
     console.log("deleting staff, body = ", body);
@@ -343,7 +344,8 @@ const DeleteStaffWrapper = ({
 
   return (
     <DialogWrapper title="Delete Staff" isOpen={isOpen} onClose={onClose}>
-      here, delete staff
+      This action will delete all the staffs and all the interactions with this
+      staff. Are you sure you want to proceed ?
       <Button variant={"destructive"} onClick={handleDelete}>
         Delete
       </Button>
@@ -360,10 +362,11 @@ const InteractStaffWrapper = ({
   isOpen: boolean;
   onClose: () => void;
 }) => {
-  console.log("inside edit staff wrapper, staff=", staff);
+  console.log("inside interact staff wrapper, staff=", staff);
   return (
     <DialogWrapper title="Add Interaction" isOpen={isOpen} onClose={onClose}>
-      interact form here
+      {!staff && <p>Loading...</p>}
+      {staff && <InteractionForm staffId={staff.staffId} />}
     </DialogWrapper>
   );
 };

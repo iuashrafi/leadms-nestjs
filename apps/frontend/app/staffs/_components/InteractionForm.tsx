@@ -82,6 +82,7 @@ export function InteractionForm({
         duration: 2000,
       },
       onSuccessFn: () => {
+        alert("interaction added successfully!");
         form.reset(initialValues);
       },
     });

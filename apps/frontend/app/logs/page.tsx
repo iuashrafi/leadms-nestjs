@@ -2,12 +2,30 @@
 import { getQueryClient } from "@/lib/api";
 import { InteractionTable } from "./_components/InteractionTable";
 import { contract } from "contract";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Search } from "lucide-react";
 import PreLoader from "@/components/PreLoader";
+import InteractionsSearchForm from "./_components/InteractionsSearchForm";
+import { useQueryState } from "@/hooks/useQueryState";
+import { InteractionsSearchFormType } from "@/lib/schema";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 const page = () => {
+  const [allInteractionsSearchQuery, setAllInteractionsSearchQuery] =
+    useQueryState<InteractionsSearchFormType>("InteractionsSearchQuery", {
+      searchText: "",
+    });
+
+  const searchForm = useForm({
+    defaultValues: {
+      searchText: "",
+    },
+  });
+
+  const onInteractionsSearch: SubmitHandler<InteractionsSearchFormType> = (
+    data
+  ) => {
+    setAllInteractionsSearchQuery(data);
+  };
+
   const { data, isError, isLoading } =
     getQueryClient().lead.getAllInteractions.useQuery(
       [contract.lead.getAllInteractions.path],
@@ -34,17 +52,16 @@ const page = () => {
         <h1 className="text-xl font-bold text-indigo-950">Interaction Logs</h1>
         <div className="flex flex-wrap justify-between gap-4 ">
           <div className="flex space-x-2">
-            <Input
-              placeholder="Search for Logs"
-              className="rounded-lg min-w-full px-4 bg-white"
+            <InteractionsSearchForm
+              searchForm={searchForm}
+              onInteractionsSearch={onInteractionsSearch}
             />
-            <Button className="rounded-lg text-md">
-              Search <Search />
-            </Button>
           </div>
         </div>
       </div>
-      <InteractionTable data={interactions} />
+      <InteractionTable
+        allInteractionsSearchQuery={allInteractionsSearchQuery}
+      />
     </div>
   );
 };

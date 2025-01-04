@@ -1,6 +1,5 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import ModalWrapper from "@/components/ModalWrapper";
 import {
   Form,
   FormControl,
@@ -32,7 +31,13 @@ const initialValues = {
   contactNumber: "",
   email: "",
 };
-const EditStaffForm = ({ staff }: any) => {
+const EditStaffForm = ({
+  staff,
+  closeModal,
+}: {
+  staff: any;
+  closeModal: () => void;
+}) => {
   const { makeApiCall } = useApi();
   const invalidationQueryClient = useQueryClient();
 
@@ -69,7 +74,7 @@ const EditStaffForm = ({ staff }: any) => {
           queryKey: [contract.lead.getLeadById.path],
           refetchType: "active",
         });
-        // form.reset(initialValues);
+        closeModal();
       },
     });
   }

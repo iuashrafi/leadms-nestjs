@@ -42,3 +42,7 @@ export type StaffsSearchFormType = {
 export type LeadsSearchFormType = {
   searchText: string;
 };
+
+export type InteractionsSearchFormType = {
+  searchText: string;
+};
