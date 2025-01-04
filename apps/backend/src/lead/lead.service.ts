@@ -387,7 +387,13 @@ export class LeadService {
         where 1=1`;
 
     if (searchText?.trim().length > 0) {
-      const filter = ` `;
+      const filter = `
+      and(
+        rs.name ILIKE '%${searchText}%' OR
+        ri.notes ILIKE '%${searchText}%' OR
+        rl.name ILIKE '%${searchText}%'
+      )
+      `;
       sqlQuery += filter;
       countQuery += filter;
     }
