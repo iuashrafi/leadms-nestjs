@@ -2,7 +2,7 @@
 import { InteractionTable } from "./_components/InteractionTable";
 import InteractionsSearchForm from "./_components/InteractionsSearchForm";
 import { useQueryState } from "@/hooks/useQueryState";
-import { InteractionsSearchFormType } from "@/lib/schema";
+import { SearchFormType } from "@/types/common";
 import { Fragment, Suspense } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
@@ -19,19 +19,19 @@ const page = () => {
 
 const CallLogsComponent = () => {
   const [allInteractionsSearchQuery, setAllInteractionsSearchQuery] =
-    useQueryState<InteractionsSearchFormType>("InteractionsSearchQuery", {
+    useQueryState<SearchFormType>("InteractionsSearchQuery", {
       searchText: "",
+      role: "",
     });
 
   const searchForm = useForm({
     defaultValues: {
       searchText: "",
+      role: "",
     },
   });
 
-  const onInteractionsSearch: SubmitHandler<InteractionsSearchFormType> = (
-    data
-  ) => {
+  const onInteractionsSearch: SubmitHandler<SearchFormType> = (data) => {
     setAllInteractionsSearchQuery(data);
   };
 

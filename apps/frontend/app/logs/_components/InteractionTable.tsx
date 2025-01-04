@@ -19,17 +19,17 @@ import DialogWrapper from "@/components/DialogWrapper";
 import { useState, useEffect } from "react";
 import { EditInteractionForm } from "./EditInteractionForm";
 import DeleteInteraction from "./DeleteInteraction";
-import { InteractionsSearchFormType } from "@/lib/schema";
 import { contract } from "contract";
 import { getQueryClient } from "@/lib/api";
 import PreLoader from "@/components/PreLoader";
+import { SearchFormType } from "@/types/common";
 
 export function InteractionTable({
   allInteractionsSearchQuery,
 }: {
-  allInteractionsSearchQuery: InteractionsSearchFormType;
+  allInteractionsSearchQuery: SearchFormType;
 }) {
-  const { searchText } = allInteractionsSearchQuery;
+  const { searchText, role } = allInteractionsSearchQuery;
   const [pageNumber, setPageNumber] = useState<number>(1);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -77,6 +77,7 @@ export function InteractionTable({
               pageNumber: String(pageNumber),
               pageSize: String(4),
               searchText: searchText,
+              roles: role.trim().length === 0 ? undefined : role,
             },
           };
         },
