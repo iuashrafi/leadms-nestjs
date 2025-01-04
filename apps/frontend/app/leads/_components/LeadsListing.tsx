@@ -1,17 +1,20 @@
-import { LeadsSearchFormType } from "@/lib/schema";
+import { SearchFormType } from "@/lib/schema";
 import RestaurantCard from "./RestaurantCard";
 import PreLoader from "@/components/PreLoader";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { getQueryClient } from "@/lib/api";
 import { contract } from "contract";
+import { Button } from "@/components/ui/button";
+import CustomErrorMessage from "@/components/CustomErrorMessage";
 
 const LeadsListing = ({
   allLeadsSearchQuery,
+  openLeadsModal,
 }: {
-  allLeadsSearchQuery: LeadsSearchFormType;
+  allLeadsSearchQuery: SearchFormType;
+  openLeadsModal: () => void;
 }) => {
-  const { searchText } = allLeadsSearchQuery;
-
+  const { searchText, role } = allLeadsSearchQuery;
   const {
     data,
     isLoading,
@@ -25,8 +28,9 @@ const LeadsListing = ({
       return {
         query: {
           pageNumber: String(pageParam.pageNumber),
-          pageSize: String(3),
+          pageSize: String(4),
           searchText,
+          roles: role,
         },
       };
     },
@@ -57,14 +61,26 @@ const LeadsListing = ({
 
   const leads = data.pages.flatMap((items) => items.body.results);
 
+  if (leads.length === 0)
+    return (
+      <CustomErrorMessage
+        title={"No Lead found"}
+        description={"Try to add new leads"}
+        actionButton={
+          <Button variant="default" onClick={openLeadsModal}>
+            Add New Lead
+          </Button>
+        }
+      />
+    );
   return (
     <>
       <div className="w-full grid grid-cols-12 gap-4">
-        {leads?.map((lead: any) => (
+        {leads.map((lead: any) => (
           <RestaurantCard key={lead.id} lead={lead} />
         ))}
       </div>
-      <div className="p-8">{observeElement}</div>
+      {observeElement}
     </>
   );
 };

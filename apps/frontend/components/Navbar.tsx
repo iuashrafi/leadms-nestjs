@@ -4,7 +4,9 @@ const Navbar = () => {
   return (
     <nav className="sticky top-0 z-50 w-full border-b px-4 py-3 flex gap-6 backdrop-blur bg-white/10">
       <div>
-        <Image src="/logo.svg" alt="logo" width={30} height={30} />
+        <Link href="/">
+          <Image src="/logo.svg" alt="logo" width={30} height={30} />
+        </Link>
       </div>
 
       <ul className="flex items-center text-md space-x-6">

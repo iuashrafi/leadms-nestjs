@@ -1,4 +1,3 @@
-import React, { ReactNode } from "react";
 import {
   Dialog,
   DialogContent,
@@ -6,14 +5,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
-interface ModalWrapperProps {
-  isOpen: boolean;
-  onClose: () => void;
-  title: string;
-  description?: string;
-  children: ReactNode;
-}
+import { ModalWrapperProps } from "@/lib/schema";
 
 const DialogWrapper = ({
   isOpen,

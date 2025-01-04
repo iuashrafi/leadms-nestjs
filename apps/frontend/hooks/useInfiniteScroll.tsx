@@ -1,3 +1,4 @@
+import { LoaderCircle } from "lucide-react";
 import { useEffect, useRef } from "react";
 
 export const useInfiniteScroll = (
@@ -44,8 +45,8 @@ export const useInfiniteScroll = (
     <>
       <div ref={observerRef} />
       {loading && (
-        <div className="flex items-center justify-center">
-          <div className="w-8 h-8 border-[3px] border-red-500 border-t-transparent rounded-full animate-spin"></div>
+        <div className="pt-4 w-full flex items-center justify-center">
+          <LoaderCircle className="animate-spin" size={30} />
         </div>
       )}
     </>

@@ -5,30 +5,35 @@ import DialogWrapper from "@/components/DialogWrapper";
 import CreateLeadForm from "./_components/CreateLeadForm";
 import LeadsSearchForm from "./_components/LeadsSearchForm";
 import { useQueryState } from "@/hooks/useQueryState";
-import { LeadsSearchFormType } from "@/lib/schema";
+import { SearchFormType } from "@/lib/schema";
 import { SubmitHandler, useForm } from "react-hook-form";
 import LeadsListing from "./_components/LeadsListing";
 
 const page = () => {
   const [allLeadsSearchQuery, setAllLeadsSearchQuery] =
-    useQueryState<LeadsSearchFormType>("LeadsSearchQuery", {
+    useQueryState<SearchFormType>("LeadsSearchQuery", {
       searchText: "",
+      role: "",
     });
 
   const searchForm = useForm({
     defaultValues: {
       searchText: "",
+      role: "",
     },
   });
 
-  const onLeadsSearch: SubmitHandler<LeadsSearchFormType> = (data) => {
-    console.log("setting data = ", data);
+  const onLeadsSearch: SubmitHandler<SearchFormType> = (data) => {
     setAllLeadsSearchQuery(data);
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
   };
 
   return (
@@ -43,7 +48,7 @@ const page = () => {
             />
           </div>
           <div>
-            <Button variant="default" onClick={() => setIsModalOpen(true)}>
+            <Button variant="default" onClick={openModal}>
               Add New Lead
             </Button>
           </div>
@@ -58,7 +63,10 @@ const page = () => {
           </DialogWrapper>
         </div>
       </div>
-      <LeadsListing allLeadsSearchQuery={allLeadsSearchQuery} />
+      <LeadsListing
+        allLeadsSearchQuery={allLeadsSearchQuery}
+        openLeadsModal={openModal}
+      />
     </div>
   );
 };

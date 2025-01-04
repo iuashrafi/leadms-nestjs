@@ -38,6 +38,10 @@ export const leadContract = c.router(
         searchText: z.string().optional(),
         pageNumber: z.string().transform(Number),
         pageSize: z.string().transform(Number),
+        roles: z
+          .string()
+          .transform((val) => val.split(","))
+          .optional(),
       }),
       responses: {
         200: createPaginatedResponseSchema(RestaurantLeadSchema),
