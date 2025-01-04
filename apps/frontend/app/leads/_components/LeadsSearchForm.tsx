@@ -53,7 +53,7 @@ const LeadsSearchForm = ({
               onValueChange={(value) => field.onChange(value)}
             >
               <SelectTrigger>
-                <SelectValue placeholder={"Roles"} />
+                <SelectValue placeholder={"Select status"} />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
