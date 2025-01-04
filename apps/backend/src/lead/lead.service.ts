@@ -107,7 +107,7 @@ export class LeadService {
   }
 
   async getAllLeads(query: LeadRequestShapes['getAllLeads']['query']) {
-    const { searchText, pageNumber, pageSize } = query;
+    const { searchText, pageNumber, pageSize, roles: leadStatus } = query;
 
     let sqlQuery = `
       SELECT r.id, r.name, r.address, r.assigned_kam, r.contact_number, r.restaurant_lead_status
@@ -133,6 +133,17 @@ export class LeadService {
       `;
       sqlQuery += filter;
       countQuery += filter;
+    }
+
+    if (leadStatus && leadStatus.length > 0) {
+      console.log(leadStatus);
+      const leadStatusFilters = leadStatus
+        .map((r) => `r.restaurant_lead_status = '${r}'`)
+        .join(' OR ');
+
+      const leadStatusCondition = ` AND (${leadStatusFilters}) `;
+      sqlQuery += leadStatusCondition;
+      countQuery += leadStatusCondition;
     }
 
     const offset = (pageNumber - 1) * pageSize;

@@ -13,6 +13,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import CustomPagination from "@/components/CustomPagination";
 import { Ellipsis } from "lucide-react";
 import DialogWrapper from "@/components/DialogWrapper";
 import { useState, useEffect } from "react";
@@ -102,16 +103,6 @@ export function InteractionTable({
   );
   const totalPages = data.pages[0].body.totalPages;
 
-  console.log("fetched interaction data = ", interactionsList);
-
-  const handlePrev = () => {
-    setPageNumber((prev) => (prev === 0 ? 0 : prev - 1));
-  };
-
-  const handleNext = () => {
-    setPageNumber((prev) => (prev === totalPages ? totalPages : prev + 1));
-  };
-
   return (
     <div className="rounded-md border bg-white p-2">
       <DialogWrapper
@@ -181,6 +172,12 @@ export function InteractionTable({
           ))}
         </TableBody>
       </Table>
+
+      <CustomPagination
+        pageNumber={pageNumber}
+        setPageNumber={setPageNumber}
+        totalPages={totalPages}
+      />
     </div>
   );
 }

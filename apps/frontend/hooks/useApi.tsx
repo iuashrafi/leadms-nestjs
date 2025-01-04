@@ -22,7 +22,7 @@ export function useApi() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  const fetcherMakeAxiosApiCall = async function <T>({
+  const fetcherMakeAxiosApiCall = async function ({
     fetcherFn,
     finallyFn,
   }: {
