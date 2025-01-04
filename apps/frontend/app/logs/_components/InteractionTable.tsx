@@ -150,11 +150,13 @@ export function InteractionTable({
           {interactionsList.map((interaction: any) => (
             <TableRow key={interaction.id}>
               <TableCell className="font-medium">{interaction.id}</TableCell>
-              <TableCell className="">{interaction.staffId}</TableCell>
+              <TableCell className="">{interaction.staffName}</TableCell>
               <TableCell>{interaction.interactionType}</TableCell>
               <TableCell>{interaction.interactionDate}</TableCell>
-              <TableCell className="">{interaction.followUp}</TableCell>
-              <TableCell className="">{interaction.notes}</TableCell>
+              <TableCell className="">
+                {interaction.followUp ? "Yes" : "No"}
+              </TableCell>
+              <TableCell className="">{interaction.notes ?? "-"}</TableCell>
               <TableCell className="">
                 <DropdownMenu>
                   <DropdownMenuTrigger>
