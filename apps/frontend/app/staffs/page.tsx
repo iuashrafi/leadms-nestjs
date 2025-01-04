@@ -10,18 +10,19 @@ const page = () => {
   const [allStaffsSearchQuery, setAllStaffsSearchQuery] =
     useQueryState<StaffsSearchFormType>("StaffSearchQuery", {
       searchText: "",
+      role: "",
     });
 
   const searchForm = useForm({
     defaultValues: {
       searchText: "",
+      role: "",
     },
   });
 
   // const { reset } = searchForm;
 
   const onStaffsSearch: SubmitHandler<StaffsSearchFormType> = (data) => {
-    console.log("submitting data= ", data);
     setAllStaffsSearchQuery(data);
   };
 

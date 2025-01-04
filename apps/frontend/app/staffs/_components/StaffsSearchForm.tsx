@@ -1,22 +1,20 @@
 "use client";
-import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, Search } from "lucide-react";
-
-import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu";
+import { Search } from "lucide-react";
 import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { SubmitHandler, UseFormReturn } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { StaffsSearchFormType } from "@/lib/schema";
-
-type Checked = DropdownMenuCheckboxItemProps["checked"];
+import { getRoleOptions } from "@/utils/staffs";
+import { Fragment } from "react";
 
 const StaffsSearchForm = ({
   searchForm,
@@ -26,24 +24,26 @@ const StaffsSearchForm = ({
   onStaffsSearch: SubmitHandler<StaffsSearchFormType>;
 }) => {
   const { handleSubmit } = searchForm;
+  const { control } = searchForm;
 
-  const [showStatusBar, setShowStatusBar] = useState<Checked>(true);
-  const [showActivityBar, setShowActivityBar] = useState<Checked>(false);
-  const [showPanel, setShowPanel] = useState<Checked>(false);
+  const staffRoles = getRoleOptions();
 
   return (
     <div>
       <Form {...searchForm}>
-        <form onSubmit={handleSubmit(onStaffsSearch)} className="flex gap-2">
+        <form
+          onSubmit={handleSubmit(onStaffsSearch)}
+          className="flex gap-2 w-full"
+        >
           <FormField
-            control={searchForm.control}
+            control={control}
             name="searchText"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
                   <Input
                     placeholder="Search for Staff Name, Restaurant"
-                    className="rounded-lg h-[43px] max-w-md px-4 bg-white"
+                    className="rounded-lg h-[43px] px-4 bg-white min-w-[300px]"
                     {...field}
                   />
                 </FormControl>
@@ -51,34 +51,29 @@ const StaffsSearchForm = ({
             )}
           />
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size={"lg"} className="rounded-lg">
-                Roles <ChevronDown />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuSeparator />
-              <DropdownMenuCheckboxItem
-                checked={showStatusBar}
-                onCheckedChange={setShowStatusBar}
+          <FormField
+            control={control}
+            name={"role"}
+            render={({ field }) => (
+              <Select
+                value={field.value}
+                onValueChange={(value) => field.onChange(value)}
               >
-                Chef
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem
-                checked={showActivityBar}
-                onCheckedChange={setShowActivityBar}
-              >
-                Owner
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem
-                checked={showPanel}
-                onCheckedChange={setShowPanel}
-              >
-                Others
-              </DropdownMenuCheckboxItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                <SelectTrigger>
+                  <SelectValue placeholder={"Roles"} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {staffRoles.map((item, index) => (
+                      <Fragment key={"roleOption" + index}>
+                        <SelectItem value={item.value}>{item.label}</SelectItem>
+                      </Fragment>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            )}
+          />
 
           <Button
             className="rounded-lg text-md"

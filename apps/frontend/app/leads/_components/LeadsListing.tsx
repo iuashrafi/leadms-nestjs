@@ -29,7 +29,7 @@ const LeadsListing = ({
       return {
         query: {
           pageNumber: String(pageParam.pageNumber),
-          pageSize: String(3),
+          pageSize: String(4),
           searchText,
         },
       };
