@@ -3,7 +3,6 @@ import { getQueryClient } from "@/lib/api";
 import { useParams } from "next/navigation";
 import { contract } from "../../../../contract";
 import { Button } from "@/components/ui/button";
-import CreateStaff from "../_components/CreateStaff";
 import { MapPin, Pencil, Phone, Trash2 } from "lucide-react";
 import {
   DropdownMenu,
@@ -20,6 +19,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import PreLoader from "@/components/PreLoader";
 import { InteractionForm } from "@/app/staffs/_components/InteractionForm";
+import CreateStaffForm from "../_components/CreateStaffForm";
 
 const page = () => {
   const params = useParams();
@@ -36,10 +36,17 @@ const page = () => {
   const [isDeleteStaffModalOpen, setIsDeleteStaffModalOpen] =
     useState<boolean>(false);
 
+  const [isCreateStaffModalOpen, setIsCreateStaffModalOpen] =
+    useState<boolean>(false);
+
   const [isInteractStaffModalOpen, setIsInteractStaffModalOpen] =
     useState<boolean>(false);
 
   const [selectedStaff, setSelectedStaff] = useState(null);
+
+  const closeCreateStaffModal = () => {
+    setIsCreateStaffModalOpen(false);
+  };
 
   const openEditStaffModal = (staff) => {
     setSelectedStaff(staff);
@@ -88,8 +95,6 @@ const page = () => {
 
   if (data?.status !== 200) return <>Error : Leads fetching error</>;
 
-  console.log("data=  ", data);
-
   const lead = data.body;
   return (
     <div>
@@ -118,6 +123,11 @@ const page = () => {
         isOpen={isInteractStaffModalOpen}
         onClose={closeInteractStaffModal}
       />
+      <CreateStaffWrapper
+        leadId={Number(params.id)}
+        isOpen={isCreateStaffModalOpen}
+        onClose={closeCreateStaffModal}
+      />
 
       <div className="bg-green-30 p-4 mb-4">
         <div className="flex items-center space-x-4 bg-green-00 mb-6">
@@ -133,7 +143,10 @@ const page = () => {
           </div>
         </div>
         <div className="flex justify-end space-x-4">
-          <CreateStaff leadId={Number(params.id)} />
+          <Button onClick={() => setIsCreateStaffModalOpen(true)}>
+            Add New Staff
+          </Button>
+          {/* <CreateStaff leadId={Number(params.id)} /> */}
           <LeadOptions
             openEditLeadModal={() => setIsEditLeadModalOpen(true)}
             openDeleteLeadModal={() => setIsDeleteLeadModalOpen(true)}
@@ -288,6 +301,22 @@ const EditLeadWrapper = ({
   return (
     <DialogWrapper title="Edit Lead" isOpen={isOpen} onClose={onClose}>
       <EditLeadForm data={data} />
+    </DialogWrapper>
+  );
+};
+
+const CreateStaffWrapper = ({
+  leadId,
+  isOpen,
+  onClose,
+}: {
+  leadId: number;
+  isOpen: boolean;
+  onClose: () => void;
+}) => {
+  return (
+    <DialogWrapper title="Add New Staff" isOpen={isOpen} onClose={onClose}>
+      <CreateStaffForm leadId={leadId} closeModal={onClose} />
     </DialogWrapper>
   );
 };
