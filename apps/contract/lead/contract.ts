@@ -51,7 +51,9 @@ export const leadContract = c.router(
     updateLead: {
       method: "PUT",
       path: "/updateLead",
-      body: RestaurantLeadSchema,
+      body: RestaurantLeadSchema.omit({
+        staffsCount: true,
+      }),
       responses: {
         200: SuccessSchema,
       },
@@ -155,6 +157,32 @@ export const leadContract = c.router(
         type: z.nativeEnum(RestaurantInteractionType),
         notes: z.string().nullable(),
         followUp: z.boolean(),
+      }),
+      responses: {
+        200: SuccessSchema,
+      },
+    },
+
+    updateInteraction: {
+      method: "PUT",
+      path: "/updateInteraction",
+      body: z.object({
+        interactionId: z.number(),
+        interactionDate: z.string().transform((val) => new Date(val)),
+        interactionType: z.nativeEnum(RestaurantInteractionType),
+        notes: z.string().nullable(),
+        followUp: z.boolean(),
+      }),
+      responses: {
+        200: SuccessSchema,
+      },
+    },
+
+    deleteInteraction: {
+      method: "DELETE",
+      path: "/deleteInteraction",
+      body: z.object({
+        interactionId: z.number(),
       }),
       responses: {
         200: SuccessSchema,

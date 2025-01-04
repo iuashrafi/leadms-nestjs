@@ -398,6 +398,33 @@ export class LeadService {
     await this.em.persistAndFlush(interaction);
   }
 
+  async updateInteraction(
+    body: LeadRequestShapes['updateInteraction']['body'],
+  ) {
+    const { interactionId, interactionDate, interactionType, notes, followUp } =
+      body;
+    const interaction = await this.em.findOneOrFail(RestaurantInteraction, {
+      id: interactionId,
+    });
+    wrap(interaction).assign({
+      interactionDate,
+      interactionType,
+      notes,
+      followUp,
+    });
+    await this.em.flush();
+  }
+
+  async deleteInteraction(
+    body: LeadRequestShapes['deleteInteraction']['body'],
+  ) {
+    const { interactionId } = body;
+    const interaction = await this.em.findOneOrFail(RestaurantInteraction, {
+      id: interactionId,
+    });
+    await this.em.removeAndFlush(interaction);
+  }
+
   async getAllInteractions(
     query: LeadRequestShapes['getAllInteractions']['query'],
   ) {
