@@ -166,6 +166,10 @@ export const leadContract = c.router(
       path: "/getAllInteractions",
       query: PaginationQuerySchema.extend({
         searchText: z.string().optional(),
+        roles: z
+          .string()
+          .transform((val) => val.split(","))
+          .optional(),
       }),
       responses: {
         200: createPaginatedResponseSchema(

@@ -382,7 +382,7 @@ export class LeadService {
   async getAllInteractions(
     query: LeadRequestShapes['getAllInteractions']['query'],
   ) {
-    const { pageNumber, pageSize, searchText } = query;
+    const { pageNumber, pageSize, searchText, roles: interactionTypes } = query;
 
     let sqlQuery = `select ri.id, rs.name, ri.created_at, ri.follow_up, ri.notes, rs.id as staff_id, rl.id as lead_id, rl.name as lead_name,
                            ri.interaction_type, ri.interaction_date 
@@ -408,6 +408,17 @@ export class LeadService {
       `;
       sqlQuery += filter;
       countQuery += filter;
+    }
+
+    if (interactionTypes && interactionTypes.length > 0) {
+      console.log(interactionTypes);
+      const interactionTypesFilters = interactionTypes
+        .map((r) => `ri.interaction_type = '${r}'`)
+        .join(' OR ');
+
+      const interactionTypesCondition = ` and (${interactionTypesFilters}) `;
+      sqlQuery += interactionTypesCondition;
+      countQuery += interactionTypesCondition;
     }
 
     const offset = (pageNumber - 1) * pageSize;
