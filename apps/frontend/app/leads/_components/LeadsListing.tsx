@@ -65,7 +65,7 @@ const LeadsListing = ({
     return (
       <CustomErrorMessage
         title={"No Lead found"}
-        subtitle={"Try to add new leads"}
+        description={"Try to add new leads"}
         actionButton={
           <Button variant="default" onClick={openLeadsModal}>
             Add New Lead
