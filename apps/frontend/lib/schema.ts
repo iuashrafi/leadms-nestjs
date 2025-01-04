@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import {
   RestaurantInteractionType,
   RestaurantLeadStatus,
@@ -42,3 +43,11 @@ export type StaffsSearchFormType = {
 export type LeadsSearchFormType = {
   searchText: string;
 };
+
+export interface ModalWrapperProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  description?: string;
+  children: ReactNode;
+}
