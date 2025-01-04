@@ -110,8 +110,26 @@ export class LeadService {
     const { searchText, pageNumber, pageSize, roles: leadStatus } = query;
 
     let sqlQuery = `
-      SELECT r.id, r.name, r.address, r.assigned_kam, r.contact_number, r.restaurant_lead_status
-      FROM restaurant_lead r
+      SELECT 
+        r.id, 
+        r.name, 
+        r.address, 
+        r.assigned_kam, 
+        r.contact_number, 
+        r.restaurant_lead_status,
+        COALESCE(staff_counts.staff_count, 0) as staffs_count
+      FROM 
+        restaurant_lead r
+      LEFT JOIN (
+        SELECT 
+          rs.restaurant_lead_id, 
+          COUNT(*) as staff_count
+        FROM 
+          restaurant_staff rs
+        GROUP BY 
+          rs.restaurant_lead_id
+      ) staff_counts
+      ON r.id = staff_counts.restaurant_lead_id
       WHERE 1=1
     `;
 
@@ -173,6 +191,7 @@ export class LeadService {
           contactNumber: lead.contact_number,
           restaurantLeadStatus: lead.restaurant_lead_status,
           assignedKAM: lead.assigned_kam,
+          staffsCount: lead.staffs_count,
         })),
         total,
       };
@@ -377,6 +396,33 @@ export class LeadService {
     });
 
     await this.em.persistAndFlush(interaction);
+  }
+
+  async updateInteraction(
+    body: LeadRequestShapes['updateInteraction']['body'],
+  ) {
+    const { interactionId, interactionDate, interactionType, notes, followUp } =
+      body;
+    const interaction = await this.em.findOneOrFail(RestaurantInteraction, {
+      id: interactionId,
+    });
+    wrap(interaction).assign({
+      interactionDate,
+      interactionType,
+      notes,
+      followUp,
+    });
+    await this.em.flush();
+  }
+
+  async deleteInteraction(
+    body: LeadRequestShapes['deleteInteraction']['body'],
+  ) {
+    const { interactionId } = body;
+    const interaction = await this.em.findOneOrFail(RestaurantInteraction, {
+      id: interactionId,
+    });
+    await this.em.removeAndFlush(interaction);
   }
 
   async getAllInteractions(

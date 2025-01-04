@@ -47,7 +47,10 @@ export const CreateLeadSchema = z.object({
   assignedKAM: z.string(),
 });
 
-export const RestaurantLeadSchema = CreateLeadSchema.extend({ id: z.number() });
+export const RestaurantLeadSchema = CreateLeadSchema.extend({
+  id: z.number(),
+  staffsCount: z.number(),
+});
 
 export const RestaurantStaffSchema = z.object({
   id: z.number(),

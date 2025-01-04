@@ -1,7 +1,7 @@
 "use client";
 import { getQueryClient } from "@/lib/api";
 import { useParams } from "next/navigation";
-import { contract } from "../../../../contract";
+import { contract } from "contract";
 import { Button } from "@/components/ui/button";
 import { MapPin, Pencil, Phone, Trash2 } from "lucide-react";
 import {
@@ -300,7 +300,7 @@ const EditLeadWrapper = ({
 }) => {
   return (
     <DialogWrapper title="Edit Lead" isOpen={isOpen} onClose={onClose}>
-      <EditLeadForm data={data} />
+      <EditLeadForm data={data} closeModal={onClose} />
     </DialogWrapper>
   );
 };
@@ -330,7 +330,6 @@ const EditStaffWrapper = ({
   isOpen: boolean;
   onClose: () => void;
 }) => {
-  console.log("inside edit staff wrapper, staff=", staff);
   return (
     <DialogWrapper title="Edit Staff" isOpen={isOpen} onClose={onClose}>
       <EditStaffForm staff={staff} closeModal={onClose} />
@@ -353,7 +352,6 @@ const DeleteStaffWrapper = ({
     const body = {
       staffId: staff.staffId,
     };
-    console.log("deleting staff, body = ", body);
     makeApiCall({
       fetcherFn: async () => {
         return await getQueryClient().lead.deleteStaff.mutation({
@@ -391,11 +389,12 @@ const InteractStaffWrapper = ({
   isOpen: boolean;
   onClose: () => void;
 }) => {
-  console.log("inside interact staff wrapper, staff=", staff);
   return (
     <DialogWrapper title="Add Interaction" isOpen={isOpen} onClose={onClose}>
       {!staff && <p>Loading...</p>}
-      {staff && <InteractionForm staffId={staff.staffId} />}
+      {staff && (
+        <InteractionForm staffId={staff.staffId} closeModal={onClose} />
+      )}
     </DialogWrapper>
   );
 };

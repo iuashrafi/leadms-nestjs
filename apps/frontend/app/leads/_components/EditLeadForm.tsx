@@ -1,7 +1,5 @@
 "use client";
 
-import React from "react";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -31,63 +29,71 @@ import { useQueryClient } from "@tanstack/react-query";
 import { CreateLeadSchemaDto } from "@/types/dashboard";
 import { CreateLeadSchema } from "contract/lead/type";
 
-// const initialValues: CreateLeadSchemaDto = {
-//   restaurantName: "",
-//   restaurantAddress: "",
-//   contactNumber: "",
-//   restaurantLeadStatus: RestaurantLeadStatus.New,
-//   assignedKAM: "",
-// };
-
-const EditLeadForm = ({ data }: any) => {
+const EditLeadForm = ({
+  data,
+  closeModal,
+}: {
+  data: any;
+  closeModal: () => void;
+}) => {
   const { makeApiCall } = useApi();
   const invalidationQueryClient = useQueryClient();
 
-  const form = useForm<CreateLeadSchemaDto>({
-    resolver: zodResolver(CreateLeadSchema),
+  const form = useForm<any>({
+    // resolver: zodResolver(CreateLeadSchema),
     defaultValues: {
-      restaurantName: data.restaurantName,
-      restaurantAddress: data.address,
-      contactNumber: data.contactNumber,
-      restaurantLeadStatus: data.currentStatus,
-      assignedKAM: data.assignedKAM,
+      // restaurantName: data.restaurantName,
+      // restaurantAddress: data.address,
+      // contactNumber: data.contactNumber,
+      // restaurantLeadStatus: data.currentStatus,
+      // assignedKAM: data.assignedKAM,
     },
   });
 
-  function onSubmit(values: CreateLeadSchemaDto) {
-    const body = {
-      id: Number(data.id),
-      restaurantName: values.restaurantName,
-      address: values.restaurantAddress,
-      contactNumber: values.contactNumber,
-      currentStatus: values.restaurantLeadStatus,
-      assignedKAM: values.assignedKAM,
-    };
-    console.log(body);
-    makeApiCall({
-      fetcherFn: async () => {
-        return await getQueryClient().lead.updateLead.mutation({
-          body,
-        });
-      },
-      successMsgProps: {
-        title: `Lead updated successfully`,
-        duration: 2000,
-      },
-      onSuccessFn: () => {
-        invalidationQueryClient.invalidateQueries({
-          queryKey: [contract.lead.getLeadById.path],
-          refetchType: "active",
-        });
-      },
-    });
+  console.log(form.formState.errors);
+
+  function onSubmit(values: any) {
+    alert("updating ... ");
+    // const body = {
+    //   id: Number(data.id),
+    //   restaurantName: values.restaurantName,
+    //   address: values.restaurantAddress,
+    //   contactNumber: values.contactNumber,
+    //   currentStatus: values.restaurantLeadStatus,
+    //   assignedKAM: values.assignedKAM,
+    // };
+    // console.log(body);
+    // makeApiCall({
+    //   fetcherFn: async () => {
+    //     return await getQueryClient().lead.updateLead.mutation({
+    //       body,
+    //     });
+    //   },
+    //   successMsgProps: {
+    //     title: `Lead updated successfully`,
+    //     duration: 2000,
+    //   },
+    //   onSuccessFn: () => {
+    //     invalidationQueryClient.invalidateQueries({
+    //       queryKey: [contract.lead.getLeadById.path],
+    //       refetchType: "active",
+    //     });
+    //     closeModal();
+    //   },
+    // });
   }
 
   return (
     <div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <FormField
+        <form
+          onSubmit={form.handleSubmit((values) => {
+            console.log("Form Submitted: ", values);
+            onSubmit(values);
+          })}
+          className="space-y-4"
+        >
+          {/* <FormField
             control={form.control}
             name="restaurantName"
             render={({ field }) => (
@@ -170,7 +176,7 @@ const EditLeadForm = ({ data }: any) => {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
           <Button type="submit">Update Lead</Button>
         </form>
       </Form>
