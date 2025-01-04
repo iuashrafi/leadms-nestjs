@@ -34,7 +34,7 @@ export const leadContract = c.router(
     getAllLeads: {
       method: "GET",
       path: "/getAllLeads",
-      query: z.object({
+      query: PaginationQuerySchema.extend({
         searchText: z.string().optional(),
         pageNumber: z.string().transform(Number),
         pageSize: z.string().transform(Number),
@@ -115,7 +115,6 @@ export const leadContract = c.router(
           .optional(),
       }),
       responses: {
-        // 200: RestaurantStaffSchema.array(),
         200: createPaginatedResponseSchema(RestaurantStaffSchema),
       },
     },
@@ -165,14 +164,16 @@ export const leadContract = c.router(
     getAllInteractions: {
       method: "GET",
       path: "/getAllInteractions",
-      query: z.object({
-        pageNumber: z.string().transform(Number),
-        pageSize: z.string().transform(Number),
+      query: PaginationQuerySchema.extend({
+        searchText: z.string().optional(),
       }),
       responses: {
         200: createPaginatedResponseSchema(
           z.object({
             id: z.number(),
+            staffName: z.string(),
+            leadId: z.number(),
+            leadName: z.string(),
             staffId: z.number(),
             interactionType: z.nativeEnum(RestaurantInteractionType),
             notes: z.string(),

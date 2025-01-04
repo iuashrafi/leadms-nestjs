@@ -87,16 +87,14 @@ export function StaffTable({
     );
 
   if (isLoading) {
-    return <>loading staffs data....</>;
+    return <PreLoader />;
   }
 
   if (error) {
     return <>an error occurred while loading staffs</>;
   }
 
-  const staffsList = data.pages.flatMap((eachPage) => {
-    return eachPage.body.results;
-  });
+  const staffsList = data.pages.flatMap((eachPage) => eachPage.body.results);
 
   const totalPages = data.pages[0].body.totalPages;
 
@@ -159,12 +157,6 @@ export function StaffTable({
             </TableRow>
           ))}
         </TableBody>
-        {/* <TableFooter>
-        <TableRow>
-          <TableCell colSpan={4}>Total</TableCell>
-          <TableCell className="text-right">$2,500.00</TableCell>
-        </TableRow>
-      </TableFooter> */}
       </Table>
 
       <div className="flex gap-1">

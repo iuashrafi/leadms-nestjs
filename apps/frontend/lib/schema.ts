@@ -48,3 +48,7 @@ export interface ModalWrapperProps {
   description?: string;
   children: ReactNode;
 }
+
+export type InteractionsSearchFormType = {
+  searchText: string;
+};

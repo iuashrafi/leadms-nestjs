@@ -370,16 +370,71 @@ export class LeadService {
   async getAllInteractions(
     query: LeadRequestShapes['getAllInteractions']['query'],
   ) {
-    const { pageNumber, pageSize } = query;
-    const [interactions, total] = await this.em.findAndCount(
-      RestaurantInteraction,
-      {},
-      {
-        limit: pageNumber,
-        offset: (pageNumber - 1) * pageSize,
-      },
-    );
+    const { pageNumber, pageSize, searchText } = query;
 
-    return { data: interactions, total };
+    let sqlQuery = `select ri.id, rs.name, ri.created_at, ri.follow_up, ri.notes, rs.id as staff_id, rl.id as lead_id, rl.name as lead_name,
+                           ri.interaction_type, ri.interaction_date 
+        from restaurant_interaction ri
+        join restaurant_staff rs on ri.staff_id = rs.id
+        join restaurant_lead rl on rs.restaurant_lead_id = rl.id
+        where 1=1
+      `;
+
+    let countQuery = `select count(*) as total 
+        from restaurant_interaction ri
+        join restaurant_staff rs on ri.staff_id = rs.id
+        join restaurant_lead rl on rs.restaurant_lead_id = rl.id
+        where 1=1`;
+
+    if (searchText?.trim().length > 0) {
+      const filter = `
+      and(
+        rs.name ILIKE '%${searchText}%' OR
+        ri.notes ILIKE '%${searchText}%' OR
+        rl.name ILIKE '%${searchText}%'
+      )
+      `;
+      sqlQuery += filter;
+      countQuery += filter;
+    }
+
+    const offset = (pageNumber - 1) * pageSize;
+    sqlQuery += ` order by ri.created_at desc
+                  limit ${pageSize}
+                  offset ${offset}
+                `;
+
+    try {
+      const [interactionsResult, countResult] = await Promise.all([
+        this.em.getKnex().raw(sqlQuery),
+        this.em.getKnex().raw(countQuery),
+      ]);
+      const interactions = interactionsResult.rows;
+      const total = parseInt(countResult.rows[0].total, 10);
+
+      return {
+        data: interactions.map((interaction) => ({
+          id: interaction.id,
+          staffName: interaction.name,
+          notes: interaction.notes,
+          leadId: interaction.lead_id,
+          leadName: interaction.lead_name,
+          staffId: interaction.staff_id,
+          followUp: interaction.follow_up,
+          interactionType: interaction.interaction_type,
+          interactionDate: interaction.interaction_date,
+        })),
+        total,
+      };
+    } catch (error) {
+      console.log(
+        '[Interactions] Error while searching in interactions: ',
+        error,
+      );
+      return {
+        data: [],
+        total: 0,
+      };
+    }
   }
 }
