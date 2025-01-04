@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { Fragment, Suspense, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import DialogWrapper from "@/components/DialogWrapper";
@@ -10,6 +10,17 @@ import { useQueryState } from "@/hooks/useQueryState";
 import { SearchFormType } from "@/types/common";
 
 const page = () => {
+  return (
+    <div className="bg-green-00">
+      <h1 className="text-xl font-bold text-indigo-950">Restaurants Leads</h1>
+      <Suspense fallback={<p>Loading leads...</p>}>
+        <LeadsComponent />
+      </Suspense>
+    </div>
+  );
+};
+
+const LeadsComponent = () => {
   const [allLeadsSearchQuery, setAllLeadsSearchQuery] =
     useQueryState<SearchFormType>("LeadsSearchQuery", {
       searchText: "",
@@ -37,9 +48,8 @@ const page = () => {
   };
 
   return (
-    <div className="bg-green-00">
+    <Fragment>
       <div className="p-4 bg-red-00 ">
-        <h1 className="text-xl font-bold text-indigo-950">Restaurants Leads</h1>
         <div className="flex flex-wrap justify-between gap-4 ">
           <div className="flex space-x-2">
             <LeadsSearchForm
@@ -63,11 +73,12 @@ const page = () => {
           </DialogWrapper>
         </div>
       </div>
+
       <LeadsListing
         allLeadsSearchQuery={allLeadsSearchQuery}
         openLeadsModal={openModal}
       />
-    </div>
+    </Fragment>
   );
 };
 

@@ -5,8 +5,20 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { StaffTable } from "./_components/StaffTable";
 import StaffsSearchForm from "./_components/StaffsSearchForm";
 import { SearchFormType } from "@/types/common";
+import { Fragment, Suspense } from "react";
 
 const page = () => {
+  return (
+    <div>
+      <h1 className="text-xl font-bold text-indigo-950">Restaurants Staffs</h1>
+      <Suspense fallback={<p>Loading staffs data...</p>}>
+        <StaffsComponent />
+      </Suspense>
+    </div>
+  );
+};
+
+const StaffsComponent = () => {
   const [allStaffsSearchQuery, setAllStaffsSearchQuery] =
     useQueryState<SearchFormType>("StaffSearchQuery", {
       searchText: "",
@@ -23,12 +35,10 @@ const page = () => {
   const onStaffsSearch: SubmitHandler<SearchFormType> = (data) => {
     setAllStaffsSearchQuery(data);
   };
+
   return (
-    <div>
+    <Fragment>
       <div className="p-4">
-        <h1 className="text-xl font-bold text-indigo-950">
-          Restaurants Staffs
-        </h1>
         <div className="mt-4 mb-6 flex">
           <StaffsSearchForm
             searchForm={searchForm}
@@ -36,8 +46,9 @@ const page = () => {
           />
         </div>
       </div>
+
       <StaffTable allStaffsSearchQuery={allStaffsSearchQuery} />
-    </div>
+    </Fragment>
   );
 };
 
