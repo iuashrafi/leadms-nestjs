@@ -1,10 +1,8 @@
 "use client";
 
 import React from "react";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -21,12 +19,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
 import { Input } from "@/components/ui/input";
 import { CreateLeadSchema, CreateLeadSchemaDto } from "@/lib/schema";
 import { RestaurantLeadStatus } from "contract/enum";
 import { useApi } from "@/hooks/useApi";
 import { getQueryClient } from "@/lib/api";
+import { useQueryClient } from "@tanstack/react-query";
+import { contract } from "contract";
 
 const initialValues: CreateLeadSchemaDto = {
   restaurantName: "",
@@ -36,13 +35,15 @@ const initialValues: CreateLeadSchemaDto = {
   assignedKAM: "",
 };
 
-const CreateLeadForm = ({ closeModal }) => {
+const CreateLeadForm = ({ closeModal }: { closeModal: () => void }) => {
   const { makeApiCall } = useApi();
 
   const form = useForm<CreateLeadSchemaDto>({
     resolver: zodResolver(CreateLeadSchema),
     defaultValues: initialValues,
   });
+
+  const invalidationQueryClient = useQueryClient();
 
   function onSubmit(values: CreateLeadSchemaDto) {
     const body = {
@@ -63,18 +64,9 @@ const CreateLeadForm = ({ closeModal }) => {
         duration: 2000,
       },
       onSuccessFn: () => {
-        // invalidationQueryClient.invalidateQueries({
-        //   queryKey: [contract.search.homepageSearch.path],
-        //   refetchType: "active",
-        // });
-        // invalidationQueryClient.invalidateQueries({
-        //   queryKey: [contract.search.savedProfilesSearch.path],
-        //   refetchType: "active",
-        // });
-        // invalidationQueryClient.invalidateQueries({
-        //   queryKey: [contract.search.viewedProfilesSearch.path],
-        //   refetchType: "active",
-        // });
+        invalidationQueryClient.refetchQueries({
+          queryKey: [contract.lead.getAllLeads.path],
+        });
         closeModal();
         form.reset(initialValues);
       },

@@ -31,6 +31,10 @@ const page = () => {
     setIsModalOpen(false);
   };
 
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
   return (
     <div className="bg-green-00">
       <div className="p-4 bg-red-00 ">
@@ -43,7 +47,7 @@ const page = () => {
             />
           </div>
           <div>
-            <Button variant="default" onClick={() => setIsModalOpen(true)}>
+            <Button variant="default" onClick={openModal}>
               Add New Lead
             </Button>
           </div>
@@ -58,7 +62,10 @@ const page = () => {
           </DialogWrapper>
         </div>
       </div>
-      <LeadsListing allLeadsSearchQuery={allLeadsSearchQuery} />
+      <LeadsListing
+        allLeadsSearchQuery={allLeadsSearchQuery}
+        openLeadsModal={openModal}
+      />
     </div>
   );
 };
