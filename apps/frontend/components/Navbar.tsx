@@ -15,7 +15,7 @@ const Navbar = () => {
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b px-4 flex backdrop-blur bg-white/10 min-h-[56px]">
-      <section className="w-full md:w-[80%] mx-auto flex items-center  justify-between  md:justify-normal  gap-12">
+      <section className="w-full md:container mx-auto md:px-6 lg:px-8 xl:px-16 flex items-center  justify-between  md:justify-normal  gap-12">
         <div>
           <Link href="/">
             <Image src="/logo.svg" alt="logo" width={30} height={30} />

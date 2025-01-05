@@ -9,7 +9,7 @@ import { SearchFormType } from "@/types/common";
 const StaffsPage = () => {
   return (
     <div>
-      <h1 className=" text-[24px] md:text-[28px] lg:text-[32px] leading-tight font-bold text-indigo-950">
+      <h1 className=" text-[24px] md:text-[28px] leading-tight font-bold text-indigo-950">
         Restaurants Staffs
       </h1>
       <Suspense fallback={<p>Loading staffs data...</p>}>
