@@ -30,7 +30,7 @@ const Navbar = () => {
         {/* mobile navbar */}
         {showNavbarDropDown && (
           <div
-            className={`w-[100vw] bg-neutral-100 h-fit top-[58px] left-0 right-0 z-[-1] flex flex-col gap-1 md:hidden shadow-xl rounded-b-xl px-2  sm:px-6  py-4 absolute`}
+            className={`w-full bg-neutral-100 h-fit top-[58px] left-0 right-0 z-[-1] flex flex-col gap-1 md:hidden shadow-xl rounded-b-xl px-2  sm:px-6  py-4 absolute`}
           >
             <NavLinkItems />
           </div>
