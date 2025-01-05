@@ -7,9 +7,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
 import { RecentRestaurantsType } from "@/types/dashboard";
-import RestaurantsList from "./RestaurantsList";
+import RestaurantsList from "@/app/(dashboard)/_components/RestaurantsList";
 
 const RecentRestaurants = ({
   restaurants,
@@ -17,7 +16,7 @@ const RecentRestaurants = ({
   restaurants: RecentRestaurantsType;
 }) => {
   return (
-    <Card className="xl:col-span-2">
+    <Card className="xl:col-span-2 shadow-none">
       <CardHeader className="flex flex-row items-center">
         <div className="grid gap-2">
           <CardTitle>Restaurants</CardTitle>

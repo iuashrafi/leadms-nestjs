@@ -29,7 +29,7 @@ const InteractionsSearchForm = ({
     <Form {...searchForm}>
       <form
         onSubmit={handleSubmit(onInteractionsSearch)}
-        className="flex gap-3"
+        className="flex flex-col md:flex-row flex-wrap lg:flex-nowrap gap-2 h-full"
       >
         <FormField
           control={control}
@@ -55,7 +55,7 @@ const InteractionsSearchForm = ({
               value={field.value}
               onValueChange={(value) => field.onChange(value)}
             >
-              <SelectTrigger>
+              <SelectTrigger className="w-full md:w-[140px]">
                 <SelectValue placeholder={"Type"} />
               </SelectTrigger>
               <SelectContent>
@@ -71,7 +71,7 @@ const InteractionsSearchForm = ({
           )}
         />
         <Button
-          className="rounded-lg text-md"
+          className="rounded-lg text-md min-h-11"
           size="lg"
           onClick={handleSubmit(onInteractionsSearch)}
         >

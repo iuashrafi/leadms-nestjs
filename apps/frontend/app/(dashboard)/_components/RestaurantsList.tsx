@@ -10,6 +10,7 @@ import { CardContent } from "@/components/ui/card";
 import CustomErrorMessage from "@/components/CustomErrorMessage";
 import { Badge } from "@/components/ui/badge";
 import { RecentRestaurantsType } from "@/types/dashboard";
+import { getRestaurantBadgeVariant } from "@/utils/leads";
 
 const RestaurantsList = ({
   restaurants,
@@ -19,8 +20,8 @@ const RestaurantsList = ({
   if (restaurants.length === 0)
     return (
       <CustomErrorMessage
-        title={"No pending calls"}
-        description={"No pending calls found"}
+        title={"No Leads Found"}
+        description={"Try to Add New Leads"}
         wrapperClassName={"min-h-[6vh]"}
       />
     );
@@ -38,13 +39,17 @@ const RestaurantsList = ({
           {restaurants.map((restaurant) => (
             <TableRow key={restaurant.id}>
               <TableCell>
-                <div className="font-medium">{restaurant.name}</div>
+                <div className="font-medium capitalize">{restaurant.name}</div>
                 <div className="hidden text-sm text-muted-foreground md:inline">
                   {restaurant.address}
                 </div>
               </TableCell>
               <TableCell className="hidden md:table-cell">
-                <Badge className="text-xs" variant="outline">
+                <Badge
+                  variant={getRestaurantBadgeVariant(
+                    restaurant.restaurantLeadStatus
+                  )}
+                >
                   {restaurant.restaurantLeadStatus}
                 </Badge>
               </TableCell>

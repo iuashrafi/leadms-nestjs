@@ -1,8 +1,12 @@
 import { initContract } from "@ts-rest/core";
-import { PaginationQuerySchema, SuccessSchema } from "contract/common";
-import { RestaurantInteractionType } from "contract/enum";
+import { SearchQuerySchema, SuccessSchema } from "contract/common";
 import { createPaginatedResponseSchema } from "contract/utils";
 import { z } from "zod";
+import {
+  CreateInteractionSchema,
+  InteractionSchema,
+  UpdateInteractionSchema,
+} from "./type";
 
 const c = initContract();
 
@@ -11,13 +15,7 @@ export const interactionContract = c.router(
     createInteraction: {
       method: "POST",
       path: "/createInteraction",
-      body: z.object({
-        staffId: z.number(),
-        interactionDate: z.string().transform((val) => new Date(val)),
-        type: z.nativeEnum(RestaurantInteractionType),
-        notes: z.string().nullable(),
-        followUp: z.boolean(),
-      }),
+      body: CreateInteractionSchema,
       responses: {
         200: SuccessSchema,
       },
@@ -26,13 +24,7 @@ export const interactionContract = c.router(
     updateInteraction: {
       method: "PUT",
       path: "/updateInteraction",
-      body: z.object({
-        interactionId: z.number(),
-        interactionDate: z.string().transform((val) => new Date(val)),
-        interactionType: z.nativeEnum(RestaurantInteractionType),
-        notes: z.string().nullable(),
-        followUp: z.boolean(),
-      }),
+      body: UpdateInteractionSchema,
       responses: {
         200: SuccessSchema,
       },
@@ -52,28 +44,12 @@ export const interactionContract = c.router(
     getAllInteractions: {
       method: "GET",
       path: "/getAllInteractions",
-      query: PaginationQuerySchema.extend({
-        searchText: z.string().optional(),
-        roles: z
-          .string()
-          .transform((val) => val.split(","))
-          .optional(),
+      query: SearchQuerySchema.extend({
         staffId: z.string().transform(Number).optional(),
+        leadId: z.string().transform(Number).optional(),
       }),
       responses: {
-        200: createPaginatedResponseSchema(
-          z.object({
-            id: z.number(),
-            staffName: z.string(),
-            leadId: z.number(),
-            leadName: z.string(),
-            staffId: z.number(),
-            interactionType: z.nativeEnum(RestaurantInteractionType),
-            notes: z.string(),
-            interactionDate: z.date(),
-            followUp: z.boolean(),
-          })
-        ),
+        200: createPaginatedResponseSchema(InteractionSchema),
       },
     },
   },

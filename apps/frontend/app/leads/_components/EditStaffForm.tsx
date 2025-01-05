@@ -152,7 +152,7 @@ const EditStaffForm = ({
         />
 
         <Button type="submit" className="w-full">
-          Edit Staff
+          Update Staff
         </Button>
       </form>
     </Form>

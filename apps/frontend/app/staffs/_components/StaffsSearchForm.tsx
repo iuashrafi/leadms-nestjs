@@ -33,7 +33,7 @@ const StaffsSearchForm = ({
       <Form {...searchForm}>
         <form
           onSubmit={handleSubmit(onStaffsSearch)}
-          className="flex gap-2 w-full"
+          className="flex flex-col md:flex-row flex-wrap lg:flex-nowrap gap-2 h-full"
         >
           <FormField
             control={control}
@@ -59,7 +59,7 @@ const StaffsSearchForm = ({
                 value={field.value}
                 onValueChange={(value) => field.onChange(value)}
               >
-                <SelectTrigger>
+                <SelectTrigger className="w-full md:w-[140px]">
                   <SelectValue placeholder={"Roles"} />
                 </SelectTrigger>
                 <SelectContent>
@@ -76,7 +76,7 @@ const StaffsSearchForm = ({
           />
 
           <Button
-            className="rounded-lg text-md"
+            className="rounded-lg text-md min-h-11"
             size="lg"
             onClick={handleSubmit(onStaffsSearch)}
           >

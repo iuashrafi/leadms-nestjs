@@ -5,7 +5,7 @@ import { tsRestFetchApi } from "@ts-rest/core";
 
 const queryClient = (authToken: string | undefined) =>
   initQueryClient(contract, {
-    baseUrl: "http://localhost:3000",
+    baseUrl: process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://localhost:3000",
     baseHeaders: authToken ? { Authorization: `Bearer ${authToken}` } : {},
     api: async (args) => {
       const response = await tsRestFetchApi(args);
