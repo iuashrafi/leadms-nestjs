@@ -77,7 +77,7 @@ const LeadsListing = ({
     );
   return (
     <>
-      <div className="w-full grid grid-cols-12 gap-4">
+      <div className="w-full grid grid-cols-12 gap-4 py-4">
         {leads.map((lead: any) => (
           <RestaurantCard key={lead.id} lead={lead} />
         ))}

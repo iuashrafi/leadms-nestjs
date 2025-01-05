@@ -8,23 +8,25 @@ const RestaurantCard = ({ lead }: any) => {
   return (
     <div className="group col-span-12 sm:col-span-6 lg:col-span-4 transition ease-in-out border bg-white p-4 rounded-xl hover:shadow-lg  hover:scale-[1.01]">
       <div className="text-xl font-semibold flex justify-between items-center">
-        <span className="text-gray-900 capitalize">{lead.restaurantName}</span>
+        <h3 className="text-gray-900 capitalize text-[20px]">
+          {lead.restaurantName}
+        </h3>
         <Badge variant={getRestaurantBadgeVariant(lead.restaurantLeadStatus)}>
           {lead.restaurantLeadStatus}
         </Badge>
       </div>
       <ul className="space-y-1 py-1">
         <li className="flex items-center space-x-2 text-lg text-gray-700">
-          <MapPin size={18} />
-          <span className="capitalize">{lead.address}</span>
+          <MapPin size={16} />
+          <p className="capitalize text-[16px]">{lead.address}</p>
         </li>
         <li className="flex items-center space-x-2 text-lg text-gray-700">
-          <Phone size={18} />
-          <span>{lead.contactNumber}</span>
+          <Phone size={16} />
+          <p className="capitalize text-[16px]">{lead.contactNumber}</p>
         </li>
         <li className="flex items-center space-x-2 text-lg text-gray-700">
-          <ChefHat size={18} />
-          <span>{lead.staffsCount} Staffs</span>
+          <ChefHat size={16} />
+          <p className="capitalize text-[16px]">{lead.staffsCount} Staffs</p>
         </li>
       </ul>
       <Button
