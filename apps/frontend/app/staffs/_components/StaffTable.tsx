@@ -1,5 +1,5 @@
 "use client";
-
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Ellipsis } from "lucide-react";
 import {
@@ -31,6 +31,7 @@ export function StaffTable({
 }: {
   allStaffsSearchQuery: SearchFormType;
 }) {
+  const router = useRouter();
   const { searchText, role } = allStaffsSearchQuery;
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -70,6 +71,10 @@ export function StaffTable({
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedStaffId(0);
+  };
+
+  const onClickViewLeadsInfo = (staffId: number) => {
+    router.push("/logs?staffId=" + staffId);
   };
 
   useEffect(() => {
@@ -171,7 +176,11 @@ export function StaffTable({
                     >
                       Interact
                     </DropdownMenuItem>
-                    <DropdownMenuItem>View Interactions</DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => onClickViewLeadsInfo(staff.id)}
+                    >
+                      View Interactions
+                    </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => openEditStaffModal(staff)}>
                       Edit Staff
                     </DropdownMenuItem>
