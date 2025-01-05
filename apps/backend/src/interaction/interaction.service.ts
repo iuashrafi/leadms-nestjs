@@ -57,7 +57,13 @@ export class InteractionService {
   async getAllInteractions(
     query: InteractionRequestShapes['getAllInteractions']['query'],
   ) {
-    const { pageNumber, pageSize, searchText, roles: interactionTypes } = query;
+    const {
+      pageNumber,
+      pageSize,
+      searchText,
+      roles: interactionTypes,
+      staffId,
+    } = query;
 
     let sqlQuery = `select ri.id, rs.name, ri.created_at, ri.follow_up, ri.notes, rs.id as staff_id, rl.id as lead_id, rl.name as lead_name,
                                ri.interaction_type, ri.interaction_date 
@@ -94,6 +100,12 @@ export class InteractionService {
       const interactionTypesCondition = ` and (${interactionTypesFilters}) `;
       sqlQuery += interactionTypesCondition;
       countQuery += interactionTypesCondition;
+    }
+
+    if (staffId) {
+      const staffFilter = ` and ri.staff_id = ${staffId}`;
+      sqlQuery += staffFilter;
+      countQuery += staffFilter;
     }
 
     const offset = (pageNumber - 1) * pageSize;
