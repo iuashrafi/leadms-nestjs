@@ -131,12 +131,23 @@ const LeadPage = () => {
               <div className="flex items-center space-x-2">
                 <span>Total Orders : </span>
                 <Badge
-                  variant={"active"}
+                  variant={"new"}
                   className="rounded-full h-8 w-8 flex justify-center items-center text-lg"
                 >
                   {lead.ordersCount}
                 </Badge>
               </div>
+              {lead.rankNo && (
+                <div className="flex items-center space-x-2">
+                  <span>Rank : </span>
+                  <Badge
+                    variant={"active"}
+                    className="rounded-full h-8 w-8 flex justify-center items-center text-lg"
+                  >
+                    {lead.rankNo}
+                  </Badge>
+                </div>
+              )}
             </div>
           </div>
         </div>

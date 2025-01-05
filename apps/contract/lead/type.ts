@@ -73,6 +73,7 @@ export const RestaurantStaffsSchema = z.object({
 
 export const ReastaurantLeadListSchema = RestaurantLeadSchema.extend({
   ordersCount: z.number(),
+  rankNo: z.number().nullable(),
   staffs: z.array(RestaurantStaffsSchema),
 });
 export const RestaurantStaffSchema = z.object({

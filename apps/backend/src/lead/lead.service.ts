@@ -75,12 +75,6 @@ export class LeadService {
           link: '/logs',
           itemsCount: interactionsCount,
         },
-        // {
-        //   title: 'Performance',
-        //   subTitle: 'Calls, Visits, Orders etc',
-        //   link: '/performance',
-        //   itemsCount: interactionsCount,
-        // },
       ],
 
       recentRestaurants: restaurants,
@@ -258,6 +252,23 @@ export class LeadService {
     const ordersCount =
       parseInt(ordersCountResult.rows[0].orderscount, 10) || 0;
 
+    const rankResult = await this.em.getKnex().raw(
+      `SELECT rankNo 
+       FROM (
+         SELECT 
+             DENSE_RANK() OVER (ORDER BY COUNT(*) DESC) AS rankNo,
+             rs.restaurant_lead_id
+         FROM restaurant_interaction ri
+         JOIN restaurant_staff rs ON ri.staff_id = rs.id
+         WHERE ri.interaction_type = 'Order'
+         GROUP BY rs.restaurant_lead_id
+       ) AS rankedData
+       WHERE restaurant_lead_id = ?`,
+      [id],
+    );
+
+    const rankNo = parseInt(rankResult.rows[0]?.rankno, 10) || null;
+
     return {
       restaurantName: lead.name,
       address: lead.address,
@@ -265,6 +276,7 @@ export class LeadService {
       currentStatus: lead.restaurantLeadStatus,
       assignedKAM: lead.assignedKAM,
       ordersCount,
+      rankNo,
       staffs: lead.staff.getItems().map((eachStaff) => ({
         staffId: eachStaff.id,
         staffName: eachStaff.name,
