@@ -24,6 +24,7 @@ import { contract } from "contract";
 import { getQueryClient } from "@/lib/api";
 import { InteractionsSearchFormType } from "@/types/logs";
 import { InteractionForm } from "@/app/staffs/_components/InteractionForm";
+import CustomErrorMessage from "@/components/CustomErrorMessage";
 export function InteractionTable({
   allInteractionsSearchQuery,
   staffId,
@@ -87,7 +88,7 @@ export function InteractionTable({
           return {
             query: {
               pageNumber: String(pageNumber),
-              pageSize: String(4),
+              pageSize: String(10),
               searchText: searchText,
               roles: role.trim().length === 0 ? undefined : role,
               staffId: staffId ?? undefined,
@@ -112,7 +113,14 @@ export function InteractionTable({
   }
 
   if (error) {
-    return <>an error occurred while loading staffs</>;
+    return (
+      <CustomErrorMessage
+        title={"Error"}
+        description={
+          "OOPS! An error occurred while loading interactions's data."
+        }
+      />
+    );
   }
 
   const interactionsList = data.pages.flatMap(

@@ -27,7 +27,7 @@ const DeleteLeadWrapper = ({
         });
       },
       successMsgProps: {
-        title: `Lead deleted successfully`,
+        title: `Lead deleted successfully!`,
         duration: 2000,
       },
       onSuccessFn: () => {

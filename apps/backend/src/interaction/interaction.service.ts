@@ -92,7 +92,6 @@ export class InteractionService {
     }
 
     if (interactionTypes && interactionTypes.length > 0) {
-      console.log(interactionTypes);
       const interactionTypesFilters = interactionTypes
         .map((r) => `ri.interaction_type = '${r}'`)
         .join(' OR ');

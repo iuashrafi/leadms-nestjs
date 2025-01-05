@@ -56,7 +56,7 @@ const CreateStaffForm = ({
         });
       },
       successMsgProps: {
-        title: `Lead Staff created successfully`,
+        title: `Staff added successfully!`,
         duration: 2000,
       },
       onSuccessFn: () => {
