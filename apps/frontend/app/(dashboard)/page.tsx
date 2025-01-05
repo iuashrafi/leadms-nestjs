@@ -21,7 +21,7 @@ export default function DashboardPage() {
     return (
       <CustomErrorMessage
         title={"Error"}
-        description={"Error loading dashboard data"}
+        description={"OOPS! An error occurred while loading dashboard's data."}
       />
     );
   }

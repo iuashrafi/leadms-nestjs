@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import RestaurantCard from "@/app/leads/_components/RestaurantCard";
 import PreLoader from "@/components/PreLoader";
 import { Button } from "@/components/ui/button";
@@ -58,7 +57,12 @@ const LeadsListing = ({
   if (isLoading) {
     return <PreLoader />;
   } else if (error) {
-    return <Fragment>En Error occurred!</Fragment>;
+    return (
+      <CustomErrorMessage
+        title={"Error"}
+        description={"OOPS! An error occurred while loading leads."}
+      />
+    );
   }
 
   const leads = data.pages.flatMap((items) => items.body.results);

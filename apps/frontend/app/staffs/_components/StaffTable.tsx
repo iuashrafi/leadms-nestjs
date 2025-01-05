@@ -25,6 +25,7 @@ import { SearchFormType } from "@/types/common";
 import { InteractionForm } from "./InteractionForm";
 import EditStaffWrapper from "@/app/leads/[id]/_components/EditStaffWrapper";
 import DeleteStaffWrapper from "@/app/leads/[id]/_components/DeleteStaffWrapper";
+import CustomErrorMessage from "@/components/CustomErrorMessage";
 
 export function StaffTable({
   allStaffsSearchQuery,
@@ -117,10 +118,13 @@ export function StaffTable({
 
   if (isLoading) {
     return <PreLoader />;
-  }
-
-  if (error) {
-    return <>an error occurred while loading staffs</>;
+  } else if (error) {
+    return (
+      <CustomErrorMessage
+        title={"Error"}
+        description={"OOPS! An error occurred while loading staffs data."}
+      />
+    );
   }
 
   const staffsList = data.pages.flatMap((eachPage) => eachPage.body.results);
