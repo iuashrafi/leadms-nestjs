@@ -153,7 +153,6 @@ export class LeadService {
     }
 
     if (leadStatus && leadStatus.length > 0) {
-      console.log(leadStatus);
       const leadStatusFilters = leadStatus
         .map((r) => `r.restaurant_lead_status = '${r}'`)
         .join(' OR ');

@@ -25,7 +25,7 @@ const DeleteInteraction = ({
         });
       },
       successMsgProps: {
-        title: `Interaction deleted successfully`,
+        title: `Interaction deleted successfully!`,
         duration: 2000,
       },
       onSuccessFn: () => {

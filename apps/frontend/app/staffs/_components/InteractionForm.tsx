@@ -50,8 +50,6 @@ export function InteractionForm({
   });
 
   function onSubmit(values: CreateInteractionSchemaDto) {
-    console.log("form values=", values);
-
     const body = {
       staffId,
       interactionDate: values.interactionDate.toISOString(),
@@ -69,11 +67,10 @@ export function InteractionForm({
         });
       },
       successMsgProps: {
-        title: `Interaction Added successfully`,
+        title: `Interaction added successfully!`,
         duration: 2000,
       },
       onSuccessFn: () => {
-        alert("interaction added successfully!");
         closeModal();
         form.reset(intialInteracationValues);
       },

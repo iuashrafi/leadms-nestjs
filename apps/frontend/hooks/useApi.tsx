@@ -66,7 +66,7 @@ export function useApi() {
         hidePageLoader();
         setIsLoading(false);
         if (successMsgProps) {
-          toast({ duration: 3000, variant: "default", ...successMsgProps });
+          toast({ duration: 3000, variant: "success", ...successMsgProps });
         }
         if (onSuccessFn) {
           onSuccessFn(response);

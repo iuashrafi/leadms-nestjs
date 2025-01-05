@@ -55,7 +55,7 @@ const CreateLeadForm = ({ closeModal }: { closeModal: () => void }) => {
         });
       },
       successMsgProps: {
-        title: `Lead created successfully`,
+        title: `Lead created successfully!`,
         duration: 2000,
       },
       onSuccessFn: () => {
