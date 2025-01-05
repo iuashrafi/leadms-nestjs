@@ -117,8 +117,8 @@ const LeadPage = () => {
           <Button onClick={() => setIsCreateStaffModalOpen(true)}>
             Add New Staff
           </Button>
-          {/* <CreateStaff leadId={Number(params.id)} /> */}
           <LeadOptions
+            leadId={params.id}
             openEditLeadModal={() => setIsEditLeadModalOpen(true)}
             openDeleteLeadModal={() => setIsDeleteLeadModalOpen(true)}
           />

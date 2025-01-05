@@ -23,6 +23,7 @@ const CallLogsPage = () => {
 const CallLogsComponent = () => {
   const searchParams = useSearchParams();
   const staffId = searchParams.get("staffId");
+  const leadId = searchParams.get("leadId");
 
   const [allInteractionsSearchQuery, setAllInteractionsSearchQuery] =
     useQueryState<InteractionsSearchFormType>("InteractionsSearchQuery", {
@@ -58,6 +59,7 @@ const CallLogsComponent = () => {
       <InteractionTable
         allInteractionsSearchQuery={allInteractionsSearchQuery}
         staffId={staffId}
+        leadId={leadId}
       />
     </Fragment>
   );

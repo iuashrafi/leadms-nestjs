@@ -28,9 +28,11 @@ import CustomErrorMessage from "@/components/CustomErrorMessage";
 export function InteractionTable({
   allInteractionsSearchQuery,
   staffId,
+  leadId,
 }: {
   allInteractionsSearchQuery: InteractionsSearchFormType;
   staffId: string | null;
+  leadId: string | null;
 }) {
   const { searchText, role } = allInteractionsSearchQuery;
   const [pageNumber, setPageNumber] = useState<number>(1);
@@ -92,6 +94,7 @@ export function InteractionTable({
               searchText: searchText,
               roles: role.trim().length === 0 ? undefined : role,
               staffId: staffId ?? undefined,
+              leadId: leadId ?? undefined,
             },
           };
         },

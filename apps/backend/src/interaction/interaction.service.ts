@@ -63,6 +63,7 @@ export class InteractionService {
       searchText,
       roles: interactionTypes,
       staffId,
+      leadId,
     } = query;
 
     let sqlQuery = `select ri.id, rs.name, ri.created_at, ri.follow_up, ri.notes, rs.id as staff_id, rl.id as lead_id, rl.name as lead_name,
@@ -105,6 +106,13 @@ export class InteractionService {
       const staffFilter = ` and ri.staff_id = ${staffId}`;
       sqlQuery += staffFilter;
       countQuery += staffFilter;
+    }
+
+    if (leadId) {
+      console.log('filter by leadid =  ', leadId);
+      const leadFilter = ` and rl.id = ${leadId}`;
+      sqlQuery += leadFilter;
+      countQuery += leadFilter;
     }
 
     const offset = (pageNumber - 1) * pageSize;
