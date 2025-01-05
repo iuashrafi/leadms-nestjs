@@ -4,34 +4,56 @@ import { Injectable } from '@nestjs/common';
 import { RestaurantLead } from './entities/restaurantLead.entity';
 import { RestaurantStaff } from '../staff/entities/restaurantStaff.entity';
 import { RestaurantInteraction } from 'src/interaction/entities/restaurantInteraction.entity';
+import { RestaurantInteractionType } from 'contract/enum';
 
 @Injectable()
 export class LeadService {
   constructor(private readonly em: EntityManager) {}
 
   async getDashboardData() {
-    const [restaurantStaffsCount] = await Promise.all([
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+
+    const endOfDay = new Date();
+    endOfDay.setHours(23, 59, 59, 999);
+    const [
+      restaurantStaffsCount,
+      [restaurants, restaurantsCount],
+      [interactions, interactionsCount],
+      todaysPendingCalls,
+    ] = await Promise.all([
       this.em.count(RestaurantStaff, {}),
+      this.em.findAndCount(
+        RestaurantLead,
+        {},
+        {
+          limit: 5,
+          orderBy: { createdAt: QueryOrder.DESC },
+        },
+      ),
+      this.em.findAndCount(
+        RestaurantInteraction,
+        {},
+        {
+          limit: 5,
+          orderBy: { createdAt: QueryOrder.DESC },
+          populate: ['staff'],
+        },
+      ),
+      this.em.find(
+        RestaurantInteraction,
+        {
+          interactionDate: { $gte: startOfDay, $lte: endOfDay },
+          interactionType: RestaurantInteractionType.Call,
+          followUp: true,
+        },
+        {
+          limit: 5,
+          orderBy: { createdAt: QueryOrder.DESC },
+          populate: ['staff'],
+        },
+      ),
     ]);
-
-    const [restaurants, restaurantsCount] = await this.em.findAndCount(
-      RestaurantLead,
-      {},
-      {
-        limit: 5,
-        orderBy: { createdAt: QueryOrder.DESC },
-      },
-    );
-
-    const [interactions, interactionsCount] = await this.em.findAndCount(
-      RestaurantInteraction,
-      {},
-      {
-        limit: 5,
-        orderBy: { createdAt: QueryOrder.DESC },
-        populate: ['staff'],
-      },
-    );
 
     return {
       dashboardCards: [
@@ -53,6 +75,12 @@ export class LeadService {
           link: '/logs',
           itemsCount: interactionsCount,
         },
+        // {
+        //   title: 'Performance',
+        //   subTitle: 'Calls, Visits, Orders etc',
+        //   link: '/performance',
+        //   itemsCount: interactionsCount,
+        // },
       ],
 
       recentRestaurants: restaurants,
@@ -63,6 +91,14 @@ export class LeadService {
         interactionType: interaction.interactionType,
         interactionDate: interaction.interactionDate,
         notes: interaction.notes,
+      })),
+
+      todaysPendingCalls: todaysPendingCalls.map((interaction) => ({
+        id: interaction.id,
+        staffName: interaction.staff.name,
+        staffContact: interaction.staff.contactNumber,
+        staffEmail: interaction.staff.email,
+        interactionDate: interaction.interactionDate,
       })),
     };
   }

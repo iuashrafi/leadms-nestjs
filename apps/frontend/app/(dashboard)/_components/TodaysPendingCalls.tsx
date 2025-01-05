@@ -1,16 +1,22 @@
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import TodaysPendingCallsList from "@/app/(dashboard)/_components/TodaysPendingCallsList";
-import { RecentInterationsType } from "@/types/dashboard";
+import { TodaysPendingCallsType } from "@/types/dashboard";
 
 const TodaysPendingCalls = ({
   interactions,
 }: {
-  interactions: RecentInterationsType;
+  interactions: TodaysPendingCallsType;
 }) => {
   return (
     <Card className="shadow-none">
       <CardHeader>
-        <CardTitle>Today's Pending Calls</CardTitle>
+        <CardTitle className="mb-2">Today's Pending Calls</CardTitle>
+        <CardDescription>Follow up calls with Today's date.</CardDescription>
         <TodaysPendingCallsList interactions={interactions} />
       </CardHeader>
     </Card>
