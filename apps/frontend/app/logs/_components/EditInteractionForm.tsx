@@ -33,6 +33,9 @@ import {
   CreateInteractionSchemaDto,
 } from "@/types/logs";
 import { intialInteracationValues } from "@/utils/logs";
+import { useQueryClient } from "@tanstack/react-query";
+import { contract } from "contract";
+import { getQueryClient } from "@/lib/api";
 // import { getQueryClient } from "@/lib/api";
 
 export function EditInteractionForm({
@@ -87,7 +90,7 @@ export function EditInteractionForm({
           refetchType: "active",
         });
         closeModal();
-        form.reset(initialValues);
+        form.reset(intialInteracationValues);
       },
     });
   }

@@ -19,7 +19,7 @@ const CallLogsPage = () => {
 
 const CallLogsComponent = () => {
   const [allInteractionsSearchQuery, setAllInteractionsSearchQuery] =
-    useQueryState<SearchFormType>("InteractionsSearchQuery", {
+    useQueryState<InteractionsSearchFormType>("InteractionsSearchQuery", {
       searchText: "",
       role: "",
     });
@@ -31,7 +31,9 @@ const CallLogsComponent = () => {
     },
   });
 
-  const onInteractionsSearch: SubmitHandler<SearchFormType> = (data) => {
+  const onInteractionsSearch: SubmitHandler<InteractionsSearchFormType> = (
+    data
+  ) => {
     setAllInteractionsSearchQuery(data);
   };
 

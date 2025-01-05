@@ -76,6 +76,7 @@ export function InteractionForm({
       },
       onSuccessFn: () => {
         alert("interaction added successfully!");
+        closeModal();
         form.reset(intialInteracationValues);
       },
     });
