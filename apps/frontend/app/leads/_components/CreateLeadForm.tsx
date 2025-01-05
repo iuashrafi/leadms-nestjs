@@ -2,7 +2,7 @@
 
 import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import {
@@ -31,14 +31,16 @@ import { CreateLeadSchema, CreateLeadSchemaDto } from "@/types/dashboard";
 const CreateLeadForm = ({ closeModal }: { closeModal: () => void }) => {
   const { makeApiCall } = useApi();
 
-  const form = useForm<CreateLeadSchemaDto>({
+  const leadForm = useForm<CreateLeadSchemaDto>({
     resolver: zodResolver(CreateLeadSchema),
     defaultValues: intialLeadValues,
   });
 
+  const { reset, control, handleSubmit } = leadForm;
+
   const invalidationQueryClient = useQueryClient();
 
-  function onSubmit(values: CreateLeadSchemaDto) {
+  const onCreateLead: SubmitHandler<CreateLeadSchemaDto> = (values) => {
     const body = {
       restaurantName: values.restaurantName,
       address: values.restaurantAddress,
@@ -61,17 +63,17 @@ const CreateLeadForm = ({ closeModal }: { closeModal: () => void }) => {
           queryKey: [contract.lead.getAllLeads.path],
         });
         closeModal();
-        form.reset(intialLeadValues);
+        reset(intialLeadValues);
       },
     });
-  }
+  };
 
   return (
     <div>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <Form {...leadForm}>
+        <form onSubmit={handleSubmit(onCreateLead)} className="space-y-4">
           <FormField
-            control={form.control}
+            control={control}
             name="restaurantName"
             render={({ field }) => (
               <FormItem>
@@ -84,7 +86,7 @@ const CreateLeadForm = ({ closeModal }: { closeModal: () => void }) => {
             )}
           />
           <FormField
-            control={form.control}
+            control={control}
             name="restaurantAddress"
             render={({ field }) => (
               <FormItem>
@@ -97,7 +99,7 @@ const CreateLeadForm = ({ closeModal }: { closeModal: () => void }) => {
             )}
           />
           <FormField
-            control={form.control}
+            control={control}
             name="contactNumber"
             render={({ field }) => (
               <FormItem>
@@ -110,7 +112,7 @@ const CreateLeadForm = ({ closeModal }: { closeModal: () => void }) => {
             )}
           />
           <FormField
-            control={form.control}
+            control={control}
             name="restaurantLeadStatus"
             render={({ field }) => (
               <FormItem>
@@ -142,7 +144,7 @@ const CreateLeadForm = ({ closeModal }: { closeModal: () => void }) => {
           />
 
           <FormField
-            control={form.control}
+            control={control}
             name="assignedKAM"
             render={({ field }) => (
               <FormItem>

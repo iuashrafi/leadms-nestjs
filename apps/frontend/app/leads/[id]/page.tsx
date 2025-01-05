@@ -21,7 +21,7 @@ import PreLoader from "@/components/PreLoader";
 import { InteractionForm } from "@/app/staffs/_components/InteractionForm";
 import CreateStaffForm from "../_components/CreateStaffForm";
 
-const page = () => {
+const LeadPage = () => {
   const params = useParams();
 
   // lead options
@@ -171,7 +171,7 @@ const page = () => {
   );
 };
 
-export default page;
+export default LeadPage;
 
 const StaffCard = ({
   staff,
@@ -257,7 +257,6 @@ const DeleteLeadWrapper = ({
     const body = {
       id: Number(data.id),
     };
-    console.log("deleting lead, body = ", body);
     makeApiCall({
       fetcherFn: async () => {
         return await getQueryClient().lead.deleteLead.mutation({

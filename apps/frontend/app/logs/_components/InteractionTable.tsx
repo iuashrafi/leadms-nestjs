@@ -1,4 +1,6 @@
 "use client";
+import { useState, useEffect } from "react";
+import { Ellipsis } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -14,21 +16,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import CustomPagination from "@/components/CustomPagination";
-import { Ellipsis } from "lucide-react";
 import DialogWrapper from "@/components/DialogWrapper";
-import { useState, useEffect } from "react";
-import { EditInteractionForm } from "./EditInteractionForm";
-import DeleteInteraction from "./DeleteInteraction";
+import { EditInteractionForm } from "@/app/logs/_components/EditInteractionForm";
+import DeleteInteraction from "@/app/logs/_components/DeleteInteraction";
+import PreLoader from "@/components/PreLoader";
 import { contract } from "contract";
 import { getQueryClient } from "@/lib/api";
-import PreLoader from "@/components/PreLoader";
-import { SearchFormType } from "@/types/common";
+import { InteractionsSearchFormType } from "@/types/logs";
 import { InteractionForm } from "@/app/staffs/_components/InteractionForm";
-
 export function InteractionTable({
   allInteractionsSearchQuery,
 }: {
-  allInteractionsSearchQuery: SearchFormType;
+  allInteractionsSearchQuery: InteractionsSearchFormType;
 }) {
   const { searchText, role } = allInteractionsSearchQuery;
   const [pageNumber, setPageNumber] = useState<number>(1);

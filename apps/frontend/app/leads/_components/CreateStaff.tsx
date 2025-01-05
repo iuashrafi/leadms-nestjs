@@ -1,7 +1,7 @@
 import React from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { useQueryClient } from "@tanstack/react-query";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
@@ -19,53 +19,40 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { getQueryClient } from "@/lib/api";
 import { useApi } from "@/hooks/useApi";
 import { RestaurantStaffRole } from "contract/enum";
 import { contract } from "contract";
-import { getQueryClient } from "@/lib/api";
 import {
   CreateStaffFormSchema,
   CreateStaffFormSchemaDto,
 } from "@/types/staffs";
 import { initialStaffValue } from "@/utils/leads";
 
-const EditStaffForm = ({
-  staff,
-  closeModal,
-}: {
-  staff: any;
-  closeModal: () => void;
-}) => {
+const CreateStaff = ({ leadId }: { leadId: number }) => {
   const { makeApiCall } = useApi();
   const invalidationQueryClient = useQueryClient();
 
-  const staffForm = useForm<CreateStaffFormSchemaDto>({
+  const form = useForm<CreateStaffFormSchemaDto>({
     resolver: zodResolver(CreateStaffFormSchema),
-    defaultValues: staff
-      ? {
-          name: staff.staffName,
-          role: staff.role,
-          contactNumber: staff.contactNumber,
-          email: staff.email,
-        }
-      : initialStaffValue,
+    defaultValues: initialStaffValue,
   });
 
-  const { handleSubmit, control } = staffForm;
+  function onSubmit(values: CreateStaffFormSchemaDto) {
+    console.log(values);
 
-  const onSubmit: SubmitHandler<CreateStaffFormSchemaDto> = (values) => {
     const body = {
-      staffId: staff.staffId,
+      leadId,
       ...values,
     };
     makeApiCall({
       fetcherFn: async () => {
-        return await getQueryClient().lead.updateStaff.mutation({
+        return await getQueryClient().lead.createRestaurantStaff.mutation({
           body,
         });
       },
       successMsgProps: {
-        title: `Staff updated successfully`,
+        title: `Lead Staff created successfully`,
         duration: 2000,
       },
       onSuccessFn: () => {
@@ -73,16 +60,16 @@ const EditStaffForm = ({
           queryKey: [contract.lead.getLeadById.path],
           refetchType: "active",
         });
-        closeModal();
+        form.reset(initialStaffValue);
       },
     });
-  };
+  }
 
   return (
-    <Form {...staffForm}>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
-          control={control}
+          control={form.control}
           name="name"
           render={({ field }) => (
             <FormItem>
@@ -95,7 +82,7 @@ const EditStaffForm = ({
           )}
         />
         <FormField
-          control={control}
+          control={form.control}
           name="contactNumber"
           render={({ field }) => (
             <FormItem>
@@ -109,7 +96,7 @@ const EditStaffForm = ({
         />
 
         <FormField
-          control={control}
+          control={form.control}
           name="email"
           render={({ field }) => (
             <FormItem>
@@ -122,7 +109,7 @@ const EditStaffForm = ({
           )}
         />
         <FormField
-          control={control}
+          control={form.control}
           name="role"
           render={({ field }) => (
             <FormItem>
@@ -152,11 +139,11 @@ const EditStaffForm = ({
         />
 
         <Button type="submit" className="w-full">
-          Edit Staff
+          Create Staff
         </Button>
       </form>
     </Form>
   );
 };
 
-export default EditStaffForm;
+export default CreateStaff;

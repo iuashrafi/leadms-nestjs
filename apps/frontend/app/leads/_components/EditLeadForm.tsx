@@ -1,33 +1,34 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-
+// import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  // SubmitHandler,
+  useForm,
+} from "react-hook-form";
+// import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import {
   Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+  // FormControl,
+  // FormField,
+  // FormItem,
+  // FormLabel,
+  // FormMessage,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
-import { Input } from "@/components/ui/input";
-import { RestaurantLeadStatus } from "contract/enum";
-import { useApi } from "@/hooks/useApi";
-import { getQueryClient } from "@/lib/api";
-import { contract } from "contract";
-import { useQueryClient } from "@tanstack/react-query";
-import { CreateLeadSchemaDto } from "@/types/dashboard";
-import { CreateLeadSchema } from "contract/lead/type";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
+// import { Input } from "@/components/ui/input";
+// import { useApi } from "@/hooks/useApi";
+// import { contract } from "contract";
+// import { RestaurantLeadStatus } from "contract/enum";
+// import { getQueryClient } from "@/lib/api";
+// import { CreateLeadSchemaDto } from "@/types/dashboard";
+// import { CreateLeadSchema } from "contract/lead/type";
 
 const EditLeadForm = ({
   data,
@@ -36,8 +37,9 @@ const EditLeadForm = ({
   data: any;
   closeModal: () => void;
 }) => {
-  const { makeApiCall } = useApi();
-  const invalidationQueryClient = useQueryClient();
+  console.log(data);
+  // const { makeApiCall } = useApi();
+  // const invalidationQueryClient = useQueryClient();
 
   const form = useForm<any>({
     // resolver: zodResolver(CreateLeadSchema),
@@ -54,6 +56,9 @@ const EditLeadForm = ({
 
   function onSubmit(values: any) {
     alert("updating ... ");
+    console.log(values);
+
+    closeModal();
     // const body = {
     //   id: Number(data.id),
     //   restaurantName: values.restaurantName,
@@ -107,7 +112,7 @@ const EditLeadForm = ({
             )}
           />
           <FormField
-            control={form.control}
+            control={control}
             name="restaurantAddress"
             render={({ field }) => (
               <FormItem>
@@ -120,7 +125,7 @@ const EditLeadForm = ({
             )}
           />
           <FormField
-            control={form.control}
+            control={control}
             name="contactNumber"
             render={({ field }) => (
               <FormItem>
@@ -133,7 +138,7 @@ const EditLeadForm = ({
             )}
           />
           <FormField
-            control={form.control}
+            control={control}
             name="restaurantLeadStatus"
             render={({ field }) => (
               <FormItem>
@@ -165,7 +170,7 @@ const EditLeadForm = ({
           />
 
           <FormField
-            control={form.control}
+            control={control}
             name="assignedKAM"
             render={({ field }) => (
               <FormItem>

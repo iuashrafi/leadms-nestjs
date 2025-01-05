@@ -1,9 +1,10 @@
-import RestaurantCard from "./RestaurantCard";
+import { Fragment } from "react";
+import RestaurantCard from "@/app/leads/_components/RestaurantCard";
 import PreLoader from "@/components/PreLoader";
-import { contract } from "contract";
 import { Button } from "@/components/ui/button";
 import CustomErrorMessage from "@/components/CustomErrorMessage";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import { contract } from "contract";
 import { getQueryClient } from "@/lib/api";
 import { SearchFormType } from "@/types/common";
 
@@ -57,7 +58,7 @@ const LeadsListing = ({
   if (isLoading) {
     return <PreLoader />;
   } else if (error) {
-    return <>En Error occurred!</>;
+    return <Fragment>En Error occurred!</Fragment>;
   }
 
   const leads = data.pages.flatMap((items) => items.body.results);

@@ -1,3 +1,7 @@
+import { format } from "date-fns";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CalendarIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -15,33 +19,24 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { format } from "date-fns";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useApi } from "@/hooks/useApi";
+import { Calendar } from "@/components/ui/calender";
+import { RestaurantInteractionType } from "contract/enum";
+import { cn } from "@/lib/utils";
 import {
   CreateInteractionSchema,
   CreateInteractionSchemaDto,
-} from "@/lib/schema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { RestaurantInteractionType } from "contract/enum";
-import { useForm } from "react-hook-form";
-import { CalendarIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Calendar } from "@/components/ui/calender";
-import { getQueryClient } from "@/lib/api";
+} from "@/types/logs";
+import { intialInteracationValues } from "@/utils/logs";
 import { useQueryClient } from "@tanstack/react-query";
 import { contract } from "contract";
-
-const initialValues: CreateInteractionSchemaDto = {
-  interactionType: RestaurantInteractionType.Call,
-  notes: "",
-  followUp: "No",
-  interactionDate: new Date(),
-};
+import { getQueryClient } from "@/lib/api";
+// import { getQueryClient } from "@/lib/api";
 
 export function EditInteractionForm({
   interaction,
@@ -95,7 +90,7 @@ export function EditInteractionForm({
           refetchType: "active",
         });
         closeModal();
-        form.reset(initialValues);
+        form.reset(intialInteracationValues);
       },
     });
   }

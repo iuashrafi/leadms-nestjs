@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ZodError } from "zod";
 import { usePageLoader } from "@/context/PageLoaderProvider";
-import { useToast, Toast } from "@/hooks/useToast";
+import { useToast, Toast } from "@/hooks/use-toast";
 // import { logout } from "@/utils/common";
 export interface ErrorStatusInterface {
   message: string;

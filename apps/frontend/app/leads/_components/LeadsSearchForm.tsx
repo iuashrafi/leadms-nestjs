@@ -1,3 +1,6 @@
+import { Fragment } from "react";
+import { SubmitHandler, UseFormReturn } from "react-hook-form";
+import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { SearchFormType } from "@/types/common";
 import {
@@ -8,12 +11,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Search } from "lucide-react";
-import { SubmitHandler, UseFormReturn } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { getLeadOptions } from "@/utils/leads";
-import { Fragment } from "react";
 
 const LeadsSearchForm = ({
   searchForm,

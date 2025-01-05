@@ -1,18 +1,19 @@
 "use client";
-
 import * as React from "react";
-
 import type { ToastActionElement, ToastProps } from "@/components/ui/toast";
 
 const TOAST_LIMIT = 1;
-const TOAST_REMOVE_DELAY = 1000000;
+export const TOAST_REMOVE_DELAY = 3000;
 
 type ToasterToast = ToastProps & {
   id: string;
   title?: React.ReactNode;
   description?: React.ReactNode;
   action?: ToastActionElement;
+  duration?: number;
 };
+
+export type Toast = Omit<ToasterToast, "id">;
 
 const actionTypes = {
   ADD_TOAST: "ADD_TOAST",
@@ -24,7 +25,7 @@ const actionTypes = {
 let count = 0;
 
 function genId() {
-  count = (count + 1) % Number.MAX_SAFE_INTEGER;
+  count = (count + 1) % Number.MAX_VALUE;
   return count.toString();
 }
 
@@ -53,7 +54,6 @@ interface State {
 }
 
 const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
-
 const addToRemoveQueue = (toastId: string) => {
   if (toastTimeouts.has(toastId)) {
     return;
@@ -89,8 +89,6 @@ export const reducer = (state: State, action: Action): State => {
     case "DISMISS_TOAST": {
       const { toastId } = action;
 
-      // ! Side effects ! - This could be extracted into a dismissToast() action,
-      // but I'll keep it here for simplicity
       if (toastId) {
         addToRemoveQueue(toastId);
       } else {
@@ -135,8 +133,6 @@ function dispatch(action: Action) {
     listener(memoryState);
   });
 }
-
-type Toast = Omit<ToasterToast, "id">;
 
 function toast({ ...props }: Toast) {
   const id = genId();

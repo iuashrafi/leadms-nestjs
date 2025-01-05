@@ -1,13 +1,12 @@
 "use client";
-
+import { Fragment, Suspense } from "react";
 import { useQueryState } from "@/hooks/useQueryState";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { StaffTable } from "./_components/StaffTable";
-import StaffsSearchForm from "./_components/StaffsSearchForm";
+import { StaffTable } from "@/app/staffs/_components/StaffTable";
+import StaffsSearchForm from "@/app/staffs/_components/StaffsSearchForm";
 import { SearchFormType } from "@/types/common";
-import { Fragment, Suspense } from "react";
 
-const page = () => {
+const StaffsPage = () => {
   return (
     <div>
       <h1 className="text-xl font-bold text-indigo-950">Restaurants Staffs</h1>
@@ -19,6 +18,7 @@ const page = () => {
 };
 
 const StaffsComponent = () => {
+  //TODO: move the default value to the specific utils
   const [allStaffsSearchQuery, setAllStaffsSearchQuery] =
     useQueryState<SearchFormType>("StaffSearchQuery", {
       searchText: "",
@@ -52,4 +52,4 @@ const StaffsComponent = () => {
   );
 };
 
-export default page;
+export default StaffsPage;

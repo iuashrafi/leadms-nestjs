@@ -8,7 +8,6 @@ export function useQueryState<T>(
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  // Initialize state from URL or default value
   const [state, setState] = useState<T>(() => {
     if (typeof window !== "undefined") {
       const value = searchParams.get(key);
@@ -23,12 +22,10 @@ export function useQueryState<T>(
     return defaultValue;
   });
 
-  // Only sync from URL when searchParams changes and the value is different
   useEffect(() => {
     const value = searchParams.get(key);
     const currentStateAsString = JSON.stringify(state);
 
-    // Only update if the URL value is different from current state
     if (value && value !== currentStateAsString) {
       try {
         const parsedValue = JSON.parse(value) as T;
@@ -51,7 +48,6 @@ export function useQueryState<T>(
       const params = new URLSearchParams(searchParams.toString());
       const valueString = JSON.stringify(value);
 
-      // Only update URL if the value is different
       if (valueString !== params.get(key)) {
         params.set(key, valueString);
         router.replace(`?${params.toString()}`);
