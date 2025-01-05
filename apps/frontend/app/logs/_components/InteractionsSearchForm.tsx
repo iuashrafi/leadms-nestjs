@@ -1,9 +1,9 @@
+import { Search } from "lucide-react";
+import { SubmitHandler, UseFormReturn } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { InteractionsSearchFormType } from "@/lib/schema";
-import { Search } from "lucide-react";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import { SubmitHandler, UseFormReturn } from "react-hook-form";
+import { InteractionsSearchFormType } from "@/types/logs";
 
 const InteractionsSearchForm = ({
   searchForm,

@@ -1,22 +1,15 @@
+import Link from "next/link";
+import { ChefHat, ChevronsRight, MapPin, Phone } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ChefHat, ChevronsRight, MapPin, Phone } from "lucide-react";
-import Link from "next/link";
+import { getRestaurantBadgeVariant } from "@/utils/leads";
 
 const RestaurantCard = ({ lead }: any) => {
   return (
     <div className="group col-span-12 sm:col-span-6 lg:col-span-4 transition ease-in-out border bg-white p-4 rounded-xl hover:shadow-lg  hover:scale-[1.01]">
       <div className="text-xl font-semibold flex justify-between items-center">
         <span className="text-gray-900 capitalize">{lead.restaurantName}</span>
-        <Badge
-          variant={
-            lead.restaurantLeadStatus === "New"
-              ? "new"
-              : lead.restaurantLeadStatus === "Active"
-                ? "active"
-                : "inActive"
-          }
-        >
+        <Badge variant={getRestaurantBadgeVariant(lead.restaurantLeadStatus)}>
           {lead.restaurantLeadStatus}
         </Badge>
       </div>

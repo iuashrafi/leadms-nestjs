@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useQueryClient } from "@tanstack/react-query";
+import { zodResolver } from "@hookform/resolvers/zod";
 import ModalWrapper from "@/components/ModalWrapper";
 import {
   Form,
@@ -10,10 +11,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useApi } from "@/hooks/useApi";
-
-import { zodResolver } from "@hookform/resolvers/zod";
-import { RestaurantStaffRole } from "contract/enum";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -24,6 +21,8 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { getQueryClient } from "@/lib/api";
+import { useApi } from "@/hooks/useApi";
+import { RestaurantStaffRole } from "contract/enum";
 import { contract } from "contract";
 import {
   CreateStaffFormSchema,

@@ -1,7 +1,9 @@
 "use client";
+import { Fragment } from "react";
+import { SubmitHandler, UseFormReturn } from "react-hook-form";
+import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -10,11 +12,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { SubmitHandler, UseFormReturn } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { SearchFormType } from "@/types/common";
 import { getRoleOptions } from "@/utils/staffs";
-import { Fragment } from "react";
 
 const StaffsSearchForm = ({
   searchForm,

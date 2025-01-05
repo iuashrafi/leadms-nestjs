@@ -1,5 +1,7 @@
 import React from "react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   Form,
   FormControl,
@@ -8,9 +10,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useApi } from "@/hooks/useApi";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { RestaurantStaffRole } from "contract/enum";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -20,9 +19,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { getQueryClient } from "@/lib/api";
-import { useQueryClient } from "@tanstack/react-query";
+import { useApi } from "@/hooks/useApi";
+import { RestaurantStaffRole } from "contract/enum";
 import { contract } from "contract";
+import { getQueryClient } from "@/lib/api";
 import {
   CreateStaffFormSchema,
   CreateStaffFormSchemaDto,
@@ -39,7 +39,7 @@ const EditStaffForm = ({
   const { makeApiCall } = useApi();
   const invalidationQueryClient = useQueryClient();
 
-  const form = useForm<CreateStaffFormSchemaDto>({
+  const staffForm = useForm<CreateStaffFormSchemaDto>({
     resolver: zodResolver(CreateStaffFormSchema),
     defaultValues: staff
       ? {
@@ -51,12 +51,13 @@ const EditStaffForm = ({
       : initialStaffValue,
   });
 
-  function onSubmit(values: CreateStaffFormSchemaDto) {
+  const { handleSubmit, control } = staffForm;
+
+  const onSubmit: SubmitHandler<CreateStaffFormSchemaDto> = (values) => {
     const body = {
       staffId: staff.staffId,
       ...values,
     };
-    console.log(body);
     makeApiCall({
       fetcherFn: async () => {
         return await getQueryClient().lead.updateStaff.mutation({
@@ -75,13 +76,13 @@ const EditStaffForm = ({
         closeModal();
       },
     });
-  }
+  };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+    <Form {...staffForm}>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <FormField
-          control={form.control}
+          control={control}
           name="name"
           render={({ field }) => (
             <FormItem>
@@ -94,7 +95,7 @@ const EditStaffForm = ({
           )}
         />
         <FormField
-          control={form.control}
+          control={control}
           name="contactNumber"
           render={({ field }) => (
             <FormItem>
@@ -108,7 +109,7 @@ const EditStaffForm = ({
         />
 
         <FormField
-          control={form.control}
+          control={control}
           name="email"
           render={({ field }) => (
             <FormItem>
@@ -121,7 +122,7 @@ const EditStaffForm = ({
           )}
         />
         <FormField
-          control={form.control}
+          control={control}
           name="role"
           render={({ field }) => (
             <FormItem>

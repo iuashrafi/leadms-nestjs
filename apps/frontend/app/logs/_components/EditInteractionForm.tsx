@@ -1,3 +1,7 @@
+import { format } from "date-fns";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CalendarIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -15,31 +19,21 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { format } from "date-fns";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 // import { useApi } from "@/hooks/useApi";
+import { Calendar } from "@/components/ui/calender";
+import { RestaurantInteractionType } from "contract/enum";
+import { cn } from "@/lib/utils";
 import {
   CreateInteractionSchema,
   CreateInteractionSchemaDto,
-} from "@/lib/schema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { RestaurantInteractionType } from "contract/enum";
-import { useForm } from "react-hook-form";
-import { CalendarIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Calendar } from "@/components/ui/calender";
+} from "@/types/logs";
+import { intialInteracationValues } from "@/utils/logs";
 // import { getQueryClient } from "@/lib/api";
-
-const initialValues: CreateInteractionSchemaDto = {
-  interactionType: RestaurantInteractionType.Call,
-  notes: "",
-  followUp: "No",
-  interactionDate: new Date(),
-};
 
 export function EditInteractionForm({
   interactionId,
@@ -51,12 +45,11 @@ export function EditInteractionForm({
 
   const form = useForm<CreateInteractionSchemaDto>({
     resolver: zodResolver(CreateInteractionSchema),
-    defaultValues: initialValues,
+    defaultValues: intialInteracationValues,
   });
 
   function onSubmit(values: CreateInteractionSchemaDto) {
     console.log("form values=", values);
-
     //TODO: uncomment while adding interaction form
     // const body = {
     //   interactionId,

@@ -1,10 +1,9 @@
 "use client";
 
 import React from "react";
-
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -21,29 +20,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
 import { Input } from "@/components/ui/input";
-import { RestaurantLeadStatus } from "contract/enum";
 import { useApi } from "@/hooks/useApi";
-import { getQueryClient } from "@/lib/api";
 import { contract } from "contract";
-import { useQueryClient } from "@tanstack/react-query";
-import { CreateLeadSchemaDto } from "@/types/dashboard";
+import { RestaurantLeadStatus } from "contract/enum";
 import { CreateLeadSchema } from "contract/lead/type";
-
-// const initialValues: CreateLeadSchemaDto = {
-//   restaurantName: "",
-//   restaurantAddress: "",
-//   contactNumber: "",
-//   restaurantLeadStatus: RestaurantLeadStatus.New,
-//   assignedKAM: "",
-// };
+import { getQueryClient } from "@/lib/api";
+import { CreateLeadSchemaDto } from "@/types/dashboard";
 
 const EditLeadForm = ({ data }: any) => {
   const { makeApiCall } = useApi();
   const invalidationQueryClient = useQueryClient();
 
-  const form = useForm<CreateLeadSchemaDto>({
+  const leadForm = useForm<CreateLeadSchemaDto>({
     resolver: zodResolver(CreateLeadSchema),
     defaultValues: {
       restaurantName: data.restaurantName,
@@ -54,7 +43,9 @@ const EditLeadForm = ({ data }: any) => {
     },
   });
 
-  function onSubmit(values: CreateLeadSchemaDto) {
+  const { handleSubmit, control } = leadForm;
+
+  const onUpdateLead: SubmitHandler<CreateLeadSchemaDto> = (values) => {
     const body = {
       id: Number(data.id),
       restaurantName: values.restaurantName,
@@ -63,7 +54,6 @@ const EditLeadForm = ({ data }: any) => {
       currentStatus: values.restaurantLeadStatus,
       assignedKAM: values.assignedKAM,
     };
-    console.log(body);
     makeApiCall({
       fetcherFn: async () => {
         return await getQueryClient().lead.updateLead.mutation({
@@ -81,14 +71,14 @@ const EditLeadForm = ({ data }: any) => {
         });
       },
     });
-  }
+  };
 
   return (
     <div>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <Form {...leadForm}>
+        <form onSubmit={handleSubmit(onUpdateLead)} className="space-y-4">
           <FormField
-            control={form.control}
+            control={control}
             name="restaurantName"
             render={({ field }) => (
               <FormItem>
@@ -101,7 +91,7 @@ const EditLeadForm = ({ data }: any) => {
             )}
           />
           <FormField
-            control={form.control}
+            control={control}
             name="restaurantAddress"
             render={({ field }) => (
               <FormItem>
@@ -114,7 +104,7 @@ const EditLeadForm = ({ data }: any) => {
             )}
           />
           <FormField
-            control={form.control}
+            control={control}
             name="contactNumber"
             render={({ field }) => (
               <FormItem>
@@ -127,7 +117,7 @@ const EditLeadForm = ({ data }: any) => {
             )}
           />
           <FormField
-            control={form.control}
+            control={control}
             name="restaurantLeadStatus"
             render={({ field }) => (
               <FormItem>
@@ -159,7 +149,7 @@ const EditLeadForm = ({ data }: any) => {
           />
 
           <FormField
-            control={form.control}
+            control={control}
             name="assignedKAM"
             render={({ field }) => (
               <FormItem>

@@ -20,3 +20,16 @@ export const initialStaffValue = {
   contactNumber: "",
   email: "",
 };
+
+export const getRestaurantBadgeVariant = (
+  status: string
+): "new" | "active" | "inActive" => {
+  switch (status) {
+    case "New":
+      return "new";
+    case "Active":
+      return "active";
+    default:
+      return "inActive";
+  }
+};

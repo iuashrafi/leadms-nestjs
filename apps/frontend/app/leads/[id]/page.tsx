@@ -21,7 +21,7 @@ import Image from "next/image";
 import PreLoader from "@/components/PreLoader";
 import { InteractionForm } from "@/app/staffs/_components/InteractionForm";
 
-const page = () => {
+const LeadPage = () => {
   const params = useParams();
 
   // lead options
@@ -87,8 +87,6 @@ const page = () => {
   }
 
   if (data?.status !== 200) return <>Error : Leads fetching error</>;
-
-  console.log("data=  ", data);
 
   const lead = data.body;
   return (
@@ -158,7 +156,7 @@ const page = () => {
   );
 };
 
-export default page;
+export default LeadPage;
 
 const StaffCard = ({
   staff,
@@ -244,7 +242,6 @@ const DeleteLeadWrapper = ({
     const body = {
       id: Number(data.id),
     };
-    console.log("deleting lead, body = ", body);
     makeApiCall({
       fetcherFn: async () => {
         return await getQueryClient().lead.deleteLead.mutation({
@@ -301,7 +298,6 @@ const EditStaffWrapper = ({
   isOpen: boolean;
   onClose: () => void;
 }) => {
-  console.log("inside edit staff wrapper, staff=", staff);
   return (
     <DialogWrapper title="Edit Staff" isOpen={isOpen} onClose={onClose}>
       <EditStaffForm staff={staff} closeModal={onClose} />
@@ -324,7 +320,6 @@ const DeleteStaffWrapper = ({
     const body = {
       staffId: staff.staffId,
     };
-    console.log("deleting staff, body = ", body);
     makeApiCall({
       fetcherFn: async () => {
         return await getQueryClient().lead.deleteStaff.mutation({
@@ -362,7 +357,6 @@ const InteractStaffWrapper = ({
   isOpen: boolean;
   onClose: () => void;
 }) => {
-  console.log("inside interact staff wrapper, staff=", staff);
   return (
     <DialogWrapper title="Add Interaction" isOpen={isOpen} onClose={onClose}>
       {!staff && <p>Loading...</p>}

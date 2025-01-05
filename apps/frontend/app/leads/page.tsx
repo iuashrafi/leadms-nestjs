@@ -3,13 +3,13 @@ import { Fragment, Suspense, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import DialogWrapper from "@/components/DialogWrapper";
-import CreateLeadForm from "./_components/CreateLeadForm";
-import LeadsSearchForm from "./_components/LeadsSearchForm";
-import LeadsListing from "./_components/LeadsListing";
+import CreateLeadForm from "@/app/leads/_components/CreateLeadForm";
+import LeadsSearchForm from "@/app/leads/_components/LeadsSearchForm";
+import LeadsListing from "@/app/leads/_components/LeadsListing";
 import { useQueryState } from "@/hooks/useQueryState";
 import { SearchFormType } from "@/types/common";
 
-const page = () => {
+const LeadsPage = () => {
   return (
     <div className="bg-green-00">
       <h1 className="text-xl font-bold text-indigo-950">Restaurants Leads</h1>
@@ -82,4 +82,4 @@ const LeadsComponent = () => {
   );
 };
 
-export default page;
+export default LeadsPage;

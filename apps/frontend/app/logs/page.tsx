@@ -1,12 +1,12 @@
 "use client";
-import { InteractionTable } from "./_components/InteractionTable";
-import InteractionsSearchForm from "./_components/InteractionsSearchForm";
-import { useQueryState } from "@/hooks/useQueryState";
-import { InteractionsSearchFormType } from "@/lib/schema";
 import { Fragment, Suspense } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { InteractionTable } from "@/app/logs/_components/InteractionTable";
+import InteractionsSearchForm from "@/app/logs/_components/InteractionsSearchForm";
+import { useQueryState } from "@/hooks/useQueryState";
+import { InteractionsSearchFormType } from "@/types/logs";
 
-const page = () => {
+const CallLogsPage = () => {
   return (
     <div>
       <h1 className="text-xl font-bold text-indigo-950">Interaction Logs</h1>
@@ -54,4 +54,4 @@ const CallLogsComponent = () => {
   );
 };
 
-export default page;
+export default CallLogsPage;
