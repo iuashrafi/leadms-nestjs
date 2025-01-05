@@ -27,7 +27,10 @@ const LeadsSearchForm = ({
 
   return (
     <Form {...searchForm}>
-      <form onSubmit={handleSubmit(onSearchLeads)} className="flex gap-2">
+      <form
+        onSubmit={handleSubmit(onSearchLeads)}
+        className="flex flex-col md:flex-row flex-wrap lg:flex-nowrap gap-2 h-full"
+      >
         <FormField
           control={searchForm.control}
           name="searchText"
@@ -36,7 +39,7 @@ const LeadsSearchForm = ({
               <FormControl>
                 <Input
                   placeholder="Search for Staff Name, Restaurant"
-                  className="rounded-lg h-[43px] max-w-md px-4 bg-white min-w-[300px]"
+                  className="rounded-lg min-h-11 max-w-md px-4 bg-white min-w-[300px]"
                   {...field}
                 />
               </FormControl>
@@ -52,7 +55,7 @@ const LeadsSearchForm = ({
               value={field.value}
               onValueChange={(value) => field.onChange(value)}
             >
-              <SelectTrigger>
+              <SelectTrigger className="w-full md:max-w-[140px]">
                 <SelectValue placeholder={"Select status"} />
               </SelectTrigger>
               <SelectContent>
@@ -69,7 +72,7 @@ const LeadsSearchForm = ({
         />
 
         <Button
-          className="rounded-lg text-md"
+          className="rounded-lg text-md min-h-11"
           size="lg"
           onClick={handleSubmit(onSearchLeads)}
         >

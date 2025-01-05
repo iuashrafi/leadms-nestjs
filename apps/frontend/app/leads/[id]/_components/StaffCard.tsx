@@ -22,7 +22,7 @@ const StaffCard = ({
   };
 
   return (
-    <div className="col-span-12 sm:col-span-6 lg:col-span-4  group transition ease-in hover:scale-[1.01] hover:shadow-md cursor-pointer border bg-white rounded-2xl p-5 space-y-3">
+    <div className="col-span-12 sm:col-span-6 lg:col-span-4  group transition ease-in hover:scale-[1.01] hover:shadow-md cursor-pointer border bg-white rounded-xl p-5 space-y-3">
       <div className="relative flex gap-0 justify-between">
         <div>
           <h3 className="text-xl font-semibold capitalize leading-tight">

@@ -8,7 +8,7 @@ const DashboardCard = ({ data }: { data: DashboardCardType }) => {
     <Link href={data.link}>
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-[16px] font-medium">
+          <CardTitle className="text-[17px] font-medium">
             {data.title}
           </CardTitle>
           <DashboardCardIcon title={data.title} />
