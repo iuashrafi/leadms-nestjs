@@ -20,8 +20,8 @@ const RestaurantsList = ({
   if (restaurants.length === 0)
     return (
       <CustomErrorMessage
-        title={"No pending calls"}
-        description={"No pending calls found"}
+        title={"No Leads Found"}
+        description={"Try to Add New Leads"}
         wrapperClassName={"min-h-[6vh]"}
       />
     );
