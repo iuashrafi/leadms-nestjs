@@ -172,6 +172,34 @@ export class LeadController
     };
   }
 
+  @TsRest(leadContractController.updateInteraction)
+  async updateInteraction(
+    @TsRestRequest() { body }: LeadRequestShapes['updateInteraction'],
+  ) {
+    await this.leadService.updateInteraction(body);
+    return {
+      status: 200 as const,
+      body: {
+        success: true,
+        message: 'Interaction updated.',
+      },
+    };
+  }
+
+  @TsRest(leadContractController.deleteInteraction)
+  async deleteInteraction(
+    @TsRestRequest() { body }: LeadRequestShapes['deleteInteraction'],
+  ) {
+    await this.leadService.deleteInteraction(body);
+    return {
+      status: 200 as const,
+      body: {
+        success: true,
+        message: 'Interaction deleted.',
+      },
+    };
+  }
+
   @TsRest(leadContractController.getAllInteractions)
   async getAllInteractions(
     @TsRestRequest() { query }: LeadRequestShapes['getAllInteractions'],

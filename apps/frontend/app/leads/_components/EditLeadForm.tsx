@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useQueryClient } from "@tanstack/react-query";
@@ -27,58 +26,74 @@ import { RestaurantLeadStatus } from "contract/enum";
 import { CreateLeadSchema } from "contract/lead/type";
 import { getQueryClient } from "@/lib/api";
 import { CreateLeadSchemaDto } from "@/types/dashboard";
+import { CreateLeadSchema } from "contract/lead/type";
 
-const EditLeadForm = ({ data }: any) => {
+const EditLeadForm = ({
+  data,
+  closeModal,
+}: {
+  data: any;
+  closeModal: () => void;
+}) => {
   const { makeApiCall } = useApi();
   const invalidationQueryClient = useQueryClient();
 
-  const leadForm = useForm<CreateLeadSchemaDto>({
-    resolver: zodResolver(CreateLeadSchema),
+  const form = useForm<any>({
+    // resolver: zodResolver(CreateLeadSchema),
     defaultValues: {
-      restaurantName: data.restaurantName,
-      restaurantAddress: data.address,
-      contactNumber: data.contactNumber,
-      restaurantLeadStatus: data.currentStatus,
-      assignedKAM: data.assignedKAM,
+      // restaurantName: data.restaurantName,
+      // restaurantAddress: data.address,
+      // contactNumber: data.contactNumber,
+      // restaurantLeadStatus: data.currentStatus,
+      // assignedKAM: data.assignedKAM,
     },
   });
 
-  const { handleSubmit, control } = leadForm;
+  console.log(form.formState.errors);
 
-  const onUpdateLead: SubmitHandler<CreateLeadSchemaDto> = (values) => {
-    const body = {
-      id: Number(data.id),
-      restaurantName: values.restaurantName,
-      address: values.restaurantAddress,
-      contactNumber: values.contactNumber,
-      currentStatus: values.restaurantLeadStatus,
-      assignedKAM: values.assignedKAM,
-    };
-    makeApiCall({
-      fetcherFn: async () => {
-        return await getQueryClient().lead.updateLead.mutation({
-          body,
-        });
-      },
-      successMsgProps: {
-        title: `Lead updated successfully`,
-        duration: 2000,
-      },
-      onSuccessFn: () => {
-        invalidationQueryClient.invalidateQueries({
-          queryKey: [contract.lead.getLeadById.path],
-          refetchType: "active",
-        });
-      },
-    });
-  };
+  function onSubmit(values: any) {
+    alert("updating ... ");
+    // const body = {
+    //   id: Number(data.id),
+    //   restaurantName: values.restaurantName,
+    //   address: values.restaurantAddress,
+    //   contactNumber: values.contactNumber,
+    //   currentStatus: values.restaurantLeadStatus,
+    //   assignedKAM: values.assignedKAM,
+    // };
+    // console.log(body);
+    // makeApiCall({
+    //   fetcherFn: async () => {
+    //     return await getQueryClient().lead.updateLead.mutation({
+    //       body,
+    //     });
+    //   },
+    //   successMsgProps: {
+    //     title: `Lead updated successfully`,
+    //     duration: 2000,
+    //   },
+    //   onSuccessFn: () => {
+    //     invalidationQueryClient.invalidateQueries({
+    //       queryKey: [contract.lead.getLeadById.path],
+    //       refetchType: "active",
+    //     });
+    //     closeModal();
+    //   },
+    // });
+  }
 
   return (
     <div>
-      <Form {...leadForm}>
-        <form onSubmit={handleSubmit(onUpdateLead)} className="space-y-4">
-          <FormField
-            control={control}
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit((values) => {
+            console.log("Form Submitted: ", values);
+            onSubmit(values);
+          })}
+          className="space-y-4"
+        >
+          {/* <FormField
+            control={form.control}
             name="restaurantName"
             render={({ field }) => (
               <FormItem>
@@ -160,7 +175,7 @@ const EditLeadForm = ({ data }: any) => {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
           <Button type="submit">Update Lead</Button>
         </form>
       </Form>

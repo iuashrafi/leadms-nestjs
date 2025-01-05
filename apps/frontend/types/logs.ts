@@ -14,4 +14,5 @@ export type CreateInteractionSchemaDto = z.infer<
 
 export type InteractionsSearchFormType = {
   searchText: string;
+  role: string;
 };

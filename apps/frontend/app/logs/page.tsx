@@ -19,19 +19,19 @@ const CallLogsPage = () => {
 
 const CallLogsComponent = () => {
   const [allInteractionsSearchQuery, setAllInteractionsSearchQuery] =
-    useQueryState<InteractionsSearchFormType>("InteractionsSearchQuery", {
+    useQueryState<SearchFormType>("InteractionsSearchQuery", {
       searchText: "",
+      role: "",
     });
 
   const searchForm = useForm({
     defaultValues: {
       searchText: "",
+      role: "",
     },
   });
 
-  const onInteractionsSearch: SubmitHandler<InteractionsSearchFormType> = (
-    data
-  ) => {
+  const onInteractionsSearch: SubmitHandler<SearchFormType> = (data) => {
     setAllInteractionsSearchQuery(data);
   };
 

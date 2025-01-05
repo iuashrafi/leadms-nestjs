@@ -23,21 +23,31 @@ import PreLoader from "@/components/PreLoader";
 import { contract } from "contract";
 import { getQueryClient } from "@/lib/api";
 import { InteractionsSearchFormType } from "@/types/logs";
-
+import { InteractionForm } from "@/app/staffs/_components/InteractionForm";
 export function InteractionTable({
   allInteractionsSearchQuery,
 }: {
   allInteractionsSearchQuery: InteractionsSearchFormType;
 }) {
-  const { searchText } = allInteractionsSearchQuery;
+  const { searchText, role } = allInteractionsSearchQuery;
   const [pageNumber, setPageNumber] = useState<number>(1);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [selectedInteractionId, setSelectedInteractionId] = useState<number>(0);
+  const [selectedInteraction, setSelectedInteraction] = useState<any>({});
+  const [isCreateInteractionModalOpen, setIsCreateInteractionModalOpen] =
+    useState<boolean>(false);
+  const [selectedStaffId, setSelectedStaffId] = useState<number>(0);
 
-  const handleInteraction = (interactionId: number) => {
-    setSelectedInteractionId(interactionId);
+  const handleCreateInteraction = (interaction: any) => {
+    setSelectedStaffId(interaction.staffId);
+    setIsCreateInteractionModalOpen(true);
+  };
+
+  const handleInteraction = (interaction: any) => {
+    setSelectedInteractionId(interaction.id);
+    setSelectedInteraction(interaction);
     setIsModalOpen(true);
   };
 
@@ -77,6 +87,7 @@ export function InteractionTable({
               pageNumber: String(pageNumber),
               pageSize: String(4),
               searchText: searchText,
+              roles: role.trim().length === 0 ? undefined : role,
             },
           };
         },
@@ -114,8 +125,8 @@ export function InteractionTable({
         onClose={closeModal}
       >
         <EditInteractionForm
-          interactionId={selectedInteractionId}
-          onClose={closeModal}
+          interaction={selectedInteraction}
+          closeModal={closeModal}
         />
       </DialogWrapper>
 
@@ -125,9 +136,19 @@ export function InteractionTable({
         onClose={closeDeleteModal}
       >
         <DeleteInteraction
-        //TODO: uncommend when adding delete interaction
-        // interactionId={selectedInteractionId}
-        // onClose={closeDeleteModal}
+          interactionId={selectedInteractionId}
+          closeModal={closeDeleteModal}
+        />
+      </DialogWrapper>
+
+      <DialogWrapper
+        title="Add New Interaction"
+        isOpen={isCreateInteractionModalOpen}
+        onClose={() => setIsCreateInteractionModalOpen(false)}
+      >
+        <InteractionForm
+          staffId={selectedStaffId}
+          closeModal={() => setIsCreateInteractionModalOpen(false)}
         />
       </DialogWrapper>
       <Table className="">
@@ -159,16 +180,20 @@ export function InteractionTable({
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem
-                      onClick={() => handleInteraction(interaction.id)}
+                      onClick={() => handleInteraction(interaction)}
                     >
-                      Edit
+                      Edit Interaction
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() => handleDeleteInteraction(interaction.id)}
                     >
-                      Delete
+                      Delete Interaction
                     </DropdownMenuItem>
-                    <DropdownMenuItem>New Interaction</DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => handleCreateInteraction(interaction)}
+                    >
+                      New Interaction
+                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </TableCell>

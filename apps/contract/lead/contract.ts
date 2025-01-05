@@ -51,7 +51,9 @@ export const leadContract = c.router(
     updateLead: {
       method: "PUT",
       path: "/updateLead",
-      body: RestaurantLeadSchema,
+      body: RestaurantLeadSchema.omit({
+        staffsCount: true,
+      }),
       responses: {
         200: SuccessSchema,
       },
@@ -161,11 +163,41 @@ export const leadContract = c.router(
       },
     },
 
+    updateInteraction: {
+      method: "PUT",
+      path: "/updateInteraction",
+      body: z.object({
+        interactionId: z.number(),
+        interactionDate: z.string().transform((val) => new Date(val)),
+        interactionType: z.nativeEnum(RestaurantInteractionType),
+        notes: z.string().nullable(),
+        followUp: z.boolean(),
+      }),
+      responses: {
+        200: SuccessSchema,
+      },
+    },
+
+    deleteInteraction: {
+      method: "DELETE",
+      path: "/deleteInteraction",
+      body: z.object({
+        interactionId: z.number(),
+      }),
+      responses: {
+        200: SuccessSchema,
+      },
+    },
+
     getAllInteractions: {
       method: "GET",
       path: "/getAllInteractions",
       query: PaginationQuerySchema.extend({
         searchText: z.string().optional(),
+        roles: z
+          .string()
+          .transform((val) => val.split(","))
+          .optional(),
       }),
       responses: {
         200: createPaginatedResponseSchema(

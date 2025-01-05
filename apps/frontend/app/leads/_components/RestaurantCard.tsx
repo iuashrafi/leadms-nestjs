@@ -24,7 +24,7 @@ const RestaurantCard = ({ lead }: any) => {
         </li>
         <li className="flex items-center space-x-2 text-lg text-gray-700">
           <ChefHat size={18} />
-          <span>5 Staffs</span>
+          <span>{lead.staffsCount} Staffs</span>
         </li>
       </ul>
       <Button
