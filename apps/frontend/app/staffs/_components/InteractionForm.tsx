@@ -154,7 +154,7 @@ export function InteractionForm({
           name="interactionDate"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel>Date of birth</FormLabel>
+              <FormLabel>Date of Interaction</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
