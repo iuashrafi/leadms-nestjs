@@ -4,34 +4,56 @@ import { Injectable } from '@nestjs/common';
 import { RestaurantLead } from './entities/restaurantLead.entity';
 import { RestaurantStaff } from '../staff/entities/restaurantStaff.entity';
 import { RestaurantInteraction } from 'src/interaction/entities/restaurantInteraction.entity';
+import { RestaurantInteractionType } from 'contract/enum';
 
 @Injectable()
 export class LeadService {
   constructor(private readonly em: EntityManager) {}
 
   async getDashboardData() {
-    const [restaurantStaffsCount] = await Promise.all([
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+
+    const endOfDay = new Date();
+    endOfDay.setHours(23, 59, 59, 999);
+    const [
+      restaurantStaffsCount,
+      [restaurants, restaurantsCount],
+      [interactions, interactionsCount],
+      todaysPendingCalls,
+    ] = await Promise.all([
       this.em.count(RestaurantStaff, {}),
+      this.em.findAndCount(
+        RestaurantLead,
+        {},
+        {
+          limit: 5,
+          orderBy: { createdAt: QueryOrder.DESC },
+        },
+      ),
+      this.em.findAndCount(
+        RestaurantInteraction,
+        {},
+        {
+          limit: 5,
+          orderBy: { createdAt: QueryOrder.DESC },
+          populate: ['staff'],
+        },
+      ),
+      this.em.find(
+        RestaurantInteraction,
+        {
+          interactionDate: { $gte: startOfDay, $lte: endOfDay },
+          interactionType: RestaurantInteractionType.Call,
+          followUp: true,
+        },
+        {
+          limit: 5,
+          orderBy: { createdAt: QueryOrder.DESC },
+          populate: ['staff'],
+        },
+      ),
     ]);
-
-    const [restaurants, restaurantsCount] = await this.em.findAndCount(
-      RestaurantLead,
-      {},
-      {
-        limit: 5,
-        orderBy: { createdAt: QueryOrder.DESC },
-      },
-    );
-
-    const [interactions, interactionsCount] = await this.em.findAndCount(
-      RestaurantInteraction,
-      {},
-      {
-        limit: 5,
-        orderBy: { createdAt: QueryOrder.DESC },
-        populate: ['staff'],
-      },
-    );
 
     return {
       dashboardCards: [
@@ -63,6 +85,14 @@ export class LeadService {
         interactionType: interaction.interactionType,
         interactionDate: interaction.interactionDate,
         notes: interaction.notes,
+      })),
+
+      todaysPendingCalls: todaysPendingCalls.map((interaction) => ({
+        id: interaction.id,
+        staffName: interaction.staff.name,
+        staffContact: interaction.staff.contactNumber,
+        staffEmail: interaction.staff.email,
+        interactionDate: interaction.interactionDate,
       })),
     };
   }
@@ -210,12 +240,43 @@ export class LeadService {
         populate: ['staff'],
       },
     );
+
+    const ordersCountResult = await this.em.getKnex().raw(
+      `select count(*) as ordersCount
+         from restaurant_interaction ri
+         join restaurant_staff rs on ri.staff_id = rs.id
+         where ri.interaction_type = 'Order' and rs.restaurant_lead_id = ?`,
+      [id],
+    );
+
+    const ordersCount =
+      parseInt(ordersCountResult.rows[0].orderscount, 10) || 0;
+
+    const rankResult = await this.em.getKnex().raw(
+      `SELECT rankNo 
+       FROM (
+         SELECT 
+             DENSE_RANK() OVER (ORDER BY COUNT(*) DESC) AS rankNo,
+             rs.restaurant_lead_id
+         FROM restaurant_interaction ri
+         JOIN restaurant_staff rs ON ri.staff_id = rs.id
+         WHERE ri.interaction_type = 'Order'
+         GROUP BY rs.restaurant_lead_id
+       ) AS rankedData
+       WHERE restaurant_lead_id = ?`,
+      [id],
+    );
+
+    const rankNo = parseInt(rankResult.rows[0]?.rankno, 10) || null;
+
     return {
       restaurantName: lead.name,
       address: lead.address,
       contactNumber: lead.contactNumber,
       currentStatus: lead.restaurantLeadStatus,
       assignedKAM: lead.assignedKAM,
+      ordersCount,
+      rankNo,
       staffs: lead.staff.getItems().map((eachStaff) => ({
         staffId: eachStaff.id,
         staffName: eachStaff.name,

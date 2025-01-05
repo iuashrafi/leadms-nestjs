@@ -26,6 +26,7 @@ import { InteractionForm } from "./InteractionForm";
 import EditStaffWrapper from "@/app/leads/[id]/_components/EditStaffWrapper";
 import DeleteStaffWrapper from "@/app/leads/[id]/_components/DeleteStaffWrapper";
 import CustomErrorMessage from "@/components/CustomErrorMessage";
+import { Badge } from "@/components/ui/badge";
 
 export function StaffTable({
   allStaffsSearchQuery,
@@ -134,7 +135,7 @@ export function StaffTable({
   return (
     <div className="rounded-md border bg-white p-2">
       <DialogWrapper
-        title="Interaction"
+        title="Add New Interaction"
         isOpen={isModalOpen}
         onClose={closeModal}
       >
@@ -150,26 +151,44 @@ export function StaffTable({
         isOpen={isDeleteStaffModalOpen}
         onClose={closeDeleteStaffModal}
       />
-      <Table className="">
+      <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="">Staff Name</TableHead>
-            <TableHead className="">Restaurant</TableHead>
+            <TableHead>Staff Name</TableHead>
+            <TableHead>Restaurant</TableHead>
             <TableHead>Role</TableHead>
             <TableHead>Contact</TableHead>
-            <TableHead className="">Email</TableHead>
-            <TableHead className=""></TableHead>
+            <TableHead>Email</TableHead>
+            <TableHead></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
+          {staffsList.length === 0 && (
+            <TableRow>
+              <TableCell
+                colSpan={6}
+                className="text-center pt-8 italic text-muted-foreground"
+              >
+                No Staffs Found
+              </TableCell>
+            </TableRow>
+          )}
           {staffsList.map((staff: any) => (
             <TableRow key={staff.id}>
-              <TableCell className="font-medium">{staff.name}</TableCell>
-              <TableCell className="">{staff.leadName}</TableCell>
-              <TableCell>{staff.role}</TableCell>
-              <TableCell>{staff.contactNumber}</TableCell>
-              <TableCell className="">{staff.email}</TableCell>
-              <TableCell className="">
+              <TableCell className="font-semibold capitalize min-w-[150px]">
+                {staff.name}
+              </TableCell>
+              <TableCell className="capitalize font-semibold min-w-[150px]">
+                {staff.leadName}
+              </TableCell>
+              <TableCell className="min-w-[100px]">
+                <Badge variant={"secondary"}>{staff.role}</Badge>
+              </TableCell>
+              <TableCell className="min-w-[100px]">
+                {staff.contactNumber}
+              </TableCell>
+              <TableCell className="min-w-[170px]">{staff.email}</TableCell>
+              <TableCell className="min-w-[50px]">
                 <DropdownMenu>
                   <DropdownMenuTrigger>
                     <Ellipsis size={16} />
@@ -178,7 +197,7 @@ export function StaffTable({
                     <DropdownMenuItem
                       onClick={() => handleInteraction(staff.id)}
                     >
-                      Interact
+                      New Interaction
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() => onClickViewLeadsInfo(staff.id)}

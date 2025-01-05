@@ -3,6 +3,7 @@ import {
   DashboardCardSchema,
   RecentInterationsSchema,
   RecentRestaurantsSchema,
+  TodaysPendingCallsSchema,
 } from "contract/lead/type";
 
 import { z } from "zod";
@@ -12,6 +13,8 @@ export type DashboardCardType = z.infer<typeof DashboardCardSchema>;
 export type RecentRestaurantsType = z.infer<typeof RecentRestaurantsSchema>;
 
 export type RecentInterationsType = z.infer<typeof RecentInterationsSchema>;
+
+export type TodaysPendingCallsType = z.infer<typeof TodaysPendingCallsSchema>;
 
 export const CreateLeadSchema = z.object({
   restaurantName: z.string().min(2).max(50),

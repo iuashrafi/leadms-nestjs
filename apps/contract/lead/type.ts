@@ -33,10 +33,21 @@ export const RecentInterationsSchema = z.array(
   })
 );
 
+export const TodaysPendingCallsSchema = z.array(
+  z.object({
+    id: z.number(),
+    staffName: z.string(),
+    staffEmail: z.string(),
+    staffContact: z.string(),
+    interactionDate: z.date(),
+  })
+);
+
 export const DashboardResponseSchema = z.object({
   dashboardCards: DashboardCardSchema.array(),
   recentRestaurants: RecentRestaurantsSchema,
   recentInteractions: RecentInterationsSchema,
+  todaysPendingCalls: TodaysPendingCallsSchema,
 });
 
 export const CreateLeadSchema = z.object({
@@ -61,6 +72,8 @@ export const RestaurantStaffsSchema = z.object({
 });
 
 export const ReastaurantLeadListSchema = RestaurantLeadSchema.extend({
+  ordersCount: z.number(),
+  rankNo: z.number().nullable(),
   staffs: z.array(RestaurantStaffsSchema),
 });
 export const RestaurantStaffSchema = z.object({
