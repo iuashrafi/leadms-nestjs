@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import RestaurantCard from "@/app/leads/_components/RestaurantCard";
 import PreLoader from "@/components/PreLoader";
 import { Button } from "@/components/ui/button";
@@ -30,7 +29,7 @@ const LeadsListing = ({
       return {
         query: {
           pageNumber: String(pageParam.pageNumber),
-          pageSize: String(4),
+          pageSize: String(9),
           searchText,
           roles: role.trim().length === 0 ? undefined : role,
         },
@@ -58,7 +57,12 @@ const LeadsListing = ({
   if (isLoading) {
     return <PreLoader />;
   } else if (error) {
-    return <Fragment>En Error occurred!</Fragment>;
+    return (
+      <CustomErrorMessage
+        title={"Error"}
+        description={"OOPS! An error occurred while loading leads."}
+      />
+    );
   }
 
   const leads = data.pages.flatMap((items) => items.body.results);

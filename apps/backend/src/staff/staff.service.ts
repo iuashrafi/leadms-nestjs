@@ -1,9 +1,9 @@
 import { wrap, EntityManager } from '@mikro-orm/postgresql';
 import { Injectable } from '@nestjs/common';
 import { StaffRequestShapes } from './staff.controller';
-import { RestaurantLead } from 'src/lead/entities/restaurantLead.entity';
-import { RestaurantStaff } from 'src/staff/entities/restaurantStaff.entity';
-import { RestaurantInteraction } from 'src/interaction/entities/restaurantInteraction.entity';
+import { RestaurantLead } from '../lead/entities/restaurantLead.entity';
+import { RestaurantStaff } from '../staff/entities/restaurantStaff.entity';
+import { RestaurantInteraction } from '../interaction/entities/restaurantInteraction.entity';
 
 @Injectable()
 export class StaffService {
@@ -151,7 +151,7 @@ export class StaffService {
     });
 
     // Cascading - Before deleting staff, lets delete all the Interactions with the current staff
-    await this.em.nativeDelete(RestaurantInteraction, { staff: staff.id });
+    await this.em.nativeDelete(RestaurantInteraction, { staff: staffId });
 
     await this.em.removeAndFlush(staff);
   }

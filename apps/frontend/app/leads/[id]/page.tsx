@@ -81,10 +81,21 @@ const LeadPage = () => {
   if (isLoading) {
     return <PreLoader />;
   } else if (isError) {
-    return <>En Error occurred!</>;
+    return (
+      <CustomErrorMessage
+        title={"Error"}
+        description={"OOPS! An error occurred while loading lead's data."}
+      />
+    );
   }
 
-  if (data?.status !== 200) return <>Error : Leads fetching error</>;
+  if (data?.status !== 200)
+    return (
+      <CustomErrorMessage
+        title={"Error"}
+        description={"Error loading lead's data"}
+      />
+    );
 
   const lead = data.body;
   return (

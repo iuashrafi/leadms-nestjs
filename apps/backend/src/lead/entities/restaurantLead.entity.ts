@@ -1,4 +1,11 @@
-import { Collection, Entity, Enum, OneToMany, Property } from '@mikro-orm/core';
+import {
+  Cascade,
+  Collection,
+  Entity,
+  Enum,
+  OneToMany,
+  Property,
+} from '@mikro-orm/core';
 import { BaseEntity } from 'src/base.entity';
 import { RestaurantLeadStatus } from 'contract/enum';
 import { RestaurantStaff } from '../../staff/entities/restaurantStaff.entity';
@@ -29,7 +36,9 @@ export class RestaurantLead extends BaseEntity {
   @Property()
   assignedKAM: string;
 
-  @OneToMany(() => RestaurantStaff, (staff) => staff.restaurantLead)
+  @OneToMany(() => RestaurantStaff, (staff) => staff.restaurantLead, {
+    cascade: [Cascade.REMOVE],
+  })
   staff = new Collection<RestaurantStaff>(this);
 
   constructor({

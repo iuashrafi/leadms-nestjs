@@ -8,6 +8,7 @@ import {
 import { PostgreSqlDriver } from '@mikro-orm/postgresql';
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
 import { NotFoundException } from '@nestjs/common';
+import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
 import 'dotenv/config';
 
 export default defineConfig({
@@ -21,7 +22,7 @@ export default defineConfig({
   user: process.env.DB_USERNAME as string,
   port: Number(process.env.DB_PORT),
   loadStrategy: LoadStrategy.JOINED,
-
+  highlighter: new SqlHighlighter(),
   metadataProvider: TsMorphMetadataProvider,
 
   debug: true,

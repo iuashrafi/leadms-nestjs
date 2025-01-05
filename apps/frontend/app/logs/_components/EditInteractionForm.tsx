@@ -72,8 +72,6 @@ export function EditInteractionForm({
       followUp: values.followUp === "Yes" ? true : false,
     };
 
-    console.log("body to submit  = ", body);
-
     makeApiCall({
       fetcherFn: async () => {
         return await getQueryClient().interaction.updateInteraction.mutation({
@@ -81,7 +79,7 @@ export function EditInteractionForm({
         });
       },
       successMsgProps: {
-        title: `Interaction Updated successfully`,
+        title: `Interaction updated successfully!`,
         duration: 2000,
       },
       onSuccessFn: () => {

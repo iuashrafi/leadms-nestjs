@@ -65,7 +65,7 @@ const EditStaffForm = ({
         });
       },
       successMsgProps: {
-        title: `Staff updated successfully`,
+        title: `Staff updated successfully!`,
         duration: 2000,
       },
       onSuccessFn: () => {

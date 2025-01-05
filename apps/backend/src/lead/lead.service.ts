@@ -50,7 +50,7 @@ export class LeadService {
         {
           title: 'Total Interactions',
           subTitle: 'Calls, Visits, Orders etc',
-          link: '/',
+          link: '/logs',
           itemsCount: interactionsCount,
         },
       ],
@@ -153,7 +153,6 @@ export class LeadService {
     }
 
     if (leadStatus && leadStatus.length > 0) {
-      console.log(leadStatus);
       const leadStatusFilters = leadStatus
         .map((r) => `r.restaurant_lead_status = '${r}'`)
         .join(' OR ');
@@ -228,7 +227,13 @@ export class LeadService {
   }
 
   async deleteLead(id: number) {
-    const lead = await this.em.findOneOrFail(RestaurantLead, { id });
+    const lead = await this.em.findOneOrFail(
+      RestaurantLead,
+      { id },
+      {
+        populate: ['staff', 'staff.interactions'],
+      },
+    );
     await this.em.remove(lead).flush();
   }
 }

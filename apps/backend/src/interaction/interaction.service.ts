@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InteractionRequestShapes } from './interaction.controller';
 import { wrap, EntityManager } from '@mikro-orm/postgresql';
-import { RestaurantStaff } from 'src/staff/entities/restaurantStaff.entity';
+import { RestaurantStaff } from '../staff/entities/restaurantStaff.entity';
 import { RestaurantInteraction } from './entities/restaurantInteraction.entity';
 
 @Injectable()
@@ -92,7 +92,6 @@ export class InteractionService {
     }
 
     if (interactionTypes && interactionTypes.length > 0) {
-      console.log(interactionTypes);
       const interactionTypesFilters = interactionTypes
         .map((r) => `ri.interaction_type = '${r}'`)
         .join(' OR ');

@@ -39,8 +39,6 @@ const CreateStaff = ({ leadId }: { leadId: number }) => {
   });
 
   function onSubmit(values: CreateStaffFormSchemaDto) {
-    console.log(values);
-
     const body = {
       leadId,
       ...values,
@@ -52,7 +50,7 @@ const CreateStaff = ({ leadId }: { leadId: number }) => {
         });
       },
       successMsgProps: {
-        title: `Lead Staff created successfully`,
+        title: `Staff added successfully!`,
         duration: 2000,
       },
       onSuccessFn: () => {
