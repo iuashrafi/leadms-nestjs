@@ -58,6 +58,7 @@ export const interactionContract = c.router(
           .string()
           .transform((val) => val.split(","))
           .optional(),
+        staffId: z.string().transform(Number).optional(),
       }),
       responses: {
         200: createPaginatedResponseSchema(
