@@ -1,9 +1,12 @@
 import { initContract } from "@ts-rest/core";
-import { PaginationQuerySchema, SuccessSchema } from "contract/common";
-import { RestaurantStaffRole } from "contract/enum";
+import { SearchQuerySchema, SuccessSchema } from "contract/common";
 import { RestaurantStaffSchema } from "contract/lead/type";
 import { createPaginatedResponseSchema } from "contract/utils";
 import { z } from "zod";
+import {
+  CreateRestaurantStaffSchema,
+  UpdateRestaurantStaffSchema,
+} from "./type";
 
 const c = initContract();
 
@@ -12,13 +15,7 @@ export const staffContract = c.router(
     createRestaurantStaff: {
       method: "POST",
       path: "/createRestaurantStaff",
-      body: z.object({
-        leadId: z.number(),
-        name: z.string(),
-        role: z.nativeEnum(RestaurantStaffRole),
-        contactNumber: z.string(),
-        email: z.string(),
-      }),
+      body: CreateRestaurantStaffSchema,
       responses: {
         201: SuccessSchema,
       },
@@ -27,13 +24,7 @@ export const staffContract = c.router(
     getAllStaffs: {
       method: "GET",
       path: "/getAllStaffs",
-      query: PaginationQuerySchema.extend({
-        searchText: z.string().optional(),
-        roles: z
-          .string()
-          .transform((val) => val.split(","))
-          .optional(),
-      }),
+      query: SearchQuerySchema,
       responses: {
         200: createPaginatedResponseSchema(RestaurantStaffSchema),
       },
@@ -42,13 +33,7 @@ export const staffContract = c.router(
     updateStaff: {
       method: "PUT",
       path: "/updateStaff",
-      body: z.object({
-        staffId: z.number(),
-        name: z.string(),
-        role: z.nativeEnum(RestaurantStaffRole),
-        contactNumber: z.string(),
-        email: z.string(),
-      }),
+      body: UpdateRestaurantStaffSchema,
       responses: {
         200: SuccessSchema,
       },
@@ -59,7 +44,6 @@ export const staffContract = c.router(
       path: "/deleteStaff",
       body: z.object({
         staffId: z.number(),
-        // leadId: z.number(),
       }),
       responses: {
         200: SuccessSchema,
