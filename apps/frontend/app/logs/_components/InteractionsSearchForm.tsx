@@ -55,7 +55,7 @@ const InteractionsSearchForm = ({
               value={field.value}
               onValueChange={(value) => field.onChange(value)}
             >
-              <SelectTrigger>
+              <SelectTrigger className="w-full md:w-[140px]">
                 <SelectValue placeholder={"Type"} />
               </SelectTrigger>
               <SelectContent>
@@ -71,7 +71,7 @@ const InteractionsSearchForm = ({
           )}
         />
         <Button
-          className="rounded-lg text-md"
+          className="rounded-lg text-md min-h-11"
           size="lg"
           onClick={handleSubmit(onInteractionsSearch)}
         >

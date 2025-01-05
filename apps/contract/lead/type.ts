@@ -52,6 +52,17 @@ export const RestaurantLeadSchema = CreateLeadSchema.extend({
   staffsCount: z.number(),
 });
 
+export const RestaurantStaffsSchema = z.object({
+  staffId: z.number(),
+  staffName: z.string(),
+  role: z.nativeEnum(RestaurantStaffRole),
+  contactNumber: z.string(),
+  email: z.string(),
+});
+
+export const ReastaurantLeadListSchema = RestaurantLeadSchema.extend({
+  staffs: z.array(RestaurantStaffsSchema),
+});
 export const RestaurantStaffSchema = z.object({
   id: z.number(),
   name: z.string(),

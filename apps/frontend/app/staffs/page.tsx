@@ -9,7 +9,9 @@ import { SearchFormType } from "@/types/common";
 const StaffsPage = () => {
   return (
     <div>
-      <h1 className="text-xl font-bold text-indigo-950">Restaurants Staffs</h1>
+      <h1 className=" text-[24px] md:text-[28px] lg:text-[32px] leading-tight font-bold text-indigo-950">
+        Restaurants Staffs
+      </h1>
       <Suspense fallback={<p>Loading staffs data...</p>}>
         <StaffsComponent />
       </Suspense>
@@ -38,13 +40,11 @@ const StaffsComponent = () => {
 
   return (
     <Fragment>
-      <div className="p-4">
-        <div className="mt-4 mb-6 flex">
-          <StaffsSearchForm
-            searchForm={searchForm}
-            onStaffsSearch={onStaffsSearch}
-          />
-        </div>
+      <div className="mt-4 mb-6 space-x-2 w-fit">
+        <StaffsSearchForm
+          searchForm={searchForm}
+          onStaffsSearch={onStaffsSearch}
+        />
       </div>
 
       <StaffTable allStaffsSearchQuery={allStaffsSearchQuery} />

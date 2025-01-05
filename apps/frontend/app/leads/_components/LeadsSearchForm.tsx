@@ -55,7 +55,7 @@ const LeadsSearchForm = ({
               value={field.value}
               onValueChange={(value) => field.onChange(value)}
             >
-              <SelectTrigger className="w-full md:max-w-[140px]">
+              <SelectTrigger className="w-full md:w-[140px]">
                 <SelectValue placeholder={"Select status"} />
               </SelectTrigger>
               <SelectContent>

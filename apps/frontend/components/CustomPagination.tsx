@@ -26,9 +26,9 @@ const CustomPagination = ({
   };
 
   return (
-    <div className="flex gap-1">
+    <div className="flex mt-3">
       <Pagination>
-        <PaginationContent>
+        <PaginationContent className="space-x-1">
           <PaginationItem>
             <PaginationPrevious
               href="#"
