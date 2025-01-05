@@ -9,6 +9,10 @@ export const CreateRestaurantStaffSchema = z.object({
   email: z.string(),
 });
 
-export const UpdateRestaurantStaffSchema = CreateRestaurantStaffSchema.extend({
+export const UpdateRestaurantStaffSchema = z.object({
   staffId: z.number(),
+  name: z.string(),
+  role: z.nativeEnum(RestaurantStaffRole),
+  contactNumber: z.string(),
+  email: z.string(),
 });
