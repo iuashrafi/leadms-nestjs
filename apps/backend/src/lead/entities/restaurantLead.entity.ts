@@ -1,7 +1,7 @@
 import { Collection, Entity, Enum, OneToMany, Property } from '@mikro-orm/core';
 import { BaseEntity } from 'src/base.entity';
 import { RestaurantLeadStatus } from 'contract/enum';
-import { RestaurantStaff } from './restaurantStaff.entity';
+import { RestaurantStaff } from '../../staff/entities/restaurantStaff.entity';
 
 // Given in Doc
 // Restaurant name

@@ -1,7 +1,7 @@
 import { Entity, Enum, ManyToOne, Property } from '@mikro-orm/core';
 import { RestaurantInteractionType } from 'contract/enum';
 import { BaseEntity } from 'src/base.entity';
-import { RestaurantStaff } from './restaurantStaff.entity';
+import { RestaurantStaff } from 'src/staff/entities/restaurantStaff.entity';
 
 // Record basic details about each interaction:
 // ○ Date of interaction
