@@ -15,6 +15,7 @@ import LeadOptions from "@/app/leads/[id]/_components/LeadOptions";
 import StaffCard from "@/app/leads/[id]/_components/StaffCard";
 import { contract } from "contract";
 import { getQueryClient } from "@/lib/api";
+import CustomErrorMessage from "@/components/CustomErrorMessage";
 
 const LeadPage = () => {
   const params = useParams();
@@ -77,7 +78,12 @@ const LeadPage = () => {
   if (isLoading) {
     return <PreLoader />;
   } else if (isError) {
-    return <>En Error occurred!</>;
+    return (
+      <CustomErrorMessage
+        title={"Error"}
+        description={"Error loading lead's data"}
+      />
+    );
   }
 
   if (data?.status !== 200) return <>Error : Leads fetching error</>;
@@ -133,7 +139,6 @@ const LeadPage = () => {
           <Button onClick={() => setIsCreateStaffModalOpen(true)}>
             Add New Staff
           </Button>
-          {/* <CreateStaff leadId={Number(params.id)} /> */}
           <LeadOptions
             openEditLeadModal={() => setIsEditLeadModalOpen(true)}
             openDeleteLeadModal={() => setIsDeleteLeadModalOpen(true)}

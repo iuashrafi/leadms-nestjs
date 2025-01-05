@@ -6,6 +6,7 @@ import TodaysPendingCalls from "@/app/(dashboard)/_components/TodaysPendingCalls
 import PreLoader from "@/components/PreLoader";
 import { contract } from "contract";
 import { getQueryClient } from "@/lib/api";
+import CustomErrorMessage from "@/components/CustomErrorMessage";
 
 export default function DashboardPage() {
   const { data, isError, isLoading } =
@@ -17,10 +18,13 @@ export default function DashboardPage() {
   if (isLoading) {
     return <PreLoader />;
   } else if (isError) {
-    return <>En Error occurred!</>;
+    return (
+      <CustomErrorMessage
+        title={"Error"}
+        description={"Error loading dashboard data"}
+      />
+    );
   }
-
-  if (data?.status !== 200) return <>Error : Leads fetching error</>;
 
   const dashboardData = data.body;
 

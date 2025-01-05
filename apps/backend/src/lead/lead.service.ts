@@ -50,7 +50,7 @@ export class LeadService {
         {
           title: 'Total Interactions',
           subTitle: 'Calls, Visits, Orders etc',
-          link: '/',
+          link: '/logs',
           itemsCount: interactionsCount,
         },
       ],
@@ -228,7 +228,13 @@ export class LeadService {
   }
 
   async deleteLead(id: number) {
-    const lead = await this.em.findOneOrFail(RestaurantLead, { id });
+    const lead = await this.em.findOneOrFail(
+      RestaurantLead,
+      { id },
+      {
+        populate: ['staff', 'staff.interactions'],
+      },
+    );
     await this.em.remove(lead).flush();
   }
 }

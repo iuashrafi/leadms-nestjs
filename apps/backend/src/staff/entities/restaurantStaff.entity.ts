@@ -1,4 +1,5 @@
 import {
+  Cascade,
   Collection,
   Entity,
   Enum,
@@ -28,7 +29,9 @@ export class RestaurantStaff extends BaseEntity {
   @ManyToOne(() => RestaurantLead)
   restaurantLead: RestaurantLead;
 
-  @OneToMany(() => RestaurantInteraction, (interaction) => interaction.staff)
+  @OneToMany(() => RestaurantInteraction, (interaction) => interaction.staff, {
+    cascade: [Cascade.REMOVE],
+  })
   interactions = new Collection<RestaurantInteraction>(this);
 
   constructor({
