@@ -166,21 +166,30 @@ export function InteractionTable({
           closeModal={() => setIsCreateInteractionModalOpen(false)}
         />
       </DialogWrapper>
-      <Table className="">
+      <Table>
         <TableHeader>
           <TableRow>
-            {/* <TableHead className="">Id</TableHead> */}
-            <TableHead className="">Interaction With</TableHead>
+            <TableHead>Interaction With</TableHead>
             <TableHead>Type</TableHead>
             <TableHead>Date</TableHead>
-            <TableHead className="">Follow up</TableHead>
-            <TableHead className="">Notes</TableHead>
+            <TableHead>Follow up</TableHead>
+            <TableHead>Notes</TableHead>
+            <TableHead></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
+          {interactionsList.length === 0 && (
+            <TableRow>
+              <TableCell
+                colSpan={5}
+                className="text-center pt-8 italic text-muted-foreground"
+              >
+                No Interactions Found
+              </TableCell>
+            </TableRow>
+          )}
           {interactionsList.map((interaction: any) => (
             <TableRow key={interaction.id}>
-              {/* <TableCell className="font-medium">{interaction.id}</TableCell> */}
               <TableCell className="font-semibold capitalize">
                 {interaction.staffName}
               </TableCell>
@@ -190,17 +199,17 @@ export function InteractionTable({
                 </Badge>
               </TableCell>
               <TableCell>{interaction.interactionDate}</TableCell>
-              <TableCell className="">
+              <TableCell>
                 {interaction.followUp ? (
                   <Badge variant={"active"}>Yes</Badge>
                 ) : (
                   <Badge variant={"inActive"}>No</Badge>
                 )}
               </TableCell>
-              <TableCell className="">
+              <TableCell>
                 <Badge variant={"notes"}>{interaction.notes ?? "-"}</Badge>
               </TableCell>
-              <TableCell className="">
+              <TableCell>
                 <DropdownMenu>
                   <DropdownMenuTrigger>
                     <Ellipsis size={16} />

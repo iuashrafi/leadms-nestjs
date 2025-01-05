@@ -151,18 +151,28 @@ export function StaffTable({
         isOpen={isDeleteStaffModalOpen}
         onClose={closeDeleteStaffModal}
       />
-      <Table className="">
+      <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="">Staff Name</TableHead>
-            <TableHead className="">Restaurant</TableHead>
+            <TableHead>Staff Name</TableHead>
+            <TableHead>Restaurant</TableHead>
             <TableHead>Role</TableHead>
             <TableHead>Contact</TableHead>
-            <TableHead className="">Email</TableHead>
-            <TableHead className=""></TableHead>
+            <TableHead>Email</TableHead>
+            <TableHead></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
+          {staffsList.length === 0 && (
+            <TableRow>
+              <TableCell
+                colSpan={5}
+                className="text-center pt-8 italic text-muted-foreground"
+              >
+                No Staffs Found
+              </TableCell>
+            </TableRow>
+          )}
           {staffsList.map((staff: any) => (
             <TableRow key={staff.id}>
               <TableCell className="font-semibold capitalize">
@@ -175,8 +185,8 @@ export function StaffTable({
                 <Badge variant={"secondary"}>{staff.role}</Badge>
               </TableCell>
               <TableCell>{staff.contactNumber}</TableCell>
-              <TableCell className="">{staff.email}</TableCell>
-              <TableCell className="">
+              <TableCell>{staff.email}</TableCell>
+              <TableCell>
                 <DropdownMenu>
                   <DropdownMenuTrigger>
                     <Ellipsis size={16} />
