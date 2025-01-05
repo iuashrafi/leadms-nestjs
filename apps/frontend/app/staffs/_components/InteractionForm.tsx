@@ -64,7 +64,7 @@ export function InteractionForm({
     };
     makeApiCall({
       fetcherFn: async () => {
-        return await getQueryClient().lead.createInteraction.mutation({
+        return await getQueryClient().interaction.createInteraction.mutation({
           body,
         });
       },

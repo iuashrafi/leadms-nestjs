@@ -60,7 +60,7 @@ const EditStaffForm = ({
     };
     makeApiCall({
       fetcherFn: async () => {
-        return await getQueryClient().lead.updateStaff.mutation({
+        return await getQueryClient().staff.updateStaff.mutation({
           body,
         });
       },

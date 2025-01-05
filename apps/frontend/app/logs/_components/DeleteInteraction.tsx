@@ -20,7 +20,7 @@ const DeleteInteraction = ({
     };
     makeApiCall({
       fetcherFn: async () => {
-        return await getQueryClient().lead.deleteInteraction.mutation({
+        return await getQueryClient().interaction.deleteInteraction.mutation({
           body,
         });
       },
@@ -30,7 +30,7 @@ const DeleteInteraction = ({
       },
       onSuccessFn: () => {
         invalidationQueryClient.invalidateQueries({
-          queryKey: [contract.lead.getAllInteractions.path],
+          queryKey: [contract.interaction.getAllInteractions.path],
           refetchType: "active",
         });
         closeModal();
