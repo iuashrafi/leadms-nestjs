@@ -8,10 +8,9 @@ import {
   RestaurantLeadSchema,
   // RestaurantStaffSchema,
 } from "./type";
-import {
-  // RestaurantInteractionType,
-  RestaurantStaffRole,
-} from "../enum";
+import {} from // RestaurantInteractionType,
+// RestaurantStaffRole,
+"../enum";
 import { createPaginatedResponseSchema } from "contract/utils";
 
 const c = initContract();
