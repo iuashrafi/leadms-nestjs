@@ -25,12 +25,11 @@ const DeleteStaffWrapper = ({
         });
       },
       successMsgProps: {
-        title: `Staff updated successfully`,
+        title: `Staff deleted successfully!`,
         duration: 2000,
       },
       onSuccessFn: () => {
         onClose();
-        alert("delete successfully!");
       },
     });
   }

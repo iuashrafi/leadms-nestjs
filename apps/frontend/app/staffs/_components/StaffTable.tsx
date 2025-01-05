@@ -1,5 +1,5 @@
 "use client";
-
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Ellipsis } from "lucide-react";
 import {
@@ -23,16 +23,45 @@ import { contract } from "contract";
 import { getQueryClient } from "@/lib/api";
 import { SearchFormType } from "@/types/common";
 import { InteractionForm } from "./InteractionForm";
+import EditStaffWrapper from "@/app/leads/[id]/_components/EditStaffWrapper";
+import DeleteStaffWrapper from "@/app/leads/[id]/_components/DeleteStaffWrapper";
 
 export function StaffTable({
   allStaffsSearchQuery,
 }: {
   allStaffsSearchQuery: SearchFormType;
 }) {
+  const router = useRouter();
   const { searchText, role } = allStaffsSearchQuery;
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedStaffId, setSelectedStaffId] = useState<number>(0);
+  const [selectedStaff, setSelectedStaff] = useState(null);
+
+  const [isEditStaffModalOpen, setIsEditStaffModalOpen] =
+    useState<boolean>(false);
+  const [isDeleteStaffModalOpen, setIsDeleteStaffModalOpen] =
+    useState<boolean>(false);
+
+  const openEditStaffModal = (staff) => {
+    setSelectedStaff({ ...staff, staffId: staff.id, staffName: staff.name });
+    setIsEditStaffModalOpen(true);
+  };
+
+  const closeEditStaffModal = () => {
+    setIsEditStaffModalOpen(false);
+    setSelectedStaff(null);
+  };
+
+  const openDeleteStaffModal = (staff) => {
+    setSelectedStaff({ ...staff, staffId: staff.id });
+
+    setIsDeleteStaffModalOpen(true);
+  };
+  const closeDeleteStaffModal = () => {
+    setIsDeleteStaffModalOpen(false);
+    setSelectedStaff(null);
+  };
 
   const handleInteraction = (staffId: number) => {
     setSelectedStaffId(staffId);
@@ -42,6 +71,10 @@ export function StaffTable({
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedStaffId(0);
+  };
+
+  const onClickViewLeadsInfo = (staffId: number) => {
+    router.push("/logs?staffId=" + staffId);
   };
 
   useEffect(() => {
@@ -103,6 +136,16 @@ export function StaffTable({
       >
         <InteractionForm staffId={selectedStaffId} closeModal={closeModal} />
       </DialogWrapper>
+      <EditStaffWrapper
+        staff={selectedStaff}
+        isOpen={isEditStaffModalOpen}
+        onClose={closeEditStaffModal}
+      />
+      <DeleteStaffWrapper
+        staff={selectedStaff}
+        isOpen={isDeleteStaffModalOpen}
+        onClose={closeDeleteStaffModal}
+      />
       <Table className="">
         <TableHeader>
           <TableRow>
@@ -133,9 +176,19 @@ export function StaffTable({
                     >
                       Interact
                     </DropdownMenuItem>
-                    <DropdownMenuItem>View Interactions</DropdownMenuItem>
-                    <DropdownMenuItem>Edit Staff</DropdownMenuItem>
-                    <DropdownMenuItem>Delete Staff</DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => onClickViewLeadsInfo(staff.id)}
+                    >
+                      View Interactions
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => openEditStaffModal(staff)}>
+                      Edit Staff
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => openDeleteStaffModal(staff)}
+                    >
+                      Delete Staff
+                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </TableCell>
