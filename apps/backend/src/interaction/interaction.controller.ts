@@ -18,7 +18,7 @@ export type InteractionRequestShapes = NestRequestShapes<
   typeof interactionContractController
 >;
 
-@Controller('interaction')
+@Controller()
 export class InteractionController
   implements NestControllerInterface<typeof interactionContractController>
 {
