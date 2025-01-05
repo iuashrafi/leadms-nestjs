@@ -72,9 +72,9 @@ export function InteractionTable({
   }, [allInteractionsSearchQuery]);
 
   const { data, isLoading, error } =
-    getQueryClient().lead.getAllInteractions.useInfiniteQuery(
+    getQueryClient().interaction.getAllInteractions.useInfiniteQuery(
       [
-        contract.lead.getAllInteractions.path,
+        contract.interaction.getAllInteractions.path,
         allInteractionsSearchQuery,
         searchText,
         pageNumber,

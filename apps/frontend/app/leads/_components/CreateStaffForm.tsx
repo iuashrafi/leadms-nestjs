@@ -51,7 +51,7 @@ const CreateStaffForm = ({
     };
     makeApiCall({
       fetcherFn: async () => {
-        return await getQueryClient().lead.createRestaurantStaff.mutation({
+        return await getQueryClient().staff.createRestaurantStaff.mutation({
           body,
         });
       },

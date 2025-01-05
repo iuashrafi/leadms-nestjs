@@ -354,7 +354,7 @@ const DeleteStaffWrapper = ({
     };
     makeApiCall({
       fetcherFn: async () => {
-        return await getQueryClient().lead.deleteStaff.mutation({
+        return await getQueryClient().staff.deleteStaff.mutation({
           body,
         });
       },

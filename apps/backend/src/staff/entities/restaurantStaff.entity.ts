@@ -8,8 +8,8 @@ import {
 } from '@mikro-orm/core';
 import { RestaurantStaffRole } from 'contract/enum';
 import { BaseEntity } from 'src/base.entity';
-import { RestaurantLead } from './restaurantLead.entity';
-import { RestaurantInteraction } from './restaurantInteraction.entity';
+import { RestaurantLead } from '../../lead/entities/restaurantLead.entity';
+import { RestaurantInteraction } from 'src/interaction/entities/restaurantInteraction.entity';
 
 @Entity()
 export class RestaurantStaff extends BaseEntity {

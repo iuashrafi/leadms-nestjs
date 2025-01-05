@@ -81,7 +81,7 @@ export function EditInteractionForm({
 
     makeApiCall({
       fetcherFn: async () => {
-        return await getQueryClient().lead.updateInteraction.mutation({
+        return await getQueryClient().interaction.updateInteraction.mutation({
           body,
         });
       },
@@ -91,7 +91,7 @@ export function EditInteractionForm({
       },
       onSuccessFn: () => {
         invalidationQueryClient.invalidateQueries({
-          queryKey: [contract.lead.getAllInteractions.path],
+          queryKey: [contract.interaction.getAllInteractions.path],
           refetchType: "active",
         });
         closeModal();

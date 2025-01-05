@@ -49,9 +49,9 @@ export function StaffTable({
   }, [allStaffsSearchQuery]);
 
   const { data, isLoading, error } =
-    getQueryClient().lead.getAllStaffs.useInfiniteQuery(
+    getQueryClient().staff.getAllStaffs.useInfiniteQuery(
       [
-        contract.lead.getAllStaffs.path,
+        contract.staff.getAllStaffs.path,
         allStaffsSearchQuery,
         searchText,
         pageNumber,
