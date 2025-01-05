@@ -8,7 +8,7 @@ const TodaysPendingCalls = ({
   interactions: RecentInterationsType;
 }) => {
   return (
-    <Card>
+    <Card className="shadow-none">
       <CardHeader>
         <CardTitle>Today's Pending Calls</CardTitle>
         <TodaysPendingCallsList interactions={interactions} />

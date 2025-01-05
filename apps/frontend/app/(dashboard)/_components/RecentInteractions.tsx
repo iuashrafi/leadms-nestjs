@@ -8,7 +8,7 @@ const RecentInteractions = ({
   interactions: RecentInterationsType;
 }) => {
   return (
-    <Card>
+    <Card className="shadow-none">
       <CardHeader>
         <CardTitle>Recent Interactions</CardTitle>
         <RecentInteractionsList interactions={interactions} />

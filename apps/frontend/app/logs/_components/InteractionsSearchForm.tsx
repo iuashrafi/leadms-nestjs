@@ -29,7 +29,7 @@ const InteractionsSearchForm = ({
     <Form {...searchForm}>
       <form
         onSubmit={handleSubmit(onInteractionsSearch)}
-        className="flex gap-3"
+        className="flex flex-col md:flex-row flex-wrap lg:flex-nowrap gap-2 h-full"
       >
         <FormField
           control={control}
