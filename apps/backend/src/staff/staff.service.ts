@@ -107,27 +107,13 @@ export class StaffService {
         total: 0,
       };
     }
-
-    // const staffs = await this.em.getKnex().raw(sqlQuery);
-    // return staffs.rows.map((staff) => ({
-    //   id: staff.id,
-    //   name: staff.name,
-    //   role: staff.role,
-    //   contactNumber: staff.contact_number,
-    //   email: staff.email,
-    //   // lead: staff.restaurantLead,
-    // }));
   }
 
   async updateStaff(body: StaffRequestShapes['updateStaff']['body']) {
     const { staffId, email, name, role, contactNumber } = body;
-    // const restaurantLead = await this.em.findOneOrFail(RestaurantLead, {
-    //   id: leadId,
-    // });
 
     const staff = await this.em.findOneOrFail(RestaurantStaff, {
       id: staffId,
-      // restaurantLead,
     });
 
     wrap(staff).assign({
@@ -142,12 +128,9 @@ export class StaffService {
 
   async deleteStaff(body: StaffRequestShapes['deleteStaff']['body']) {
     const { staffId } = body;
-    // const restaurantLead = await this.em.findOneOrFail(RestaurantLead, {
-    //   id: leadId,
-    // });
+
     const staff = await this.em.findOneOrFail(RestaurantStaff, {
       id: staffId,
-      // restaurantLead,
     });
 
     // Cascading - Before deleting staff, lets delete all the Interactions with the current staff

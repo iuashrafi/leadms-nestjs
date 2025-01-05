@@ -1,16 +1,12 @@
 import { initContract } from "@ts-rest/core";
-import { PaginationQuerySchema, SuccessSchema } from "../common";
+import { SuccessSchema, SearchQuerySchema } from "../common";
 import { z } from "zod";
 import {
   CreateLeadSchema,
   DashboardResponseSchema,
   ReastaurantLeadListSchema,
   RestaurantLeadSchema,
-  // RestaurantStaffSchema,
 } from "./type";
-import {} from // RestaurantInteractionType,
-// RestaurantStaffRole,
-"../enum";
 import { createPaginatedResponseSchema } from "contract/utils";
 
 const c = initContract();
@@ -37,17 +33,20 @@ export const leadContract = c.router(
     getAllLeads: {
       method: "GET",
       path: "/getAllLeads",
-      query: PaginationQuerySchema.extend({
-        searchText: z.string().optional(),
-        pageNumber: z.string().transform(Number),
-        pageSize: z.string().transform(Number),
-        roles: z
-          .string()
-          .transform((val) => val.split(","))
-          .optional(),
-      }),
+      query: SearchQuerySchema,
       responses: {
         200: createPaginatedResponseSchema(RestaurantLeadSchema),
+      },
+    },
+
+    getLeadById: {
+      method: "GET",
+      path: "/getLeadById",
+      query: z.object({
+        id: z.string().transform(Number),
+      }),
+      responses: {
+        200: ReastaurantLeadListSchema,
       },
     },
 
@@ -70,17 +69,6 @@ export const leadContract = c.router(
       }),
       responses: {
         200: SuccessSchema,
-      },
-    },
-
-    getLeadById: {
-      method: "GET",
-      path: "/getLeadById",
-      query: z.object({
-        id: z.string().transform(Number),
-      }),
-      responses: {
-        200: ReastaurantLeadListSchema,
       },
     },
   },
