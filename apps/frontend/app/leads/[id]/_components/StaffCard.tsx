@@ -18,7 +18,7 @@ const StaffCard = ({
   const router = useRouter();
 
   const onClickViewLeadsInfo = () => {
-    router.push("/leads?leadId=" + staffId);
+    router.push("/logs?staffId=" + staffId);
   };
 
   return (

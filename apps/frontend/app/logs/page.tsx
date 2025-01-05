@@ -1,5 +1,6 @@
 "use client";
 import { Fragment, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { InteractionTable } from "@/app/logs/_components/InteractionTable";
 import InteractionsSearchForm from "@/app/logs/_components/InteractionsSearchForm";
@@ -18,6 +19,9 @@ const CallLogsPage = () => {
 };
 
 const CallLogsComponent = () => {
+  const searchParams = useSearchParams();
+  const staffId = searchParams.get("staffId");
+
   const [allInteractionsSearchQuery, setAllInteractionsSearchQuery] =
     useQueryState<InteractionsSearchFormType>("InteractionsSearchQuery", {
       searchText: "",
@@ -51,6 +55,7 @@ const CallLogsComponent = () => {
       </div>
       <InteractionTable
         allInteractionsSearchQuery={allInteractionsSearchQuery}
+        staffId={staffId}
       />
     </Fragment>
   );

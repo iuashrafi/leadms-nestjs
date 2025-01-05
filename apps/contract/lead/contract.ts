@@ -5,9 +5,12 @@ import {
   CreateLeadSchema,
   DashboardResponseSchema,
   RestaurantLeadSchema,
-  RestaurantStaffSchema,
+  // RestaurantStaffSchema,
 } from "./type";
-import { RestaurantInteractionType, RestaurantStaffRole } from "../enum";
+import {
+  // RestaurantInteractionType,
+  RestaurantStaffRole,
+} from "../enum";
 import { createPaginatedResponseSchema } from "contract/utils";
 
 const c = initContract();

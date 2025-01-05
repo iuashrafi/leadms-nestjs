@@ -26,12 +26,13 @@ import { InteractionsSearchFormType } from "@/types/logs";
 import { InteractionForm } from "@/app/staffs/_components/InteractionForm";
 export function InteractionTable({
   allInteractionsSearchQuery,
+  staffId,
 }: {
   allInteractionsSearchQuery: InteractionsSearchFormType;
+  staffId: string | null;
 }) {
   const { searchText, role } = allInteractionsSearchQuery;
   const [pageNumber, setPageNumber] = useState<number>(1);
-
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [selectedInteractionId, setSelectedInteractionId] = useState<number>(0);
@@ -77,6 +78,7 @@ export function InteractionTable({
         allInteractionsSearchQuery,
         searchText,
         pageNumber,
+        staffId,
       ],
       () =>
         //TODO: uncomment when it is changed to createPaginatedResponse
@@ -88,6 +90,7 @@ export function InteractionTable({
               pageSize: String(4),
               searchText: searchText,
               roles: role.trim().length === 0 ? undefined : role,
+              staffId: staffId ?? undefined,
             },
           };
         },
