@@ -4,6 +4,7 @@ import { z } from "zod";
 import {
   CreateLeadSchema,
   DashboardResponseSchema,
+  ReastaurantLeadListSchema,
   RestaurantLeadSchema,
   // RestaurantStaffSchema,
 } from "./type";
@@ -80,17 +81,7 @@ export const leadContract = c.router(
         id: z.string().transform(Number),
       }),
       responses: {
-        200: RestaurantLeadSchema.extend({
-          staffs: z.array(
-            z.object({
-              staffId: z.number(),
-              staffName: z.string(),
-              role: z.nativeEnum(RestaurantStaffRole),
-              contactNumber: z.string(),
-              email: z.string(),
-            })
-          ),
-        }),
+        200: ReastaurantLeadListSchema,
       },
     },
   },

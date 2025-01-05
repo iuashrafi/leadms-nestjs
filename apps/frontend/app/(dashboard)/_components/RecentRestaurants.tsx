@@ -7,9 +7,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
 import { RecentRestaurantsType } from "@/types/dashboard";
-import RestaurantsList from "./RestaurantsList";
+import RestaurantsList from "@/app/(dashboard)/_components/RestaurantsList";
 
 const RecentRestaurants = ({
   restaurants,
