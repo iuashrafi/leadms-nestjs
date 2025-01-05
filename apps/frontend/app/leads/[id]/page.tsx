@@ -1,47 +1,35 @@
 "use client";
-import { getQueryClient } from "@/lib/api";
-import { useParams } from "next/navigation";
-import { contract } from "contract";
-import { Button } from "@/components/ui/button";
-import { MapPin, Pencil, Phone, Trash2 } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import DialogWrapper from "@/components/DialogWrapper";
-import { useState } from "react";
-import EditLeadForm from "../_components/EditLeadForm";
-import EditStaffForm from "../_components/EditStaffForm";
-import { useApi } from "@/hooks/useApi";
-import { useRouter } from "next/navigation";
+import { Fragment, useState } from "react";
 import Image from "next/image";
+import { useParams } from "next/navigation";
+import { MapPin } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import PreLoader from "@/components/PreLoader";
-import { InteractionForm } from "@/app/staffs/_components/InteractionForm";
-import CreateStaffForm from "../_components/CreateStaffForm";
+import DeleteLeadWrapper from "@/app/leads/[id]/_components/DeleteLeadWrapper";
+import EditLeadWrapper from "@/app/leads/[id]/_components/EditLeadWrapper";
+import EditStaffWrapper from "@/app/leads/[id]/_components/EditStaffWrapper";
+import DeleteStaffWrapper from "@/app/leads/[id]/_components/DeleteStaffWrapper";
+import InteractStaffWrapper from "@/app/leads/[id]/_components/InteractStaffWrapper";
+import CreateStaffWrapper from "@/app/leads/[id]/_components/CreateStaffWrapper";
+import LeadOptions from "@/app/leads/[id]/_components/LeadOptions";
+import StaffCard from "@/app/leads/[id]/_components/StaffCard";
+import { contract } from "contract";
+import { getQueryClient } from "@/lib/api";
 
 const LeadPage = () => {
   const params = useParams();
-
-  // lead options
   const [isDeleteLeadModalOpen, setIsDeleteLeadModalOpen] =
     useState<boolean>(false);
   const [isEditLeadModalOpen, setIsEditLeadModalOpen] =
     useState<boolean>(false);
-
-  // staff interact/edit/delete options
   const [isEditStaffModalOpen, setIsEditStaffModalOpen] =
     useState<boolean>(false);
   const [isDeleteStaffModalOpen, setIsDeleteStaffModalOpen] =
     useState<boolean>(false);
-
   const [isCreateStaffModalOpen, setIsCreateStaffModalOpen] =
     useState<boolean>(false);
-
   const [isInteractStaffModalOpen, setIsInteractStaffModalOpen] =
     useState<boolean>(false);
-
   const [selectedStaff, setSelectedStaff] = useState(null);
 
   const closeCreateStaffModal = () => {
@@ -76,7 +64,6 @@ const LeadPage = () => {
     setSelectedStaff(null);
   };
 
-  // api call to load page data
   const { data, isError, isLoading } =
     getQueryClient().lead.getLeadById.useQuery(
       [contract.lead.getLeadById.path],
@@ -157,13 +144,14 @@ const LeadPage = () => {
       <div className="px-5 py-8 bg-indigo-00">
         <div className="gap-4 grid grid-cols-12">
           {lead.staffs.map((staff) => (
-            <StaffCard
-              key={staff.staffId}
-              staff={staff}
-              openInteractStaffModal={openInteractStaffModal}
-              openEditStaffModal={openEditStaffModal}
-              openDeleteStaffModal={openDeleteStaffModal}
-            />
+            <Fragment key={staff.staffId}>
+              <StaffCard
+                staff={staff}
+                openInteractStaffModal={openInteractStaffModal}
+                openEditStaffModal={openEditStaffModal}
+                openDeleteStaffModal={openDeleteStaffModal}
+              />
+            </Fragment>
           ))}
         </div>
       </div>
@@ -172,228 +160,3 @@ const LeadPage = () => {
 };
 
 export default LeadPage;
-
-const StaffCard = ({
-  staff,
-  openInteractStaffModal,
-  openEditStaffModal,
-  openDeleteStaffModal,
-}) => {
-  const { staffId, staffName, role, email } = staff;
-  return (
-    <div
-      key={staffId}
-      className="col-span-12 sm:col-span-6 lg:col-span-4  group transition ease-in-out hover:scale-[1.01] hover:shadow-md cursor-pointer border bg-white rounded-2xl p-5"
-    >
-      <div className="relative flex justify-between">
-        <div>
-          <div className="text-lg font-semibold capitalize">{staffName}</div>
-          <div className="text-muted-foreground">{role}</div>
-        </div>
-      </div>
-
-      <div className="flex justify-between">
-        <span className="text-gray-600/80">Email</span>
-        <span>{email}</span>
-      </div>
-      <div className="flex justify-end">
-        <Button
-          variant={"ghost"}
-          size="sm"
-          onClick={() => openInteractStaffModal(staff)}
-        >
-          <Phone />
-        </Button>
-        <Button
-          variant={"ghost"}
-          size="sm"
-          onClick={() => openEditStaffModal(staff)}
-        >
-          <Pencil />
-        </Button>
-        <Button
-          variant={"ghost"}
-          size="sm"
-          onClick={() => openDeleteStaffModal(staff)}
-        >
-          <Trash2 />
-        </Button>
-      </div>
-    </div>
-  );
-};
-
-const LeadOptions = ({ openEditLeadModal, openDeleteLeadModal }) => {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button>Settings</Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuItem onClick={openEditLeadModal}>
-          Edit Lead
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={openDeleteLeadModal}>
-          Delete Lead
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-};
-
-const DeleteLeadWrapper = ({
-  data,
-  isOpen,
-  onClose,
-}: {
-  data: any;
-  isOpen: boolean;
-  onClose: () => void;
-}) => {
-  const router = useRouter();
-  const { makeApiCall } = useApi();
-
-  function handleDelete() {
-    const body = {
-      id: Number(data.id),
-    };
-    makeApiCall({
-      fetcherFn: async () => {
-        return await getQueryClient().lead.deleteLead.mutation({
-          body,
-        });
-      },
-      successMsgProps: {
-        title: `Lead deleted successfully`,
-        duration: 2000,
-      },
-      onSuccessFn: () => {
-        onClose();
-        router.push("/leads");
-      },
-    });
-  }
-
-  return (
-    <DialogWrapper title="Delete Lead" isOpen={isOpen} onClose={onClose}>
-      <div>
-        <p>Are you sure you want to delete this Lead ?</p>
-        <div className="flex justify-end">
-          <Button variant={"destructive"} onClick={handleDelete}>
-            Delete
-          </Button>
-        </div>
-      </div>
-    </DialogWrapper>
-  );
-};
-
-const EditLeadWrapper = ({
-  data,
-  isOpen,
-  onClose,
-}: {
-  data: any;
-  isOpen: boolean;
-  onClose: () => void;
-}) => {
-  return (
-    <DialogWrapper title="Edit Lead" isOpen={isOpen} onClose={onClose}>
-      <EditLeadForm data={data} closeModal={onClose} />
-    </DialogWrapper>
-  );
-};
-
-const CreateStaffWrapper = ({
-  leadId,
-  isOpen,
-  onClose,
-}: {
-  leadId: number;
-  isOpen: boolean;
-  onClose: () => void;
-}) => {
-  return (
-    <DialogWrapper title="Add New Staff" isOpen={isOpen} onClose={onClose}>
-      <CreateStaffForm leadId={leadId} closeModal={onClose} />
-    </DialogWrapper>
-  );
-};
-
-const EditStaffWrapper = ({
-  staff,
-  isOpen,
-  onClose,
-}: {
-  staff: any;
-  isOpen: boolean;
-  onClose: () => void;
-}) => {
-  return (
-    <DialogWrapper title="Edit Staff" isOpen={isOpen} onClose={onClose}>
-      <EditStaffForm staff={staff} closeModal={onClose} />
-    </DialogWrapper>
-  );
-};
-
-const DeleteStaffWrapper = ({
-  staff,
-  isOpen,
-  onClose,
-}: {
-  staff: any;
-  isOpen: boolean;
-  onClose: () => void;
-}) => {
-  const { makeApiCall } = useApi();
-
-  function handleDelete() {
-    const body = {
-      staffId: staff.staffId,
-    };
-    makeApiCall({
-      fetcherFn: async () => {
-        return await getQueryClient().staff.deleteStaff.mutation({
-          body,
-        });
-      },
-      successMsgProps: {
-        title: `Staff updated successfully`,
-        duration: 2000,
-      },
-      onSuccessFn: () => {
-        onClose();
-        alert("delete successfully!");
-      },
-    });
-  }
-
-  return (
-    <DialogWrapper title="Delete Staff" isOpen={isOpen} onClose={onClose}>
-      This action will delete all the staffs and all the interactions with this
-      staff. Are you sure you want to proceed ?
-      <Button variant={"destructive"} onClick={handleDelete}>
-        Delete
-      </Button>
-    </DialogWrapper>
-  );
-};
-
-const InteractStaffWrapper = ({
-  staff,
-  isOpen,
-  onClose,
-}: {
-  staff: any;
-  isOpen: boolean;
-  onClose: () => void;
-}) => {
-  return (
-    <DialogWrapper title="Add Interaction" isOpen={isOpen} onClose={onClose}>
-      {!staff && <p>Loading...</p>}
-      {staff && (
-        <InteractionForm staffId={staff.staffId} closeModal={onClose} />
-      )}
-    </DialogWrapper>
-  );
-};
