@@ -96,7 +96,7 @@ export function StaffTable({
           return {
             query: {
               pageNumber: String(pageNumber),
-              pageSize: String(5),
+              pageSize: String(10),
               searchText: searchText,
               roles: role,
             },

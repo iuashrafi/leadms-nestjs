@@ -87,7 +87,7 @@ export function InteractionTable({
           return {
             query: {
               pageNumber: String(pageNumber),
-              pageSize: String(4),
+              pageSize: String(10),
               searchText: searchText,
               roles: role.trim().length === 0 ? undefined : role,
               staffId: staffId ?? undefined,

@@ -30,7 +30,7 @@ const LeadsListing = ({
       return {
         query: {
           pageNumber: String(pageParam.pageNumber),
-          pageSize: String(4),
+          pageSize: String(9),
           searchText,
           roles: role.trim().length === 0 ? undefined : role,
         },
