@@ -171,3 +171,18 @@ We have divided our backend into 3 modules. Each having its own controller, serv
 ## Screenshots
 
 Please check screenshots folder or directly the github link (incase the screenshots doesn't loads locally)
+
+Dashboard - Metrics, Recent Leads, Interactions, Today's Pending calls
+![Dashboard](screenshots/ss1.png)
+
+Restaurant Leads - Search, Filter by Lead status, Infinite Pagination Scroll
+![Leads](screenshots/ss2.png)
+
+Single Lead Page - Rank(performance) of Lead, Total Orders, Lead Details, Add staffs to a lead, interact with staff, Edit etc
+![Single Lead](screenshots/ss3.png)
+
+Staffs Table - Search staffs, Filter by role, Dropdown option to edit, interact with staff
+![Staffs](screenshots/ss4.png)
+
+Interactions Table - search, filter, edit interaction, add new interaction, filter interactions by leadId or staffId
+![Dashboard](screenshots/ss5.png)
