@@ -18,7 +18,7 @@ const CustomErrorMessage = ({
       <div className="bg-white py-4 px-5 rounded-lg w-fit min-w-[300px] flex flex-col gap-4">
         <div>
           <h1 className="text-xl font-semibold">{title}</h1>
-          <p className="text-sm">{description}</p>
+          <p className="text-sm mt-1">{description}</p>
         </div>
         {actionButton}
       </div>

@@ -135,7 +135,7 @@ export function StaffTable({
   return (
     <div className="rounded-md border bg-white p-2">
       <DialogWrapper
-        title="Interaction"
+        title="Add New Interaction"
         isOpen={isModalOpen}
         onClose={closeModal}
       >
@@ -166,7 +166,7 @@ export function StaffTable({
           {staffsList.length === 0 && (
             <TableRow>
               <TableCell
-                colSpan={5}
+                colSpan={6}
                 className="text-center pt-8 italic text-muted-foreground"
               >
                 No Staffs Found
@@ -175,18 +175,20 @@ export function StaffTable({
           )}
           {staffsList.map((staff: any) => (
             <TableRow key={staff.id}>
-              <TableCell className="font-semibold capitalize">
+              <TableCell className="font-semibold capitalize min-w-[150px]">
                 {staff.name}
               </TableCell>
-              <TableCell className="capitalize font-semibold">
+              <TableCell className="capitalize font-semibold min-w-[150px]">
                 {staff.leadName}
               </TableCell>
-              <TableCell>
+              <TableCell className="min-w-[100px]">
                 <Badge variant={"secondary"}>{staff.role}</Badge>
               </TableCell>
-              <TableCell>{staff.contactNumber}</TableCell>
-              <TableCell>{staff.email}</TableCell>
-              <TableCell>
+              <TableCell className="min-w-[100px]">
+                {staff.contactNumber}
+              </TableCell>
+              <TableCell className="min-w-[170px]">{staff.email}</TableCell>
+              <TableCell className="min-w-[50px]">
                 <DropdownMenu>
                   <DropdownMenuTrigger>
                     <Ellipsis size={16} />
@@ -195,7 +197,7 @@ export function StaffTable({
                     <DropdownMenuItem
                       onClick={() => handleInteraction(staff.id)}
                     >
-                      Interact
+                      New Interaction
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() => onClickViewLeadsInfo(staff.id)}

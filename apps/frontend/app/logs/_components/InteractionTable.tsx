@@ -190,26 +190,30 @@ export function InteractionTable({
           )}
           {interactionsList.map((interaction: any) => (
             <TableRow key={interaction.id}>
-              <TableCell className="font-semibold capitalize">
+              <TableCell className="font-semibold capitalize min-w-[150px]">
                 {interaction.staffName}
               </TableCell>
-              <TableCell>
+              <TableCell className="min-w-[100px]">
                 <Badge variant={"secondary"}>
                   {interaction.interactionType}
                 </Badge>
               </TableCell>
-              <TableCell>{interaction.interactionDate}</TableCell>
-              <TableCell>
+              <TableCell className="min-w-[150px]">
+                {interaction.interactionDate}
+              </TableCell>
+              <TableCell className="min-w-[100px]">
                 {interaction.followUp ? (
                   <Badge variant={"active"}>Yes</Badge>
                 ) : (
                   <Badge variant={"inActive"}>No</Badge>
                 )}
               </TableCell>
-              <TableCell>
-                <Badge variant={"notes"}>{interaction.notes ?? "-"}</Badge>
+              <TableCell className="min-w-[180px]">
+                {interaction.notes && (
+                  <Badge variant={"notes"}> {interaction.notes} </Badge>
+                )}
               </TableCell>
-              <TableCell>
+              <TableCell className="min-w-[50px]">
                 <DropdownMenu>
                   <DropdownMenuTrigger>
                     <Ellipsis size={16} />

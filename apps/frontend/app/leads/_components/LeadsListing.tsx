@@ -6,6 +6,7 @@ import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { contract } from "contract";
 import { getQueryClient } from "@/lib/api";
 import { SearchFormType } from "@/types/common";
+import { Plus } from "lucide-react";
 
 const LeadsListing = ({
   allLeadsSearchQuery,
@@ -70,11 +71,11 @@ const LeadsListing = ({
   if (leads.length === 0)
     return (
       <CustomErrorMessage
-        title={"No Lead found"}
-        description={"Try to add new leads"}
+        title={"No Leads found"}
+        description={"Try to Add New Leads"}
         actionButton={
           <Button variant="default" onClick={openLeadsModal}>
-            Add New Lead
+            <Plus /> Add New Lead
           </Button>
         }
       />
