@@ -18,7 +18,7 @@ const LeadOptions = ({ openEditLeadModal, openDeleteLeadModal, leadId }) => {
       <DropdownMenuTrigger asChild>
         <Button>Settings</Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={openEditLeadModal}>
           Edit Lead
         </DropdownMenuItem>

@@ -246,12 +246,25 @@ export class LeadService {
         populate: ['staff'],
       },
     );
+
+    const ordersCountResult = await this.em.getKnex().raw(
+      `select count(*) as ordersCount
+         from restaurant_interaction ri
+         join restaurant_staff rs on ri.staff_id = rs.id
+         where ri.interaction_type = 'Order' and rs.restaurant_lead_id = ?`,
+      [id],
+    );
+
+    const ordersCount =
+      parseInt(ordersCountResult.rows[0].orderscount, 10) || 0;
+
     return {
       restaurantName: lead.name,
       address: lead.address,
       contactNumber: lead.contactNumber,
       currentStatus: lead.restaurantLeadStatus,
       assignedKAM: lead.assignedKAM,
+      ordersCount,
       staffs: lead.staff.getItems().map((eachStaff) => ({
         staffId: eachStaff.id,
         staffName: eachStaff.name,

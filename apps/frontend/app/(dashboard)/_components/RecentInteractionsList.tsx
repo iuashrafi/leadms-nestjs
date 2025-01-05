@@ -28,7 +28,7 @@ const RecentInteractionsList = ({
             </AvatarFallback>
           </Avatar>
           <div className="grid gap-1">
-            <p className="text-sm font-medium leading-none">
+            <p className="text-sm font-medium leading-none capitalize">
               {interaction.staffName}
             </p>
             <p className="text-sm text-muted-foreground">

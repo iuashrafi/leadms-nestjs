@@ -25,6 +25,7 @@ import { getQueryClient } from "@/lib/api";
 import { InteractionsSearchFormType } from "@/types/logs";
 import { InteractionForm } from "@/app/staffs/_components/InteractionForm";
 import CustomErrorMessage from "@/components/CustomErrorMessage";
+import { Badge } from "@/components/ui/badge";
 export function InteractionTable({
   allInteractionsSearchQuery,
   staffId,
@@ -168,7 +169,7 @@ export function InteractionTable({
       <Table className="">
         <TableHeader>
           <TableRow>
-            <TableHead className="">Id</TableHead>
+            {/* <TableHead className="">Id</TableHead> */}
             <TableHead className="">Interaction With</TableHead>
             <TableHead>Type</TableHead>
             <TableHead>Date</TableHead>
@@ -179,14 +180,26 @@ export function InteractionTable({
         <TableBody>
           {interactionsList.map((interaction: any) => (
             <TableRow key={interaction.id}>
-              <TableCell className="font-medium">{interaction.id}</TableCell>
-              <TableCell className="">{interaction.staffName}</TableCell>
-              <TableCell>{interaction.interactionType}</TableCell>
+              {/* <TableCell className="font-medium">{interaction.id}</TableCell> */}
+              <TableCell className="font-semibold capitalize">
+                {interaction.staffName}
+              </TableCell>
+              <TableCell>
+                <Badge variant={"secondary"}>
+                  {interaction.interactionType}
+                </Badge>
+              </TableCell>
               <TableCell>{interaction.interactionDate}</TableCell>
               <TableCell className="">
-                {interaction.followUp ? "Yes" : "No"}
+                {interaction.followUp ? (
+                  <Badge variant={"active"}>Yes</Badge>
+                ) : (
+                  <Badge variant={"inActive"}>No</Badge>
+                )}
               </TableCell>
-              <TableCell className="">{interaction.notes ?? "-"}</TableCell>
+              <TableCell className="">
+                <Badge variant={"notes"}>{interaction.notes ?? "-"}</Badge>
+              </TableCell>
               <TableCell className="">
                 <DropdownMenu>
                   <DropdownMenuTrigger>

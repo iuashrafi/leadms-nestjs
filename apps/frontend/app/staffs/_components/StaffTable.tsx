@@ -26,6 +26,7 @@ import { InteractionForm } from "./InteractionForm";
 import EditStaffWrapper from "@/app/leads/[id]/_components/EditStaffWrapper";
 import DeleteStaffWrapper from "@/app/leads/[id]/_components/DeleteStaffWrapper";
 import CustomErrorMessage from "@/components/CustomErrorMessage";
+import { Badge } from "@/components/ui/badge";
 
 export function StaffTable({
   allStaffsSearchQuery,
@@ -164,9 +165,15 @@ export function StaffTable({
         <TableBody>
           {staffsList.map((staff: any) => (
             <TableRow key={staff.id}>
-              <TableCell className="font-medium">{staff.name}</TableCell>
-              <TableCell className="">{staff.leadName}</TableCell>
-              <TableCell>{staff.role}</TableCell>
+              <TableCell className="font-semibold capitalize">
+                {staff.name}
+              </TableCell>
+              <TableCell className="capitalize font-semibold">
+                {staff.leadName}
+              </TableCell>
+              <TableCell>
+                <Badge variant={"secondary"}>{staff.role}</Badge>
+              </TableCell>
               <TableCell>{staff.contactNumber}</TableCell>
               <TableCell className="">{staff.email}</TableCell>
               <TableCell className="">
