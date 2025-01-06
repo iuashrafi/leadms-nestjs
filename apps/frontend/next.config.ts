@@ -1,6 +1,7 @@
 const nextConfig = {
   reactStrictMode: true,
 
+  // this is te proxy setup
   async rewrites() {
     switch (process.env.ENV) {
       case "dev":
