@@ -34,6 +34,7 @@ import {
 } from "@/types/logs";
 import { cn } from "@/lib/utils";
 import { intialInteracationValues } from "@/utils/logs";
+import { toUTCISOString } from "@/utils/common";
 
 export function InteractionForm({
   staffId,
@@ -52,7 +53,7 @@ export function InteractionForm({
   function onSubmit(values: CreateInteractionSchemaDto) {
     const body = {
       staffId,
-      interactionDate: values.interactionDate.toISOString(),
+      interactionDate: toUTCISOString(values.interactionDate),
       type: values.interactionType,
       notes:
         values.notes && values.notes.trim().length > 0

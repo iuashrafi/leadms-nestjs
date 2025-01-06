@@ -36,6 +36,7 @@ import { intialInteracationValues } from "@/utils/logs";
 import { useQueryClient } from "@tanstack/react-query";
 import { contract } from "contract";
 import { getQueryClient } from "@/lib/api";
+import { toUTCISOString } from "@/utils/common";
 // import { getQueryClient } from "@/lib/api";
 
 export function EditInteractionForm({
@@ -52,7 +53,7 @@ export function EditInteractionForm({
     resolver: zodResolver(CreateInteractionSchema),
     defaultValues: {
       interactionType: interaction.interactionType,
-      notes: interaction.notes,
+      notes: interaction.notes ?? "",
       followUp: interaction.followUp ? "Yes" : "No",
       interactionDate: interaction.interactionDate
         ? new Date(interaction.interactionDate)
@@ -63,7 +64,7 @@ export function EditInteractionForm({
   function onSubmit(values: CreateInteractionSchemaDto) {
     const body = {
       interactionId: interaction.id,
-      interactionDate: values.interactionDate.toISOString(),
+      interactionDate: toUTCISOString(values.interactionDate),
       interactionType: values.interactionType,
       notes:
         values.notes && values.notes.trim().length > 0
@@ -195,9 +196,7 @@ export function EditInteractionForm({
                     mode="single"
                     selected={field.value}
                     onSelect={field.onChange}
-                    disabled={(date) =>
-                      date > new Date() || date < new Date("1900-01-01")
-                    }
+                    disabled={(date) => date < new Date("1900-01-01")}
                   />
                 </PopoverContent>
               </Popover>

@@ -11,7 +11,7 @@ import { RestaurantStaff } from 'src/staff/entities/restaurantStaff.entity';
 
 @Entity()
 export class RestaurantInteraction extends BaseEntity {
-  @Property({ type: 'date' })
+  @Property()
   interactionDate: Date;
 
   @Enum({ items: () => RestaurantInteractionType })

@@ -26,6 +26,7 @@ import { InteractionsSearchFormType } from "@/types/logs";
 import { InteractionForm } from "@/app/staffs/_components/InteractionForm";
 import CustomErrorMessage from "@/components/CustomErrorMessage";
 import { Badge } from "@/components/ui/badge";
+import { convertToIST } from "@/utils/common";
 export function InteractionTable({
   allInteractionsSearchQuery,
   staffId,
@@ -199,7 +200,7 @@ export function InteractionTable({
                 </Badge>
               </TableCell>
               <TableCell className="min-w-[150px]">
-                {interaction.interactionDate}
+                {convertToIST(interaction.interactionDate)}
               </TableCell>
               <TableCell className="min-w-[100px]">
                 {interaction.followUp ? (

@@ -251,13 +251,13 @@
         },
         "interaction_date": {
           "name": "interaction_date",
-          "type": "date",
+          "type": "timestamptz",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
-          "mappedType": "date"
+          "length": 6,
+          "mappedType": "datetime"
         },
         "interaction_type": {
           "name": "interaction_type",
