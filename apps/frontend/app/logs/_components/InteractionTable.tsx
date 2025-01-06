@@ -25,12 +25,15 @@ import { getQueryClient } from "@/lib/api";
 import { InteractionsSearchFormType } from "@/types/logs";
 import { InteractionForm } from "@/app/staffs/_components/InteractionForm";
 import CustomErrorMessage from "@/components/CustomErrorMessage";
+import { Badge } from "@/components/ui/badge";
 export function InteractionTable({
   allInteractionsSearchQuery,
   staffId,
+  leadId,
 }: {
   allInteractionsSearchQuery: InteractionsSearchFormType;
   staffId: string | null;
+  leadId: string | null;
 }) {
   const { searchText, role } = allInteractionsSearchQuery;
   const [pageNumber, setPageNumber] = useState<number>(1);
@@ -92,6 +95,7 @@ export function InteractionTable({
               searchText: searchText,
               roles: role.trim().length === 0 ? undefined : role,
               staffId: staffId ?? undefined,
+              leadId: leadId ?? undefined,
             },
           };
         },
@@ -162,29 +166,54 @@ export function InteractionTable({
           closeModal={() => setIsCreateInteractionModalOpen(false)}
         />
       </DialogWrapper>
-      <Table className="">
+      <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="">Id</TableHead>
-            <TableHead className="">Interaction With</TableHead>
+            <TableHead>Interaction With</TableHead>
             <TableHead>Type</TableHead>
             <TableHead>Date</TableHead>
-            <TableHead className="">Follow up</TableHead>
-            <TableHead className="">Notes</TableHead>
+            <TableHead>Follow up</TableHead>
+            <TableHead>Notes</TableHead>
+            <TableHead></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
+          {interactionsList.length === 0 && (
+            <TableRow>
+              <TableCell
+                colSpan={5}
+                className="text-center pt-8 italic text-muted-foreground"
+              >
+                No Interactions Found
+              </TableCell>
+            </TableRow>
+          )}
           {interactionsList.map((interaction: any) => (
             <TableRow key={interaction.id}>
-              <TableCell className="font-medium">{interaction.id}</TableCell>
-              <TableCell className="">{interaction.staffName}</TableCell>
-              <TableCell>{interaction.interactionType}</TableCell>
-              <TableCell>{interaction.interactionDate}</TableCell>
-              <TableCell className="">
-                {interaction.followUp ? "Yes" : "No"}
+              <TableCell className="font-semibold capitalize min-w-[150px]">
+                {interaction.staffName}
               </TableCell>
-              <TableCell className="">{interaction.notes ?? "-"}</TableCell>
-              <TableCell className="">
+              <TableCell className="min-w-[100px]">
+                <Badge variant={"secondary"}>
+                  {interaction.interactionType}
+                </Badge>
+              </TableCell>
+              <TableCell className="min-w-[150px]">
+                {interaction.interactionDate}
+              </TableCell>
+              <TableCell className="min-w-[100px]">
+                {interaction.followUp ? (
+                  <Badge variant={"active"}>Yes</Badge>
+                ) : (
+                  <Badge variant={"inActive"}>No</Badge>
+                )}
+              </TableCell>
+              <TableCell className="min-w-[180px]">
+                {interaction.notes && (
+                  <Badge variant={"notes"}> {interaction.notes} </Badge>
+                )}
+              </TableCell>
+              <TableCell className="min-w-[50px]">
                 <DropdownMenu>
                   <DropdownMenuTrigger>
                     <Ellipsis size={16} />

@@ -19,7 +19,7 @@ const NavLinkButton = ({ navLink }: { navLink: navLinkType }) => {
           : " text-gray-600  hover:text-black bg-transparent hover:bg-transparent"
       }`}
         >
-          <span className="p-2 md:p-0 bg-[#186B641A] md:bg-transparent rounded-[6px]">
+          <span className="p-2 md:p-0 bg-gray-200 md:bg-transparent rounded-[6px]">
             {Icon && <Icon strokeWidth={2.5} />}
           </span>
           <p>{label}</p>

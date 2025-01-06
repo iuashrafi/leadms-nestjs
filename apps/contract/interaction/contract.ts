@@ -46,6 +46,7 @@ export const interactionContract = c.router(
       path: "/getAllInteractions",
       query: SearchQuerySchema.extend({
         staffId: z.string().transform(Number).optional(),
+        leadId: z.string().transform(Number).optional(),
       }),
       responses: {
         200: createPaginatedResponseSchema(InteractionSchema),

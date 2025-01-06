@@ -7,7 +7,7 @@ const queryClient = (authToken: string | undefined) =>
   initQueryClient(contract, {
     baseUrl:
       process.env.NEXT_PUBLIC_BACKEND_URL ??
-      "http://ec2-13-201-194-19.ap-south-1.compute.amazonaws.com:3000/:path*",
+      "http://ec2-13-201-194-19.ap-south-1.compute.amazonaws.com:3000",
     baseHeaders: authToken ? { Authorization: `Bearer ${authToken}` } : {},
     api: async (args) => {
       const response = await tsRestFetchApi(args);

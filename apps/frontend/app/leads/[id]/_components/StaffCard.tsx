@@ -32,25 +32,25 @@ const StaffCard = ({
     {
       id: "view",
       Icon: Eye,
-      label: `View ${staffName} info`,
+      label: `View ${staffName} Interactions`,
       onClick: () => onClickViewLeadsInfo(),
     },
     {
       id: "call",
       Icon: Phone,
-      label: `Call ${staffName} info`,
+      label: `Interact with ${staffName}`,
       onClick: () => openInteractStaffModal(staff),
     },
     {
       id: "edit",
       Icon: Pencil,
-      label: `Edit ${staffName} info`,
+      label: `Edit ${staffName} data`,
       onClick: () => openEditStaffModal(staff),
     },
     {
       id: "delete",
       Icon: Trash2,
-      label: `Delete ${staffName} info`,
+      label: `Delete ${staffName}`,
       onClick: () => openDeleteStaffModal(staff),
     },
   ];

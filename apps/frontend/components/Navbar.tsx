@@ -15,7 +15,7 @@ const Navbar = () => {
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b px-4 flex backdrop-blur bg-white/10 min-h-[56px]">
-      <section className="w-full md:container mx-auto md:px-6 lg:px-8 xl:px-16 flex items-center  justify-between  md:justify-normal  gap-12">
+      <section className="w-full md:container mx-auto md:px-6 lg:px-8 xl:px-16 flex items-center  justify-between  md:justify-normal  gap-8">
         <div>
           <Link href="/">
             <Image src="/logo.svg" alt="logo" width={30} height={30} />
@@ -30,7 +30,7 @@ const Navbar = () => {
         {/* mobile navbar */}
         {showNavbarDropDown && (
           <div
-            className={`w-[100vw] bg-neutral-100 h-fit top-[58px] left-0 right-0 z-[-1] flex flex-col gap-1 md:hidden shadow-xl rounded-b-xl px-2  sm:px-6  py-4 absolute`}
+            className={`w-full bg-neutral-100 h-fit top-[58px] left-0 right-0 z-[-1] flex flex-col gap-1 md:hidden shadow-xl rounded-b-xl px-2  sm:px-6  py-4 absolute`}
           >
             <NavLinkItems />
           </div>

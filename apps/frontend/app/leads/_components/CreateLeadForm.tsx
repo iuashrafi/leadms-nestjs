@@ -55,7 +55,7 @@ const CreateLeadForm = ({ closeModal }: { closeModal: () => void }) => {
         });
       },
       successMsgProps: {
-        title: `Lead created successfully!`,
+        title: `Lead added successfully!`,
         duration: 2000,
       },
       onSuccessFn: () => {
@@ -156,7 +156,9 @@ const CreateLeadForm = ({ closeModal }: { closeModal: () => void }) => {
               </FormItem>
             )}
           />
-          <Button type="submit">Create Lead</Button>
+          <Button type="submit" className="w-full">
+            Add Lead
+          </Button>
         </form>
       </Form>
     </div>
