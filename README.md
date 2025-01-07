@@ -81,6 +81,20 @@ The frontend is built using **NextJs**, Tailwindcss and shadcn library and It is
   ```bash
   npm install -g pnpm
   ```
+#### Env configuration
+
+Add a .env.local file to apps/frontend folder
+```bash
+ENV=dev
+NEXT_PUBLIC_BACKEND_URL=/api
+```
+
+Add a .env.production file to apps/frontend folder
+```bash
+ENV=prod
+NEXT_PUBLIC_BACKEND_URL=/api
+```
+
 
 #### Running the Project Development Server
 
